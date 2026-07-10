@@ -83,6 +83,26 @@
     white-space: pre-wrap; line-height: 1.5;
   }
   #debug summary { cursor: pointer; color: var(--accent); font-family: -apple-system, sans-serif; font-size: 12px; }
+
+  #sim-panel {
+    margin: 12px; padding: 4px 12px; border-radius: 8px;
+    background: var(--panel); border: 1px solid var(--line);
+  }
+  #sim-panel summary { cursor: pointer; color: var(--warn); font-size: 13px; padding: 8px 0; font-weight: 600; }
+  .sim-body { padding: 4px 0 12px; display: flex; flex-direction: column; gap: 10px; }
+  .sim-body label { font-size: 12px; color: var(--text-dim); display: flex; flex-direction: column; gap: 4px; }
+  .sim-body input {
+    background: var(--bg); border: 1px solid var(--line); color: var(--text);
+    padding: 8px 10px; border-radius: 6px; font-size: 14px; font-family: monospace;
+  }
+  .sim-buttons { display: flex; gap: 8px; }
+  .sim-buttons button {
+    flex: 1; padding: 10px; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  #sim-start-btn { border-color: var(--ok); color: var(--ok); }
+  #sim-stop-btn { border-color: var(--warn); color: var(--warn); }
+  .sim-hint { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -93,6 +113,28 @@
       <span id="gps-text">Locating…</span>
     </div>
     <div class="highway" id="highway-text">—</div>
+  </div>
+
+  <div id="sim-panel">
+    <details>
+      <summary>🧪 Simulate a drive (no GPS needed)</summary>
+      <div class="sim-body">
+        <label>Start (lat,lon)
+          <input type="text" id="sim-start" placeholder="35.2034,-80.9631">
+        </label>
+        <label>End (lat,lon)
+          <input type="text" id="sim-end" placeholder="35.3050,-80.9530">
+        </label>
+        <label>Speed (mph)
+          <input type="number" id="sim-speed" value="60" min="5" max="100">
+        </label>
+        <div class="sim-buttons">
+          <button id="sim-start-btn">Start simulation</button>
+          <button id="sim-stop-btn">Stop</button>
+        </div>
+        <div class="sim-hint">Tip: pick two coordinates that are both on the same highway in cameras.json, a few miles apart, so you're guaranteed to pass real cameras. Open the Debug panel below to watch bearing/highway lock in real time.</div>
+      </div>
+    </details>
   </div>
 
   <div id="cam-list">
@@ -116,7 +158,7 @@
   const BEARING_DISAGREE_DEG = 45;   // how much new bearing must differ to challenge current direction
   const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to flip direction
   const HIGHWAY_RECHECK_MS = 15000;  // re-run OSRM snap at most this often
-  const MAX_CANDIDATE_DIST_M = 40000; // ignore cameras farther than this (40km) to keep sorting cheap
+  const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
   const PASSED_THRESHOLD_M = 150;    // consider a camera "passed" once you're this close and moving away
 
   // ---------- State ----------
@@ -274,7 +316,7 @@
         ? true
         : angleDiff(bearingToCam, lastStableBearing) < 90;
       return { cam: c, dist, isAhead };
-    }).filter(s => s.dist <= MAX_CANDIDATE_DIST_M && s.isAhead);
+    }).filter(s => s.dist <= MAX_SEARCH_DIST_M && s.isAhead);
 
     scored.sort((a, b) => a.dist - b.dist);
     return scored.slice(0, 2);
@@ -295,7 +337,14 @@
       destroySlot(index);
       displayedCams[index] = null;
       el.className = 'cam-slot empty';
-      el.textContent = index === 0 ? 'No camera found ahead on this highway yet.' : '—';
+      if (index === 1) {
+        el.textContent = '—';
+      } else if (!currentHighway) {
+        el.textContent = 'Waiting for highway lock…';
+      } else {
+        const miles = (MAX_SEARCH_DIST_M / 1609.34).toFixed(0);
+        el.textContent = `No camera within ${miles} mi ahead on ${currentHighway}.`;
+      }
       return;
     }
 
@@ -345,12 +394,11 @@
     renderSlot(1, scoredCams[1] || null);
   }
 
-  // ---------- Main GPS handling ----------
-  async function onPosition(position) {
-    const { latitude: lat, longitude: lon } = position.coords;
+  // ---------- Main position handling (shared by real GPS and simulator) ----------
+  async function handlePosition(lat, lon, source) {
 
     gpsDot.className = 'dot live';
-    gpsText.textContent = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+    gpsText.textContent = `${lat.toFixed(5)}, ${lon.toFixed(5)}${source === 'sim' ? ' (simulated)' : ''}`;
 
     updateDirection(lat, lon);
 
@@ -370,7 +418,6 @@
     const upcoming = getUpcomingCameras(lat, lon);
     updateDisplay(upcoming);
 
-    setDebug(prev => prev); // no-op placeholder, real debug set above
     debugContent.textContent = JSON.stringify({
       highway: currentHighway,
       direction: currentDirectionLabel,
@@ -384,15 +431,86 @@
     gpsText.textContent = `GPS error: ${err.message}`;
   }
 
+  function onRealPosition(position) {
+    if (simTimer) return; // ignore real GPS while a simulation is running
+    handlePosition(position.coords.latitude, position.coords.longitude, 'real');
+  }
+
+  // ---------- Drive simulator ----------
+  let simTimer = null;
+
+  function parseLatLon(str) {
+    const parts = str.split(',').map(s => parseFloat(s.trim()));
+    if (parts.length !== 2 || parts.some(isNaN)) return null;
+    return { lat: parts[0], lon: parts[1] };
+  }
+
+  function startSimulation() {
+    stopSimulation();
+
+    const start = parseLatLon(document.getElementById('sim-start').value);
+    const end = parseLatLon(document.getElementById('sim-end').value);
+    const mph = parseFloat(document.getElementById('sim-speed').value) || 60;
+
+    if (!start || !end) {
+      alert('Enter valid "lat,lon" for both start and end.');
+      return;
+    }
+
+    // Reset tracking state so the sim starts clean
+    posHistory = [];
+    lastStableBearing = null;
+    pendingBearing = null;
+    pendingBearingCount = 0;
+    currentHighway = null;
+    lastHighwayCheck = 0;
+
+    const totalDist = haversineMeters(start.lat, start.lon, end.lat, end.lon);
+    const speedMs = mph * 0.44704; // mph -> m/s
+    const totalTimeSec = totalDist / speedMs;
+    const TICK_SEC = 2; // emit a fake GPS point every 2 simulated seconds
+    const totalTicks = Math.max(1, Math.ceil(totalTimeSec / TICK_SEC));
+
+    let tick = 0;
+    gpsText.textContent = `Simulating: ${(totalDist / 1609.34).toFixed(1)} mi @ ${mph} mph (~${Math.round(totalTimeSec)}s)`;
+
+    simTimer = setInterval(() => {
+      tick++;
+      const frac = Math.min(1, tick / totalTicks);
+      const lat = start.lat + (end.lat - start.lat) * frac;
+      const lon = start.lon + (end.lon - start.lon) * frac;
+
+      handlePosition(lat, lon, 'sim');
+
+      if (frac >= 1) {
+        stopSimulation();
+        gpsText.textContent += ' — simulation complete';
+      }
+    }, 400); // real-world tick speed; each tick advances TICK_SEC of simulated time
+  }
+
+  function stopSimulation() {
+    if (simTimer) {
+      clearInterval(simTimer);
+      simTimer = null;
+    }
+  }
+
   async function init() {
     await loadCameras();
+
+    document.getElementById('sim-start-btn').addEventListener('click', startSimulation);
+    document.getElementById('sim-stop-btn').addEventListener('click', () => {
+      stopSimulation();
+      gpsText.textContent = 'Simulation stopped.';
+    });
 
     if (!navigator.geolocation) {
       gpsText.textContent = 'Geolocation not supported on this device/browser.';
       return;
     }
 
-    navigator.geolocation.watchPosition(onPosition, onPositionError, {
+    navigator.geolocation.watchPosition(onRealPosition, onPositionError, {
       enableHighAccuracy: true,
       maximumAge: 5000,
       timeout: 15000,
