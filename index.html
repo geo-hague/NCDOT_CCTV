@@ -182,8 +182,6 @@
   let pendingBearingCount = 0;
   let posHistory = [];            // [{lat,lon,t}]
   let lastHighwayCheck = 0;
-  let displayedCams = [null, null]; // camera objects currently in slot 0 / slot 1
-  let hlsInstances = [null, null];
 
   // ---------- DOM ----------
   const gpsDot = document.getElementById('gps-dot');
@@ -384,21 +382,30 @@
   }
 
   // ---------- Video slot rendering ----------
-  function destroySlot(index) {
-    if (hlsInstances[index]) {
-      try { hlsInstances[index].detachMedia(); hlsInstances[index].destroy(); } catch (e) {}
-      hlsInstances[index] = null;
+  // Each of the two DOM slot elements tracks which camera id it currently
+  // holds via a data attribute, and its hls.js instance via this Map. When a
+  // camera needs to move from the "next" position to "nearest" (or vice
+  // versa), we physically move the DOM element itself — which keeps its
+  // live <video> node and hls.js binding intact — rather than copying its
+  // innerHTML into the other slot, which would destroy and recreate the
+  // video element and silently orphan the still-running hls instance.
+  const hlsByEl = new Map();
+  let slotOrder = [slotEls[0], slotEls[1]]; // current top-to-bottom DOM order
+
+  function destroySlotEl(el) {
+    const hls = hlsByEl.get(el);
+    if (hls) {
+      try { hls.detachMedia(); hls.destroy(); } catch (e) {}
+      hlsByEl.delete(el);
     }
   }
 
-  function renderSlot(index, camWithDist) {
-    const el = slotEls[index];
-
+  function renderCameraIntoEl(el, camWithDist, label) {
     if (!camWithDist) {
-      destroySlot(index);
-      displayedCams[index] = null;
+      destroySlotEl(el);
+      el.dataset.camId = '';
       el.className = 'cam-slot empty';
-      if (index === 1) {
+      if (label === 'Next') {
         el.textContent = '—';
       } else if (!currentHighway) {
         el.textContent = 'Waiting for highway lock…';
@@ -410,25 +417,25 @@
     }
 
     const { cam, dist } = camWithDist;
-    const alreadyShowing = displayedCams[index] && displayedCams[index].id === cam.id;
-
     const distText = formatDistance(dist);
 
-    if (alreadyShowing) {
-      // just update the distance readout, no video rebuild
+    if (el.dataset.camId === String(cam.id)) {
+      // Same camera already live in this element — just refresh the label
+      // (position may have changed, e.g. Next -> Nearest) and distance.
+      const labelEl = el.querySelector('.cam-label');
       const distEl = el.querySelector('.cam-dist');
+      if (labelEl) labelEl.textContent = `${label} — ${cam.roadway}`;
       if (distEl) distEl.textContent = distText;
       return;
     }
 
-    // new camera for this slot - rebuild
-    destroySlot(index);
-    displayedCams[index] = cam;
-
+    // Genuinely new camera for this element — rebuild the player.
+    destroySlotEl(el);
+    el.dataset.camId = String(cam.id);
     el.className = 'cam-slot';
     el.innerHTML = `
       <div class="cam-header">
-        <span class="cam-label">${index === 0 ? 'Nearest' : 'Next'} — ${cam.roadway}</span>
+        <span class="cam-label">${label} — ${cam.roadway}</span>
         <span class="cam-dist">${distText}</span>
       </div>
       <div class="cam-location">${cam.location || ''}</div>
@@ -443,7 +450,7 @@
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play().catch(() => {});
       });
-      hlsInstances[index] = hls;
+      hlsByEl.set(el, hls);
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = cam.videoUrl;
       video.addEventListener('loadedmetadata', () => video.play().catch(() => {}));
@@ -451,32 +458,31 @@
   }
 
   function updateDisplay(scoredCams) {
-    // If a camera already showing in one slot is about to be reassigned to
-    // the other slot (e.g. "next" becomes "nearest" once the old nearest
-    // drops below -1320ft), swap our bookkeeping instead of rebuilding the
-    // player — avoids an unnecessary video restart on promotion.
-    const newIds = scoredCams.map(s => s.cam.id);
-    const oldIds = displayedCams.map(c => c ? c.id : null);
+    const labels = ['Nearest', 'Next'];
+    const desiredIds = scoredCams.map(s => String(s.cam.id));
 
-    for (let index = 0; index < 2; index++) {
-      const wantId = newIds[index] ?? null;
-      if (wantId !== null && oldIds[index] !== wantId) {
-        const otherIndex = index === 0 ? 1 : 0;
-        if (oldIds[otherIndex] === wantId) {
-          // Same camera, different slot — move the live hls instance/DOM
-          // state across without tearing it down.
-          [displayedCams[0], displayedCams[1]] = [displayedCams[1], displayedCams[0]];
-          [hlsInstances[0], hlsInstances[1]] = [hlsInstances[1], hlsInstances[0]];
-          [slotEls[0].innerHTML, slotEls[1].innerHTML] = [slotEls[1].innerHTML, slotEls[0].innerHTML];
-          [slotEls[0].className, slotEls[1].className] = [slotEls[1].className, slotEls[0].className];
-          oldIds[0] = displayedCams[0] ? displayedCams[0].id : null;
-          oldIds[1] = displayedCams[1] ? displayedCams[1].id : null;
-        }
-      }
+    // Prefer keeping each camera in the element that already has it live,
+    // just at a (possibly) different position — avoids rebuilding video
+    // that's already playing correctly, just relocates it.
+    const usedEls = new Set();
+    const newOrder = [null, null];
+    desiredIds.forEach((id, pos) => {
+      const match = slotOrder.find(el => el.dataset.camId === id && !usedEls.has(el));
+      if (match) { newOrder[pos] = match; usedEls.add(match); }
+    });
+    const leftover = slotOrder.filter(el => !usedEls.has(el));
+    for (let pos = 0; pos < 2; pos++) {
+      if (!newOrder[pos]) newOrder[pos] = leftover.shift();
     }
 
-    renderSlot(0, scoredCams[0] || null);
-    renderSlot(1, scoredCams[1] || null);
+    // Physically reorder the DOM to match (moves nodes, preserves live video).
+    const container = document.getElementById('cam-list');
+    newOrder.forEach(el => container.appendChild(el));
+    slotOrder = newOrder;
+
+    slotOrder.forEach((el, pos) => {
+      renderCameraIntoEl(el, scoredCams[pos] || null, labels[pos]);
+    });
   }
 
   // ---------- Main position handling (shared by real GPS and simulator) ----------
@@ -578,9 +584,10 @@
     pendingHighway = null;
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
-    displayedCams = [null, null];
-    destroySlot(0);
-    destroySlot(1);
+    slotOrder.forEach(el => {
+      destroySlotEl(el);
+      el.dataset.camId = '';
+    });
 
     const totalDist = haversineMeters(start.lat, start.lon, end.lat, end.lon);
     const speedMs = mph * 0.44704; // mph -> m/s
