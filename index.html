@@ -120,10 +120,10 @@
       <summary>🧪 Simulate a drive (no GPS needed)</summary>
       <div class="sim-body">
         <label>Start (lat,lon)
-          <input type="text" id="sim-start" placeholder="35.2034,-80.9631" value="35.806743,-78.720926">
+          <input type="text" id="sim-start" placeholder="35.2034,-80.9631" value="35.819716,-78.741887">
         </label>
         <label>End (lat,lon)
-          <input type="text" id="sim-end" placeholder="35.3050,-80.9530" value="35.871821,-78.829404">
+          <input type="text" id="sim-end" placeholder="35.3050,-80.9530" value="35.891144,-78.849057">
         </label>
         <label>Speed (mph)
           <input type="number" id="sim-speed" value="60" min="5" max="100">
@@ -167,9 +167,9 @@
   const HIGHWAY_RECHECK_MS = 15000;  // re-run highway snap at most this often
   const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
   const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
-  const SWAP_BUFFER_M = 304.8;       // ~1000 ft — once a slot's camera is passed, wait this much
-                                      // travel distance before showing the next one, unless the
-                                      // next candidate is already this close (then show it right away)
+  const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
+                                      // "nearest"/"next" camera, counting down through negative
+                                      // distance, until it's this far behind you
 
   // ---------- State ----------
   let allCameras = [];
@@ -184,7 +184,6 @@
   let lastHighwayCheck = 0;
   let displayedCams = [null, null]; // camera objects currently in slot 0 / slot 1
   let hlsInstances = [null, null];
-  let slotVacatedAt = [null, null]; // {lat,lon} where each slot's camera was passed, or null if not waiting
 
   // ---------- DOM ----------
   const gpsDot = document.getElementById('gps-dot');
@@ -231,12 +230,9 @@
   }
 
   // ---------- Highway name normalization ----------
-  function metersToFeet(m) { return m * 3.28084; }
-
   function formatDistance(meters) {
-    const feet = metersToFeet(meters);
-    if (feet < 5280) return `${Math.round(feet / 10) * 10} ft`;
-    return `${(meters / 1609.34).toFixed(1)} mi`;
+    const miles = meters / 1609.34;
+    return `${miles.toFixed(1)} mi`;
   }
 
   function normalizeHighwayName(raw) {
@@ -360,18 +356,29 @@
     if (!currentHighway) return [];
 
     // Direction the camera itself faces doesn't matter here — we only care
-    // that it's on the current highway and physically ahead of us.
+    // that it's on the current highway.
     const candidates = allCameras.filter(c => normalizeHighwayName(c.roadway) === currentHighway);
 
     const scored = candidates.map(c => {
-      const dist = haversineMeters(lat, lon, c.lat, c.lon);
+      const straightLineDist = haversineMeters(lat, lon, c.lat, c.lon);
       const bearingToCam = bearingDeg(lat, lon, c.lat, c.lon);
-      const isAhead = lastStableBearing === null
-        ? true
-        : angleDiff(bearingToCam, lastStableBearing) < 90;
-      return { cam: c, dist, isAhead };
-    }).filter(s => s.dist <= MAX_SEARCH_DIST_M && s.isAhead);
 
+      // Project the straight-line distance onto our direction of travel:
+      // positive = ahead of us, negative = behind us. This lets a camera
+      // stay "in view" and count down through zero as you pass it, rather
+      // than disappearing the instant its raw bearing crosses 90°.
+      let dist;
+      if (lastStableBearing === null) {
+        dist = straightLineDist; // no travel direction locked yet — treat everything as ahead
+      } else {
+        const angle = angleDiff(bearingToCam, lastStableBearing);
+        dist = straightLineDist * Math.cos(toRad(angle));
+      }
+
+      return { cam: c, dist };
+    }).filter(s => s.dist >= -SWAP_BUFFER_M && s.dist <= MAX_SEARCH_DIST_M);
+
+    // Ascending: most-behind-but-still-in-view first, then increasingly ahead.
     scored.sort((a, b) => a.dist - b.dist);
     return scored.slice(0, 2);
   }
@@ -443,55 +450,33 @@
     }
   }
 
-  function renderSlotWaiting(index, feetRemaining) {
-    destroySlot(index);
-    displayedCams[index] = null;
-    const el = slotEls[index];
-    el.className = 'cam-slot empty';
-    el.textContent = `Next camera in ~${Math.round(feetRemaining / 10) * 10} ft…`;
-  }
+  function updateDisplay(scoredCams) {
+    // If a camera already showing in one slot is about to be reassigned to
+    // the other slot (e.g. "next" becomes "nearest" once the old nearest
+    // drops below -1320ft), swap our bookkeeping instead of rebuilding the
+    // player — avoids an unnecessary video restart on promotion.
+    const newIds = scoredCams.map(s => s.cam.id);
+    const oldIds = displayedCams.map(c => c ? c.id : null);
 
-  function updateDisplay(scoredCams, lat, lon) {
     for (let index = 0; index < 2; index++) {
-      const candidate = scoredCams[index] || null;
-      const currentCam = displayedCams[index];
-
-      // Same camera still holds this slot — just refresh distance, no rebuild.
-      if (currentCam && candidate && candidate.cam.id === currentCam.id) {
-        slotVacatedAt[index] = null;
-        renderSlot(index, candidate);
-        continue;
-      }
-
-      // Slot is empty and there's nothing to show yet.
-      if (!currentCam && !candidate) {
-        renderSlot(index, null);
-        continue;
-      }
-
-      // Slot was empty, now something qualifies — show it immediately,
-      // no buffer needed since we're not replacing an active view.
-      if (!currentCam && candidate) {
-        slotVacatedAt[index] = null;
-        renderSlot(index, candidate);
-        continue;
-      }
-
-      // currentCam is no longer the top pick for this slot (passed, or
-      // overtaken in ranking) — apply the swap buffer before replacing it.
-      if (!slotVacatedAt[index]) {
-        slotVacatedAt[index] = { lat, lon };
-      }
-      const traveledSinceVacated = haversineMeters(slotVacatedAt[index].lat, slotVacatedAt[index].lon, lat, lon);
-      const candidateDist = candidate ? candidate.dist : Infinity;
-
-      if (candidateDist <= SWAP_BUFFER_M || traveledSinceVacated >= SWAP_BUFFER_M) {
-        slotVacatedAt[index] = null;
-        renderSlot(index, candidate);
-      } else {
-        renderSlotWaiting(index, SWAP_BUFFER_M - traveledSinceVacated);
+      const wantId = newIds[index] ?? null;
+      if (wantId !== null && oldIds[index] !== wantId) {
+        const otherIndex = index === 0 ? 1 : 0;
+        if (oldIds[otherIndex] === wantId) {
+          // Same camera, different slot — move the live hls instance/DOM
+          // state across without tearing it down.
+          [displayedCams[0], displayedCams[1]] = [displayedCams[1], displayedCams[0]];
+          [hlsInstances[0], hlsInstances[1]] = [hlsInstances[1], hlsInstances[0]];
+          [slotEls[0].innerHTML, slotEls[1].innerHTML] = [slotEls[1].innerHTML, slotEls[0].innerHTML];
+          [slotEls[0].className, slotEls[1].className] = [slotEls[1].className, slotEls[0].className];
+          oldIds[0] = displayedCams[0] ? displayedCams[0].id : null;
+          oldIds[1] = displayedCams[1] ? displayedCams[1].id : null;
+        }
       }
     }
+
+    renderSlot(0, scoredCams[0] || null);
+    renderSlot(1, scoredCams[1] || null);
   }
 
   // ---------- Main position handling (shared by real GPS and simulator) ----------
@@ -542,7 +527,7 @@
     }
 
     const upcoming = getUpcomingCameras(lat, lon);
-    updateDisplay(upcoming, lat, lon);
+    updateDisplay(upcoming);
 
     debugContent.textContent = JSON.stringify({
       highway: currentHighway,
@@ -593,7 +578,6 @@
     pendingHighway = null;
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
-    slotVacatedAt = [null, null];
     displayedCams = [null, null];
     destroySlot(0);
     destroySlot(1);
@@ -630,8 +614,29 @@
     }
   }
 
+  // ---------- Keep screen awake ----------
+  let wakeLock = null;
+
+  async function acquireWakeLock() {
+    if (!('wakeLock' in navigator)) return; // unsupported browser — fails silently
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (err) {
+      // Common causes: low battery mode, or the tab isn't visible yet.
+      console.warn('Wake lock request failed:', err);
+    }
+  }
+
+  // The lock is automatically released whenever the tab is hidden (e.g. you
+  // switch apps to check a map, then come back) — re-acquire it on return.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') acquireWakeLock();
+  });
+
   async function init() {
     await loadCameras();
+    acquireWakeLock();
 
     document.getElementById('sim-start-btn').addEventListener('click', startSimulation);
     document.getElementById('sim-stop-btn').addEventListener('click', () => {
