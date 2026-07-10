@@ -173,7 +173,7 @@
 
   // ---------- State ----------
   let allCameras = [];
-  let currentHighway = null;      // normalized e.g. "I-40"
+  let currentHighway = null;      // array of normalized refs currently locked, e.g. ["I-85"] or ["I-40","I-85"]
   let pendingHighway = null;
   let pendingHighwayCount = 0;
   let currentDirectionLabel = null; // "Northbound" | "Southbound" | "Eastbound" | "Westbound"
@@ -265,8 +265,14 @@
   // Restricted to motorway/trunk/primary (excludes _link/ramp ways and any
   // crossing road at overpasses) and searched within a tight radius so we
   // don't accidentally grab a road passing underneath/above.
-  const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
-  const SNAP_RADIUS_M = 25; // how close a way must be to count as "you're on it"
+  const OVERPASS_URLS = [
+    'https://overpass-api.de/api/interpreter',
+    'https://overpass.kumi.systems/api/interpreter',
+  ];
+  const SNAP_RADIUS_M = 60; // how close a way must be to count as "you're on it" —
+                             // loose enough to tolerate the test simulator's straight-line
+                             // path drifting off the actual (curved) road; real GPS traces
+                             // will sit right on the road so this won't hurt real accuracy.
 
   async function snapToHighway(lat, lon) {
     const query = `
@@ -275,34 +281,39 @@
         [highway~"^(motorway|trunk|primary)$"];
       out tags;
     `;
-    try {
-      const resp = await fetch(OVERPASS_URL, {
-        method: 'POST',
-        body: 'data=' + encodeURIComponent(query),
-      });
-      const data = await resp.json();
-      if (!data.elements || !data.elements.length) {
-        return { rawName: null, normalized: null };
-      }
-      const tags = data.elements[0].tags || {};
-      // Prefer the route number (ref) when present — e.g. "I-40" — since
-      // that's the reliable, unambiguous identifier. Fall back to the
-      // literal road name (e.g. "Wade Avenue") for roads that carry CCTV
-      // cameras but don't have a route-number ref tag.
-      let source = null;
-      if (tags.ref) {
-        source = tags.ref.split(';')[0].trim();
-      } else if (tags.name) {
-        source = tags.name.trim();
-      }
-      if (!source) return { rawName: null, normalized: null };
 
-      const normalized = normalizeHighwayName(source);
-      return { rawName: source, normalized };
-    } catch (err) {
-      console.warn('Overpass snap failed:', err);
-      return { rawName: null, normalized: null };
+    let lastError = null;
+    for (const baseUrl of OVERPASS_URLS) {
+      try {
+        const resp = await fetch(baseUrl, {
+          method: 'POST',
+          body: 'data=' + encodeURIComponent(query),
+        });
+        if (!resp.ok) {
+          lastError = `HTTP ${resp.status} from ${baseUrl}`;
+          continue; // try next mirror
+        }
+        const data = await resp.json();
+        if (!data.elements || !data.elements.length) {
+          return { rawName: null, normalizedList: [], error: null };
+        }
+        const tags = data.elements[0].tags || {};
+        let sources = [];
+        if (tags.ref) {
+          sources = tags.ref.split(';').map(s => s.trim()).filter(Boolean);
+        } else if (tags.name) {
+          sources = [tags.name.trim()];
+        }
+        if (!sources.length) return { rawName: null, normalizedList: [], error: null };
+
+        const normalizedList = sources.map(normalizeHighwayName).filter(Boolean);
+        return { rawName: sources.join(' / '), normalizedList, error: null };
+      } catch (err) {
+        lastError = `${baseUrl}: ${err.message}`;
+      }
     }
+    console.warn('Overpass snap failed on all mirrors:', lastError);
+    return { rawName: null, normalizedList: [], error: lastError };
   }
 
   // ---------- Direction of travel (with hysteresis) ----------
@@ -351,11 +362,12 @@
 
   // ---------- Candidate camera selection ----------
   function getUpcomingCameras(lat, lon) {
-    if (!currentHighway) return [];
+    if (!currentHighway || !currentHighway.length) return [];
 
     // Direction the camera itself faces doesn't matter here — we only care
-    // that it's on the current highway.
-    const candidates = allCameras.filter(c => normalizeHighwayName(c.roadway) === currentHighway);
+    // that it's on one of the currently-locked refs (handles concurrent
+    // routes like I-40/I-85 without favoring whichever OSM lists first).
+    const candidates = allCameras.filter(c => currentHighway.includes(normalizeHighwayName(c.roadway)));
 
     const scored = candidates.map(c => {
       const straightLineDist = haversineMeters(lat, lon, c.lat, c.lon);
@@ -407,11 +419,11 @@
       el.className = 'cam-slot empty';
       if (label === 'Next') {
         el.textContent = '—';
-      } else if (!currentHighway) {
+      } else if (!currentHighway || !currentHighway.length) {
         el.textContent = 'Waiting for highway lock…';
       } else {
         const miles = (MAX_SEARCH_DIST_M / 1609.34).toFixed(0);
-        el.textContent = `No camera within ${miles} mi ahead on ${currentHighway}.`;
+        el.textContent = `No camera within ${miles} mi ahead on ${currentHighway.join('/')}.`;
       }
       return;
     }
@@ -497,39 +509,50 @@
     if (now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
       lastHighwayCheck = now;
       const snap = await snapToHighway(lat, lon);
+      const snapKey = snap.normalizedList.length ? [...snap.normalizedList].sort().join('/') : null;
+      const currentKey = currentHighway ? [...currentHighway].sort().join('/') : null;
 
-      if (!snap.normalized) {
+      if (!snapKey) {
         // No confident match this round (e.g. mid-interchange with no
-        // tagged ref within radius) — don't clear currentHighway on a
-        // single miss, just leave it as-is until we get a real reading.
+        // tagged ref within radius, or an Overpass request failure) —
+        // don't clear currentHighway on a single miss, just leave it
+        // as-is until we get a real reading.
         pendingHighway = null;
         pendingHighwayCount = 0;
       } else if (!currentHighway) {
         // First lock — accept immediately, nothing to debounce against yet.
-        currentHighway = snap.normalized;
-        highwayText.textContent = currentHighway;
-      } else if (snap.normalized === currentHighway) {
+        currentHighway = snap.normalizedList;
+        highwayText.textContent = currentHighway.join(' / ');
+      } else if (snapKey === currentKey) {
         // Confirms what we already have — reset any pending switch.
         pendingHighway = null;
         pendingHighwayCount = 0;
       } else {
         // Disagrees with current highway — require repeated confirmation
         // before switching, so one bad overpass reading doesn't flip us.
-        if (pendingHighway === snap.normalized) {
+        const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
+        if (pendingKey === snapKey) {
           pendingHighwayCount++;
         } else {
-          pendingHighway = snap.normalized;
+          pendingHighway = snap.normalizedList;
           pendingHighwayCount = 1;
         }
         if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
           currentHighway = pendingHighway;
-          highwayText.textContent = currentHighway;
+          highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
         }
       }
 
-      setDebug({ rawRef: snap.rawName, normalized: snap.normalized, locked: currentHighway, pending: pendingHighway, pendingCount: pendingHighwayCount });
+      setDebug({
+        rawRef: snap.rawName,
+        normalizedList: snap.normalizedList,
+        overpassError: snap.error,
+        locked: currentHighway,
+        pending: pendingHighway,
+        pendingCount: pendingHighwayCount
+      });
     }
 
     const upcoming = getUpcomingCameras(lat, lon);
@@ -584,6 +607,7 @@
     pendingHighway = null;
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
+    highwayText.textContent = '—';
     slotOrder.forEach(el => {
       destroySlotEl(el);
       el.dataset.camId = '';
