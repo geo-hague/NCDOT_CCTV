@@ -1,1 +1,33 @@
+name: Update Camera List
 
+on:
+  schedule:
+    # Runs once a day at 09:00 UTC (~5am ET). Cameras rarely move,
+    # so this is just to catch new/removed cameras over time.
+    - cron: '0 9 * * *'
+  workflow_dispatch: {}  # allows manual "Run workflow" button in GitHub UI
+
+jobs:
+  update-cameras:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch camera data
+        env:
+          CAMERA_API_KEY: ${{ secrets.CAMERA_API_KEY }}
+        run: node fetch-cameras.js
+
+      - name: Commit updated cameras.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cameras.json
+          git diff --staged --quiet && echo "No changes to commit" || git commit -m "Update cameras.json"
+          git push
