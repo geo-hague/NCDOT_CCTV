@@ -120,10 +120,10 @@
       <summary>🧪 Simulate a drive (no GPS needed)</summary>
       <div class="sim-body">
         <label>Start (lat,lon)
-          <input type="text" id="sim-start" placeholder="35.2034,-80.9631">
+          <input type="text" id="sim-start" placeholder="35.2034,-80.9631" value="35.806743,-78.720926">
         </label>
         <label>End (lat,lon)
-          <input type="text" id="sim-end" placeholder="35.3050,-80.9530">
+          <input type="text" id="sim-end" placeholder="35.3050,-80.9530" value="35.871821,-78.829404">
         </label>
         <label>Speed (mph)
           <input type="number" id="sim-speed" value="60" min="5" max="100">
@@ -167,7 +167,9 @@
   const HIGHWAY_RECHECK_MS = 15000;  // re-run highway snap at most this often
   const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
   const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
-  const PASSED_THRESHOLD_M = 150;    // consider a camera "passed" once you're this close and moving away
+  const SWAP_BUFFER_M = 304.8;       // ~1000 ft — once a slot's camera is passed, wait this much
+                                      // travel distance before showing the next one, unless the
+                                      // next candidate is already this close (then show it right away)
 
   // ---------- State ----------
   let allCameras = [];
@@ -182,6 +184,7 @@
   let lastHighwayCheck = 0;
   let displayedCams = [null, null]; // camera objects currently in slot 0 / slot 1
   let hlsInstances = [null, null];
+  let slotVacatedAt = [null, null]; // {lat,lon} where each slot's camera was passed, or null if not waiting
 
   // ---------- DOM ----------
   const gpsDot = document.getElementById('gps-dot');
@@ -228,9 +231,17 @@
   }
 
   // ---------- Highway name normalization ----------
+  function metersToFeet(m) { return m * 3.28084; }
+
+  function formatDistance(meters) {
+    const feet = metersToFeet(meters);
+    if (feet < 5280) return `${Math.round(feet / 10) * 10} ft`;
+    return `${(meters / 1609.34).toFixed(1)} mi`;
+  }
+
   function normalizeHighwayName(raw) {
     if (!raw) return null;
-    const s = raw.toUpperCase();
+    const s = raw.toUpperCase().trim();
     // Interstate: "I-40", "I 40", "Interstate 40"
     let m = s.match(/\bI[-\s]?(\d+)\b/) || s.match(/INTERSTATE\s+(\d+)/);
     if (m) return `I-${m[1]}`;
@@ -240,7 +251,11 @@
     // NC Highway: "NC-16", "NC 16"
     m = s.match(/\bNC[-\s]?(\d+)\b/);
     if (m) return `NC-${m[1]}`;
-    return null;
+    // No route-number pattern matched (e.g. "Wade Avenue") — fall back to
+    // the literal name, uppercased/trimmed so both cameras.json's "roadway"
+    // field and OSM's "name" tag compare equal as long as they're spelled
+    // the same way.
+    return s;
   }
 
   // ---------- Load static camera list ----------
@@ -263,8 +278,7 @@
     const query = `
       [out:json][timeout:10];
       way(around:${SNAP_RADIUS_M},${lat},${lon})
-        [highway~"^(motorway|trunk|primary)$"]
-        [ref];
+        [highway~"^(motorway|trunk|primary)$"];
       out tags;
     `;
     try {
@@ -276,12 +290,21 @@
       if (!data.elements || !data.elements.length) {
         return { rawName: null, normalized: null };
       }
-      // A way can have multiple refs separated by ';' (e.g. concurrent routes).
-      // Take the first element's first ref.
-      const refRaw = data.elements[0].tags.ref || '';
-      const firstRef = refRaw.split(';')[0].trim();
-      const normalized = normalizeHighwayName(firstRef);
-      return { rawName: refRaw, normalized };
+      const tags = data.elements[0].tags || {};
+      // Prefer the route number (ref) when present — e.g. "I-40" — since
+      // that's the reliable, unambiguous identifier. Fall back to the
+      // literal road name (e.g. "Wade Avenue") for roads that carry CCTV
+      // cameras but don't have a route-number ref tag.
+      let source = null;
+      if (tags.ref) {
+        source = tags.ref.split(';')[0].trim();
+      } else if (tags.name) {
+        source = tags.name.trim();
+      }
+      if (!source) return { rawName: null, normalized: null };
+
+      const normalized = normalizeHighwayName(source);
+      return { rawName: source, normalized };
     } catch (err) {
       console.warn('Overpass snap failed:', err);
       return { rawName: null, normalized: null };
@@ -382,7 +405,7 @@
     const { cam, dist } = camWithDist;
     const alreadyShowing = displayedCams[index] && displayedCams[index].id === cam.id;
 
-    const distText = dist < 1000 ? `${Math.round(dist)} m` : `${(dist / 1609.34).toFixed(1)} mi`;
+    const distText = formatDistance(dist);
 
     if (alreadyShowing) {
       // just update the distance readout, no video rebuild
@@ -420,9 +443,55 @@
     }
   }
 
-  function updateDisplay(scoredCams) {
-    renderSlot(0, scoredCams[0] || null);
-    renderSlot(1, scoredCams[1] || null);
+  function renderSlotWaiting(index, feetRemaining) {
+    destroySlot(index);
+    displayedCams[index] = null;
+    const el = slotEls[index];
+    el.className = 'cam-slot empty';
+    el.textContent = `Next camera in ~${Math.round(feetRemaining / 10) * 10} ft…`;
+  }
+
+  function updateDisplay(scoredCams, lat, lon) {
+    for (let index = 0; index < 2; index++) {
+      const candidate = scoredCams[index] || null;
+      const currentCam = displayedCams[index];
+
+      // Same camera still holds this slot — just refresh distance, no rebuild.
+      if (currentCam && candidate && candidate.cam.id === currentCam.id) {
+        slotVacatedAt[index] = null;
+        renderSlot(index, candidate);
+        continue;
+      }
+
+      // Slot is empty and there's nothing to show yet.
+      if (!currentCam && !candidate) {
+        renderSlot(index, null);
+        continue;
+      }
+
+      // Slot was empty, now something qualifies — show it immediately,
+      // no buffer needed since we're not replacing an active view.
+      if (!currentCam && candidate) {
+        slotVacatedAt[index] = null;
+        renderSlot(index, candidate);
+        continue;
+      }
+
+      // currentCam is no longer the top pick for this slot (passed, or
+      // overtaken in ranking) — apply the swap buffer before replacing it.
+      if (!slotVacatedAt[index]) {
+        slotVacatedAt[index] = { lat, lon };
+      }
+      const traveledSinceVacated = haversineMeters(slotVacatedAt[index].lat, slotVacatedAt[index].lon, lat, lon);
+      const candidateDist = candidate ? candidate.dist : Infinity;
+
+      if (candidateDist <= SWAP_BUFFER_M || traveledSinceVacated >= SWAP_BUFFER_M) {
+        slotVacatedAt[index] = null;
+        renderSlot(index, candidate);
+      } else {
+        renderSlotWaiting(index, SWAP_BUFFER_M - traveledSinceVacated);
+      }
+    }
   }
 
   // ---------- Main position handling (shared by real GPS and simulator) ----------
@@ -473,7 +542,7 @@
     }
 
     const upcoming = getUpcomingCameras(lat, lon);
-    updateDisplay(upcoming);
+    updateDisplay(upcoming, lat, lon);
 
     debugContent.textContent = JSON.stringify({
       highway: currentHighway,
@@ -524,6 +593,10 @@
     pendingHighway = null;
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
+    slotVacatedAt = [null, null];
+    displayedCams = [null, null];
+    destroySlot(0);
+    destroySlot(1);
 
     const totalDist = haversineMeters(start.lat, start.lon, end.lat, end.lon);
     const speedMs = mph * 0.44704; // mph -> m/s
