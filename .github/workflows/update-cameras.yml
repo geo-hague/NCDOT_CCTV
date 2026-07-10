@@ -7,6 +7,9 @@ on:
     - cron: '0 9 * * *'
   workflow_dispatch: {}  # allows manual "Run workflow" button in GitHub UI
 
+permissions:
+  contents: write
+
 jobs:
   update-cameras:
     runs-on: ubuntu-latest
