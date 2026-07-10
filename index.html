@@ -128,6 +128,14 @@
         <label>Speed (mph)
           <input type="number" id="sim-speed" value="60" min="5" max="100">
         </label>
+        <label>Playback speed
+          <select id="sim-multiplier">
+            <option value="1" selected>Real-time (1x)</option>
+            <option value="2">2x fast-forward</option>
+            <option value="5">5x fast-forward</option>
+            <option value="10">10x fast-forward</option>
+          </select>
+        </label>
         <div class="sim-buttons">
           <button id="sim-start-btn">Start simulation</button>
           <button id="sim-stop-btn">Stop</button>
@@ -153,17 +161,19 @@
 
   // ---------- Config ----------
   const CAMERAS_URL = './cameras.json';
-  const OSRM_NEAREST_URL = 'https://router.project-osrm.org/nearest/v1/driving/';
   const MIN_DISPLACEMENT_M = 40;     // min movement before recomputing bearing
   const BEARING_DISAGREE_DEG = 45;   // how much new bearing must differ to challenge current direction
   const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to flip direction
-  const HIGHWAY_RECHECK_MS = 15000;  // re-run OSRM snap at most this often
+  const HIGHWAY_RECHECK_MS = 15000;  // re-run highway snap at most this often
+  const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
   const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
   const PASSED_THRESHOLD_M = 150;    // consider a camera "passed" once you're this close and moving away
 
   // ---------- State ----------
   let allCameras = [];
   let currentHighway = null;      // normalized e.g. "I-40"
+  let pendingHighway = null;
+  let pendingHighwayCount = 0;
   let currentDirectionLabel = null; // "Northbound" | "Southbound" | "Eastbound" | "Westbound"
   let lastStableBearing = null;
   let pendingBearing = null;
@@ -241,18 +251,39 @@
     console.log(`Loaded ${allCameras.length} cameras.`);
   }
 
-  // ---------- OSRM highway snap ----------
+  // ---------- Highway snap via Overpass (returns real route "ref" tags,
+  // e.g. "I-40", not the scenic/local "name" tag like "Dan K. Moore Freeway".
+  // Restricted to motorway/trunk/primary (excludes _link/ramp ways and any
+  // crossing road at overpasses) and searched within a tight radius so we
+  // don't accidentally grab a road passing underneath/above.
+  const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
+  const SNAP_RADIUS_M = 25; // how close a way must be to count as "you're on it"
+
   async function snapToHighway(lat, lon) {
-    const url = `${OSRM_NEAREST_URL}${lon},${lat}?number=1`;
+    const query = `
+      [out:json][timeout:10];
+      way(around:${SNAP_RADIUS_M},${lat},${lon})
+        [highway~"^(motorway|trunk|primary)$"]
+        [ref];
+      out tags;
+    `;
     try {
-      const resp = await fetch(url);
+      const resp = await fetch(OVERPASS_URL, {
+        method: 'POST',
+        body: 'data=' + encodeURIComponent(query),
+      });
       const data = await resp.json();
-      const wp = data.waypoints && data.waypoints[0];
-      const rawName = wp ? wp.name : null;
-      const normalized = normalizeHighwayName(rawName);
-      return { rawName, normalized };
+      if (!data.elements || !data.elements.length) {
+        return { rawName: null, normalized: null };
+      }
+      // A way can have multiple refs separated by ';' (e.g. concurrent routes).
+      // Take the first element's first ref.
+      const refRaw = data.elements[0].tags.ref || '';
+      const firstRef = refRaw.split(';')[0].trim();
+      const normalized = normalizeHighwayName(firstRef);
+      return { rawName: refRaw, normalized };
     } catch (err) {
-      console.warn('OSRM snap failed:', err);
+      console.warn('Overpass snap failed:', err);
       return { rawName: null, normalized: null };
     }
   }
@@ -403,16 +434,42 @@
     updateDirection(lat, lon);
 
     const now = Date.now();
-    if (!currentHighway || now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
+    if (now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
       lastHighwayCheck = now;
       const snap = await snapToHighway(lat, lon);
-      if (snap.normalized) {
+
+      if (!snap.normalized) {
+        // No confident match this round (e.g. mid-interchange with no
+        // tagged ref within radius) — don't clear currentHighway on a
+        // single miss, just leave it as-is until we get a real reading.
+        pendingHighway = null;
+        pendingHighwayCount = 0;
+      } else if (!currentHighway) {
+        // First lock — accept immediately, nothing to debounce against yet.
         currentHighway = snap.normalized;
         highwayText.textContent = currentHighway;
+      } else if (snap.normalized === currentHighway) {
+        // Confirms what we already have — reset any pending switch.
+        pendingHighway = null;
+        pendingHighwayCount = 0;
       } else {
-        highwayText.textContent = snap.rawName ? `? (${snap.rawName})` : 'Unknown road';
+        // Disagrees with current highway — require repeated confirmation
+        // before switching, so one bad overpass reading doesn't flip us.
+        if (pendingHighway === snap.normalized) {
+          pendingHighwayCount++;
+        } else {
+          pendingHighway = snap.normalized;
+          pendingHighwayCount = 1;
+        }
+        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
+          currentHighway = pendingHighway;
+          highwayText.textContent = currentHighway;
+          pendingHighway = null;
+          pendingHighwayCount = 0;
+        }
       }
-      setDebug({ rawOsrmName: snap.rawName, normalized: snap.normalized });
+
+      setDebug({ rawRef: snap.rawName, normalized: snap.normalized, locked: currentHighway, pending: pendingHighway, pendingCount: pendingHighwayCount });
     }
 
     const upcoming = getUpcomingCameras(lat, lon);
@@ -451,6 +508,7 @@
     const start = parseLatLon(document.getElementById('sim-start').value);
     const end = parseLatLon(document.getElementById('sim-end').value);
     const mph = parseFloat(document.getElementById('sim-speed').value) || 60;
+    const multiplier = parseFloat(document.getElementById('sim-multiplier').value) || 1;
 
     if (!start || !end) {
       alert('Enter valid "lat,lon" for both start and end.');
@@ -463,16 +521,19 @@
     pendingBearing = null;
     pendingBearingCount = 0;
     currentHighway = null;
+    pendingHighway = null;
+    pendingHighwayCount = 0;
     lastHighwayCheck = 0;
 
     const totalDist = haversineMeters(start.lat, start.lon, end.lat, end.lon);
     const speedMs = mph * 0.44704; // mph -> m/s
     const totalTimeSec = totalDist / speedMs;
-    const TICK_SEC = 2; // emit a fake GPS point every 2 simulated seconds
+    const TICK_SEC = 2; // each tick advances 2 seconds of simulated driving time
     const totalTicks = Math.max(1, Math.ceil(totalTimeSec / TICK_SEC));
+    const realTickMs = (TICK_SEC * 1000) / multiplier; // real wall-clock delay per tick
 
     let tick = 0;
-    gpsText.textContent = `Simulating: ${(totalDist / 1609.34).toFixed(1)} mi @ ${mph} mph (~${Math.round(totalTimeSec)}s)`;
+    gpsText.textContent = `Simulating: ${(totalDist / 1609.34).toFixed(1)} mi @ ${mph} mph (${multiplier}x, ~${Math.round(totalTimeSec / multiplier)}s real time)`;
 
     simTimer = setInterval(() => {
       tick++;
@@ -486,7 +547,7 @@
         stopSimulation();
         gpsText.textContent += ' — simulation complete';
       }
-    }, 400); // real-world tick speed; each tick advances TICK_SEC of simulated time
+    }, realTickMs);
   }
 
   function stopSimulation() {
