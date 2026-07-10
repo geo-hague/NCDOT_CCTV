@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NC Highway Cams</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.8/hls.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0c10;
+    --panel: #12151b;
+    --line: #232830;
+    --text: #e8ebef;
+    --text-dim: #8b93a1;
+    --accent: #4fc3f7;
+    --warn: #ffb74d;
+    --ok: #66bb6a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; min-height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    overflow-x: hidden;
+  }
+
+  #status-bar {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+    padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--text-dim);
+  }
+  #status-bar .highway {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  #status-bar .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px; background: var(--text-dim);
+  }
+  #status-bar .dot.live { background: var(--ok); }
+  #status-bar .dot.searching { background: var(--warn); animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  #cam-list {
+    padding: 12px; display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .cam-slot {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    overflow: hidden;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .cam-slot.empty {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 120px; color: var(--text-dim); font-size: 14px;
+  }
+  .cam-slot.fading-out { opacity: 0; transform: scale(0.98); }
+
+  .cam-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-bottom: 1px solid var(--line);
+  }
+  .cam-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--accent); font-weight: 700;
+  }
+  .cam-dist {
+    font-size: 13px; color: var(--text-dim); font-variant-numeric: tabular-nums;
+  }
+  .cam-location {
+    padding: 6px 12px 0; font-size: 12px; color: var(--text-dim);
+  }
+
+  .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+  video { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+  #debug {
+    margin: 12px; padding: 10px 12px; border-radius: 8px;
+    background: var(--panel); border: 1px solid var(--line);
+    font-size: 11px; color: var(--text-dim); font-family: monospace;
+    white-space: pre-wrap; line-height: 1.5;
+  }
+  #debug summary { cursor: pointer; color: var(--accent); font-family: -apple-system, sans-serif; font-size: 12px; }
+</style>
+</head>
+<body>
+
+  <div id="status-bar">
+    <div>
+      <span class="dot searching" id="gps-dot"></span>
+      <span id="gps-text">Locating…</span>
+    </div>
+    <div class="highway" id="highway-text">—</div>
+  </div>
+
+  <div id="cam-list">
+    <div class="cam-slot empty" id="slot-0">Waiting for GPS + highway lock…</div>
+    <div class="cam-slot empty" id="slot-1">—</div>
+  </div>
+
+  <details id="debug">
+    <summary>Debug info</summary>
+    <div id="debug-content">—</div>
+  </details>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Config ----------
+  const CAMERAS_URL = './cameras.json';
+  const OSRM_NEAREST_URL = 'https://router.project-osrm.org/nearest/v1/driving/';
+  const MIN_DISPLACEMENT_M = 40;     // min movement before recomputing bearing
+  const BEARING_DISAGREE_DEG = 45;   // how much new bearing must differ to challenge current direction
+  const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to flip direction
+  const HIGHWAY_RECHECK_MS = 15000;  // re-run OSRM snap at most this often
+  const MAX_CANDIDATE_DIST_M = 40000; // ignore cameras farther than this (40km) to keep sorting cheap
+  const PASSED_THRESHOLD_M = 150;    // consider a camera "passed" once you're this close and moving away
+
+  // ---------- State ----------
+  let allCameras = [];
+  let currentHighway = null;      // normalized e.g. "I-40"
+  let currentDirectionLabel = null; // "Northbound" | "Southbound" | "Eastbound" | "Westbound"
+  let lastStableBearing = null;
+  let pendingBearing = null;
+  let pendingBearingCount = 0;
+  let posHistory = [];            // [{lat,lon,t}]
+  let lastHighwayCheck = 0;
+  let displayedCams = [null, null]; // camera objects currently in slot 0 / slot 1
+  let hlsInstances = [null, null];
+
+  // ---------- DOM ----------
+  const gpsDot = document.getElementById('gps-dot');
+  const gpsText = document.getElementById('gps-text');
+  const highwayText = document.getElementById('highway-text');
+  const slotEls = [document.getElementById('slot-0'), document.getElementById('slot-1')];
+  const debugContent = document.getElementById('debug-content');
+
+  function setDebug(obj) {
+    debugContent.textContent = JSON.stringify(obj, null, 2);
+  }
+
+  // ---------- Geo helpers ----------
+  function toRad(d) { return d * Math.PI / 180; }
+  function toDeg(r) { return r * 180 / Math.PI; }
+
+  function haversineMeters(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  function bearingDeg(lat1, lon1, lat2, lon2) {
+    const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
+    const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) -
+              Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
+    return (toDeg(Math.atan2(y, x)) + 360) % 360;
+  }
+
+  function angleDiff(a, b) {
+    let d = Math.abs(a - b) % 360;
+    return d > 180 ? 360 - d : d;
+  }
+
+  function bearingToCompassLabel(bearing) {
+    // Map to the 4 cardinal "of travel" labels NCDOT uses most.
+    if (bearing >= 315 || bearing < 45) return 'Northbound';
+    if (bearing >= 45 && bearing < 135) return 'Eastbound';
+    if (bearing >= 135 && bearing < 225) return 'Southbound';
+    return 'Westbound';
+  }
+
+  // ---------- Highway name normalization ----------
+  function normalizeHighwayName(raw) {
+    if (!raw) return null;
+    const s = raw.toUpperCase();
+    // Interstate: "I-40", "I 40", "Interstate 40"
+    let m = s.match(/\bI[-\s]?(\d+)\b/) || s.match(/INTERSTATE\s+(\d+)/);
+    if (m) return `I-${m[1]}`;
+    // US Highway: "US-74", "US 74", "US Highway 74"
+    m = s.match(/\bUS[-\s]?(\d+)\b/);
+    if (m) return `US-${m[1]}`;
+    // NC Highway: "NC-16", "NC 16"
+    m = s.match(/\bNC[-\s]?(\d+)\b/);
+    if (m) return `NC-${m[1]}`;
+    return null;
+  }
+
+  // ---------- Load static camera list ----------
+  async function loadCameras() {
+    const resp = await fetch(CAMERAS_URL);
+    const data = await resp.json();
+    allCameras = data.cameras || [];
+    console.log(`Loaded ${allCameras.length} cameras.`);
+  }
+
+  // ---------- OSRM highway snap ----------
+  async function snapToHighway(lat, lon) {
+    const url = `${OSRM_NEAREST_URL}${lon},${lat}?number=1`;
+    try {
+      const resp = await fetch(url);
+      const data = await resp.json();
+      const wp = data.waypoints && data.waypoints[0];
+      const rawName = wp ? wp.name : null;
+      const normalized = normalizeHighwayName(rawName);
+      return { rawName, normalized };
+    } catch (err) {
+      console.warn('OSRM snap failed:', err);
+      return { rawName: null, normalized: null };
+    }
+  }
+
+  // ---------- Direction of travel (with hysteresis) ----------
+  function updateDirection(lat, lon) {
+    const now = Date.now();
+    posHistory.push({ lat, lon, t: now });
+    // keep last ~8 points
+    if (posHistory.length > 8) posHistory.shift();
+    if (posHistory.length < 2) return;
+
+    const first = posHistory[0];
+    const last = posHistory[posHistory.length - 1];
+    const dist = haversineMeters(first.lat, first.lon, last.lat, last.lon);
+    if (dist < MIN_DISPLACEMENT_M) return; // not enough movement to trust a bearing
+
+    const newBearing = bearingDeg(first.lat, first.lon, last.lat, last.lon);
+
+    if (lastStableBearing === null) {
+      lastStableBearing = newBearing;
+      currentDirectionLabel = bearingToCompassLabel(newBearing);
+      return;
+    }
+
+    const diff = angleDiff(newBearing, lastStableBearing);
+    if (diff < BEARING_DISAGREE_DEG) {
+      // agrees with current direction, reset any pending flip
+      lastStableBearing = newBearing;
+      pendingBearing = null;
+      pendingBearingCount = 0;
+    } else {
+      // disagrees - only flip after repeated confirmation
+      if (pendingBearing !== null && angleDiff(newBearing, pendingBearing) < BEARING_DISAGREE_DEG) {
+        pendingBearingCount++;
+      } else {
+        pendingBearing = newBearing;
+        pendingBearingCount = 1;
+      }
+      if (pendingBearingCount >= BEARING_CONFIRM_COUNT) {
+        lastStableBearing = newBearing;
+        currentDirectionLabel = bearingToCompassLabel(newBearing);
+        pendingBearing = null;
+        pendingBearingCount = 0;
+      }
+    }
+  }
+
+  // ---------- Candidate camera selection ----------
+  function getUpcomingCameras(lat, lon) {
+    if (!currentHighway) return [];
+
+    // Direction the camera itself faces doesn't matter here — we only care
+    // that it's on the current highway and physically ahead of us.
+    const candidates = allCameras.filter(c => normalizeHighwayName(c.roadway) === currentHighway);
+
+    const scored = candidates.map(c => {
+      const dist = haversineMeters(lat, lon, c.lat, c.lon);
+      const bearingToCam = bearingDeg(lat, lon, c.lat, c.lon);
+      const isAhead = lastStableBearing === null
+        ? true
+        : angleDiff(bearingToCam, lastStableBearing) < 90;
+      return { cam: c, dist, isAhead };
+    }).filter(s => s.dist <= MAX_CANDIDATE_DIST_M && s.isAhead);
+
+    scored.sort((a, b) => a.dist - b.dist);
+    return scored.slice(0, 2);
+  }
+
+  // ---------- Video slot rendering ----------
+  function destroySlot(index) {
+    if (hlsInstances[index]) {
+      try { hlsInstances[index].detachMedia(); hlsInstances[index].destroy(); } catch (e) {}
+      hlsInstances[index] = null;
+    }
+  }
+
+  function renderSlot(index, camWithDist) {
+    const el = slotEls[index];
+
+    if (!camWithDist) {
+      destroySlot(index);
+      displayedCams[index] = null;
+      el.className = 'cam-slot empty';
+      el.textContent = index === 0 ? 'No camera found ahead on this highway yet.' : '—';
+      return;
+    }
+
+    const { cam, dist } = camWithDist;
+    const alreadyShowing = displayedCams[index] && displayedCams[index].id === cam.id;
+
+    const distText = dist < 1000 ? `${Math.round(dist)} m` : `${(dist / 1609.34).toFixed(1)} mi`;
+
+    if (alreadyShowing) {
+      // just update the distance readout, no video rebuild
+      const distEl = el.querySelector('.cam-dist');
+      if (distEl) distEl.textContent = distText;
+      return;
+    }
+
+    // new camera for this slot - rebuild
+    destroySlot(index);
+    displayedCams[index] = cam;
+
+    el.className = 'cam-slot';
+    el.innerHTML = `
+      <div class="cam-header">
+        <span class="cam-label">${index === 0 ? 'Nearest' : 'Next'} — ${cam.roadway}</span>
+        <span class="cam-dist">${distText}</span>
+      </div>
+      <div class="cam-location">${cam.location || ''}</div>
+      <div class="video-wrapper"><video muted autoplay playsinline webkit-playsinline></video></div>
+    `;
+
+    const video = el.querySelector('video');
+    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+      const hls = new Hls({ maxBufferLength: 6, lowLatencyMode: true });
+      hls.loadSource(cam.videoUrl);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {});
+      });
+      hlsInstances[index] = hls;
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = cam.videoUrl;
+      video.addEventListener('loadedmetadata', () => video.play().catch(() => {}));
+    }
+  }
+
+  function updateDisplay(scoredCams) {
+    renderSlot(0, scoredCams[0] || null);
+    renderSlot(1, scoredCams[1] || null);
+  }
+
+  // ---------- Main GPS handling ----------
+  async function onPosition(position) {
+    const { latitude: lat, longitude: lon } = position.coords;
+
+    gpsDot.className = 'dot live';
+    gpsText.textContent = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
+    updateDirection(lat, lon);
+
+    const now = Date.now();
+    if (!currentHighway || now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
+      lastHighwayCheck = now;
+      const snap = await snapToHighway(lat, lon);
+      if (snap.normalized) {
+        currentHighway = snap.normalized;
+        highwayText.textContent = currentHighway;
+      } else {
+        highwayText.textContent = snap.rawName ? `? (${snap.rawName})` : 'Unknown road';
+      }
+      setDebug({ rawOsrmName: snap.rawName, normalized: snap.normalized });
+    }
+
+    const upcoming = getUpcomingCameras(lat, lon);
+    updateDisplay(upcoming);
+
+    setDebug(prev => prev); // no-op placeholder, real debug set above
+    debugContent.textContent = JSON.stringify({
+      highway: currentHighway,
+      direction: currentDirectionLabel,
+      bearing: lastStableBearing ? Math.round(lastStableBearing) : null,
+      candidates: upcoming.map(s => ({ id: s.cam.id, dist: Math.round(s.dist), loc: s.cam.location }))
+    }, null, 2);
+  }
+
+  function onPositionError(err) {
+    gpsDot.className = 'dot';
+    gpsText.textContent = `GPS error: ${err.message}`;
+  }
+
+  async function init() {
+    await loadCameras();
+
+    if (!navigator.geolocation) {
+      gpsText.textContent = 'Geolocation not supported on this device/browser.';
+      return;
+    }
+
+    navigator.geolocation.watchPosition(onPosition, onPositionError, {
+      enableHighAccuracy: true,
+      maximumAge: 5000,
+      timeout: 15000,
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
