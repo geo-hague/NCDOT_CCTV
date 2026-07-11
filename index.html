@@ -225,6 +225,11 @@
     <button id="scan-ahead-btn">Ahead ▶</button>
   </div>
 
+  <div id="cam-list">
+    <div class="cam-slot empty" id="slot-0">Waiting for GPS + highway lock…</div>
+    <div class="cam-slot empty" id="slot-1">—</div>
+  </div>
+
   <div id="sim-panel">
     <details>
       <summary>🧪 Simulate a drive (no GPS needed)</summary>
@@ -253,11 +258,6 @@
         <div class="sim-hint">Tip: pick two coordinates that are both on the same highway in cameras.json, a few miles apart, so you're guaranteed to pass real cameras. Open the Debug panel below to watch bearing/highway lock in real time.</div>
       </div>
     </details>
-  </div>
-
-  <div id="cam-list">
-    <div class="cam-slot empty" id="slot-0">Waiting for GPS + highway lock…</div>
-    <div class="cam-slot empty" id="slot-1">—</div>
   </div>
 
   <details id="debug">
@@ -1221,17 +1221,22 @@
         // No confident match this round (e.g. mid-interchange with no
         // tagged ref within radius, or an Overpass request failure) —
         // don't clear currentHighway on a single miss, just leave it
-        // as-is until we get a real reading.
-        pendingHighway = null;
-        pendingHighwayCount = 0;
+        // as-is until we get a real reading. Also don't touch pending —
+        // a blank reading shouldn't erase progress toward a real switch.
       } else if (!currentHighway) {
         // First lock — accept immediately, nothing to debounce against yet.
         currentHighway = snap.normalizedList;
         highwayText.textContent = currentHighway.join(' / ');
       } else if (snapKey === currentKey) {
-        // Confirms what we already have — reset any pending switch.
-        pendingHighway = null;
-        pendingHighwayCount = 0;
+        // Re-confirms what we already have. IMPORTANT: don't reset any
+        // pending switch here — near an interchange, Overpass readings can
+        // legitimately alternate between e.g. "US-74" and "I-26/US-74"
+        // (different nearby way segments fall in/out of the search radius
+        // as you move a few meters), and resetting on every re-confirmation
+        // of the old value meant a genuinely new highway could never
+        // accumulate enough consecutive confirmations to win — a permanent
+        // deadlock. We only clear pending below, when a THIRD, different
+        // candidate shows up.
       } else {
         // Disagrees with current highway — require repeated confirmation
         // before switching, so one bad overpass reading doesn't flip us.
@@ -1265,6 +1270,8 @@
       setDebug({
         rawRef: snap.rawName,
         normalizedList: snap.normalizedList,
+        snapKey,
+        currentKey,
         overpassError: snap.error,
         locked: currentHighway,
         pending: pendingHighway,
