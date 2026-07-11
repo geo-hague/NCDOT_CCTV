@@ -43,6 +43,51 @@
   #status-bar .dot.searching { background: var(--warn); animation: pulse 1.4s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
+  /* ---- Highway shield / direction / mile marker ---- */
+  .highway-block {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .highway-shield {
+    height: 30px; width: auto; display: none;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  }
+  .highway-info { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; }
+  .direction-label {
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  /* Styled to resemble the small green interstate mile marker signs */
+  .mile-marker-sign {
+    display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    background: #1b5e35; border: 2px solid #eef3ee; border-radius: 3px;
+    padding: 2px 7px 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .mm-label {
+    font-size: 8px; font-weight: 700; color: #eef3ee;
+    letter-spacing: 0.08em; font-family: "Segoe UI", sans-serif;
+  }
+  .mm-value {
+    font-size: 17px; font-weight: 800; color: #eef3ee;
+    font-family: "Segoe UI", sans-serif; line-height: 1; letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Amber DMS message banner ---- */
+  #msg-sign-banner {
+    display: none;
+    position: sticky; top: 45px; z-index: 18;
+    background: #1a1400; border-bottom: 2px solid var(--warn);
+    color: var(--warn); font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.03em; text-align: center;
+    padding: 10px 14px; font-size: 15px; line-height: 1.4;
+    text-shadow: 0 0 6px rgba(255,183,77,0.5);
+  }
+  #msg-sign-banner .msg-meta {
+    display: block; margin-top: 3px; font-size: 11px; font-weight: 600;
+    color: #c99a52; text-transform: none; letter-spacing: 0.02em;
+  }
+
   #cam-list {
     padding: 12px; display: flex; flex-direction: column; gap: 12px;
   }
@@ -153,8 +198,20 @@
       <span class="dot searching" id="gps-dot"></span>
       <span id="gps-text">Locating…</span>
     </div>
-    <div class="highway" id="highway-text">—</div>
+    <div class="highway-block" id="highway-block">
+      <img id="highway-shield" class="highway-shield" alt="">
+      <div class="highway-info">
+        <div class="highway" id="highway-text">—</div>
+        <div class="direction-label" id="direction-label"></div>
+      </div>
+      <div class="mile-marker-sign" id="mile-marker-sign">
+        <div class="mm-label">MILE</div>
+        <div class="mm-value" id="mm-value">—</div>
+      </div>
+    </div>
   </div>
+
+  <div id="msg-sign-banner" role="alert"></div>
 
   <div id="scan-bar">
     <button id="scan-behind-btn">◀ Behind</button>
@@ -221,6 +278,35 @@
   const MANIFEST_TIMEOUT_MS = 12000; // if a stream hasn't started playing within this long, treat as stalled
   const MAX_STREAM_RETRIES = 3;      // automatic retry attempts before showing a manual "tap to retry" button
 
+  // ---- Mile marker lookup (NCDOT ArcGIS mile marker layer) ----
+  // NCDOT publishes green mile-marker sign locations as a queryable ArcGIS
+  // FeatureServer/MapServer layer. We use the generic ArcGIS REST "query"
+  // operation (geometry + distance search), which is a stable, documented
+  // interface even though the exact field names in NCDOT's schema aren't
+  // publicly documented — see findMilepostField()/findRouteField() below,
+  // which inspect whatever fields come back rather than hardcoding names.
+  // If NCDOT changes the service path, update MILEMARKER_QUERY_URL only.
+  const MILEMARKER_QUERY_URL = 'https://gis11.services.ncdot.gov/arcgis/rest/services/NCDOT_MileMarker_Hatching/MapServer/1/query';
+  const MILEMARKER_SEARCH_RADIUS_M = 900;  // ~0.56mi — wide enough to bracket the two nearest mileposts
+  const MILEMARKER_RECHECK_MS = 8000;      // how often we re-query for nearby mileposts
+  const MM_TREND_CONFIRM_COUNT = 2;        // consecutive milepost readings needed to confirm ascending/descending
+
+  // ---- Highway shield images (Wikipedia / Wikimedia Commons) ----
+  // Special:FilePath redirects straight to the file, so it works as a plain
+  // <img src> with no API key or CORS preflight needed. We try a short list
+  // of likely filenames per route type and fall back silently if none load.
+  const COMMONS_FILEPATH = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
+
+  // ---- DriveNC message signs (DMS) ----
+  // Public NCDOT endpoint: https://www.drivenc.gov/help/endpoint/messagesigns
+  // Requires a free developer key from https://www.drivenc.gov (Developers ->
+  // API Documentation -> Sign up). Paste it below.
+  const DRIVENC_API_KEY = '';  // <-- put your DriveNC developer key here
+  const DRIVENC_MSG_URL = 'https://www.drivenc.gov/api/v2/get/messagesigns';
+  const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles
+  const MSG_SIGN_POLL_MS = 20000;     // re-poll signs this often so a sign 10mi out
+                                       // can't silently change message before we reach it
+
   // ---------- State ----------
   let allCameras = [];
   let currentHighway = null;      // array of normalized refs currently locked, e.g. ["I-85"] or ["I-40","I-85"]
@@ -233,10 +319,32 @@
   let posHistory = [];            // [{lat,lon,t}]
   let lastHighwayCheck = 0;
 
+  // Mile marker / NCDOT-convention direction (Eastbound/Northbound/etc, derived
+  // from ascending/descending mileposts) — separate from currentDirectionLabel
+  // above, which is a raw compass bearing used only for camera ahead/behind math.
+  let currentMilepost = null;
+  let lastMilepostCheck = 0;
+  let mmTrend = null;              // 'ascending' | 'descending' | null
+  let pendingMmTrend = null;
+  let pendingMmTrendCount = 0;
+  let highwayDirectionLabel = null; // "Eastbound" | "Northbound" | "Southbound" | "Westbound"
+  let shieldLoadedFor = null;      // which normalized ref the shield <img> currently shows
+
+  // Message signs (DMS)
+  let messageSigns = [];
+  let lastMsgSignFetch = 0;
+  let activeSignId = null;
+  let lastSpokenMessage = null;
+
   // ---------- DOM ----------
   const gpsDot = document.getElementById('gps-dot');
   const gpsText = document.getElementById('gps-text');
   const highwayText = document.getElementById('highway-text');
+  const highwayShieldEl = document.getElementById('highway-shield');
+  const directionLabelEl = document.getElementById('direction-label');
+  const mmSignEl = document.getElementById('mile-marker-sign');
+  const mmValueEl = document.getElementById('mm-value');
+  const msgBannerEl = document.getElementById('msg-sign-banner');
   const slotEls = [document.getElementById('slot-0'), document.getElementById('slot-1')];
   const debugContent = document.getElementById('debug-content');
 
@@ -408,6 +516,258 @@
         pendingBearingCount = 0;
       }
     }
+  }
+
+  // ---------- Highway ref parsing + shield lookup ----------
+  function parseHighwayRef(ref) {
+    if (!ref) return null;
+    const m = ref.match(/^(I|US|NC)-(\d+)$/);
+    if (!m) return null;
+    return { type: m[1], number: parseInt(m[2], 10), isEven: parseInt(m[2], 10) % 2 === 0 };
+  }
+
+  // Try a short list of plausible Wikimedia Commons filenames for a route
+  // shield, falling back through the list via onerror. Special:FilePath
+  // redirects directly to the image so no API round-trip is needed.
+  function shieldCandidates(parsed) {
+    const n = parsed.number;
+    if (parsed.type === 'I') return [`I-${n}.svg`, `Interstate ${n}.svg`, `I-${n} (NC).svg`];
+    if (parsed.type === 'US') return [`US ${n}.svg`, `US Highway ${n}.svg`, `US ${n} (NC).svg`];
+    if (parsed.type === 'NC') return [`NC ${n}.svg`, `North Carolina ${n}.svg`, `NC-${n}.svg`];
+    return [];
+  }
+
+  function updateHighwayShield(normalizedRef) {
+    if (shieldLoadedFor === normalizedRef) return;
+    const parsed = parseHighwayRef(normalizedRef);
+    if (!parsed) {
+      highwayShieldEl.style.display = 'none';
+      shieldLoadedFor = normalizedRef;
+      return;
+    }
+    const candidates = shieldCandidates(parsed);
+    let i = 0;
+    shieldLoadedFor = normalizedRef;
+    const tryNext = () => {
+      if (i >= candidates.length) { highwayShieldEl.style.display = 'none'; return; }
+      highwayShieldEl.onerror = tryNext;
+      highwayShieldEl.onload = () => { highwayShieldEl.style.display = ''; };
+      highwayShieldEl.src = COMMONS_FILEPATH + encodeURIComponent(candidates[i]);
+      i++;
+    };
+    tryNext();
+  }
+
+  // ---------- Mile marker lookup ----------
+  // Finds whichever numeric-looking field holds the milepost value and
+  // whichever text field holds the route ref, without assuming exact names —
+  // NCDOT's public schema for this layer isn't formally documented.
+  function findMilepostField(attrs) {
+    const keys = Object.keys(attrs);
+    let k = keys.find(k => /^milepost$/i.test(k)) || keys.find(k => /mile/i.test(k) && typeof attrs[k] === 'number');
+    return k || null;
+  }
+  function findRouteField(attrs) {
+    const keys = Object.keys(attrs);
+    return keys.find(k => /^(route|rte|roadway|rteclass|road)/i.test(k)) || null;
+  }
+
+  async function queryNearestMileposts(lat, lon) {
+    const params = new URLSearchParams({
+      f: 'json',
+      geometry: `${lon},${lat}`,
+      geometryType: 'esriGeometryPoint',
+      inSR: '4326',
+      spatialRel: 'esriSpatialRelIntersects',
+      distance: String(MILEMARKER_SEARCH_RADIUS_M),
+      units: 'esriSRUnit_Meter',
+      outFields: '*',
+      returnGeometry: 'true',
+      outSR: '4326',
+    });
+    try {
+      const resp = await fetch(`${MILEMARKER_QUERY_URL}?${params.toString()}`);
+      if (!resp.ok) return { error: `HTTP ${resp.status}` };
+      const data = await resp.json();
+      if (!data.features || !data.features.length) return { features: [] };
+      return { features: data.features };
+    } catch (err) {
+      return { error: err.message };
+    }
+  }
+
+  // Uses the two nearest mileposts on the locked highway to linearly
+  // interpolate the driver's position to a tenth of a mile.
+  async function updateMilepostAndDirection(lat, lon) {
+    const now = Date.now();
+    if (now - lastMilepostCheck < MILEMARKER_RECHECK_MS) return;
+    lastMilepostCheck = now;
+    if (!currentHighway || !currentHighway.length) return;
+
+    const { features, error } = await queryNearestMileposts(lat, lon);
+    if (error || !features || !features.length) {
+      setDebug({ milepostLookup: error || 'no features found nearby' });
+      return;
+    }
+
+    const parsedForRef = currentHighway.map(parseHighwayRef).find(Boolean);
+    const routeCandidates = parsedForRef
+      ? [parsedForRef.type + '-' + parsedForRef.number, String(parsedForRef.number)]
+      : currentHighway;
+
+    const withMeta = features.map(f => {
+      const attrs = f.attributes || {};
+      const mmField = findMilepostField(attrs);
+      const rtField = findRouteField(attrs);
+      const mp = mmField ? parseFloat(attrs[mmField]) : NaN;
+      const routeVal = rtField ? String(attrs[rtField]).toUpperCase() : '';
+      const geom = f.geometry || {};
+      const dist = (geom.x != null && geom.y != null)
+        ? haversineMeters(lat, lon, geom.y, geom.x)
+        : Infinity;
+      return { mp, routeVal, dist };
+    }).filter(f => !isNaN(f.mp) && routeCandidates.some(rc => f.routeVal.includes(rc)));
+
+    if (withMeta.length < 1) {
+      setDebug({ milepostLookup: 'no matching-route mileposts in range', sampleFields: Object.keys(features[0].attributes || {}) });
+      return;
+    }
+
+    withMeta.sort((a, b) => a.dist - b.dist);
+    let interpolated;
+    if (withMeta.length >= 2) {
+      const [a, b] = withMeta;
+      const total = a.dist + b.dist;
+      // Weighted toward whichever marker we're closer to.
+      interpolated = total > 0 ? (a.mp * b.dist + b.mp * a.dist) / total : a.mp;
+    } else {
+      interpolated = withMeta[0].mp;
+    }
+    interpolated = Math.round(interpolated * 10) / 10;
+
+    // Trend (ascending/descending) with hysteresis, same pattern as bearing lock.
+    if (currentMilepost !== null && interpolated !== currentMilepost) {
+      const newTrend = interpolated > currentMilepost ? 'ascending' : 'descending';
+      if (mmTrend === null) {
+        mmTrend = newTrend;
+      } else if (newTrend === mmTrend) {
+        pendingMmTrend = null; pendingMmTrendCount = 0;
+      } else {
+        if (pendingMmTrend === newTrend) pendingMmTrendCount++;
+        else { pendingMmTrend = newTrend; pendingMmTrendCount = 1; }
+        if (pendingMmTrendCount >= MM_TREND_CONFIRM_COUNT) {
+          mmTrend = newTrend; pendingMmTrend = null; pendingMmTrendCount = 0;
+        }
+      }
+    }
+    currentMilepost = interpolated;
+
+    if (parsedForRef && mmTrend) {
+      if (mmTrend === 'ascending') {
+        highwayDirectionLabel = parsedForRef.isEven ? 'Eastbound' : 'Northbound';
+      } else {
+        highwayDirectionLabel = parsedForRef.isEven ? 'Westbound' : 'Southbound';
+      }
+    }
+
+    // ---- Render ----
+    mmValueEl.textContent = currentMilepost.toFixed(1);
+    mmSignEl.style.display = 'flex';
+    directionLabelEl.textContent = highwayDirectionLabel || '';
+    updateHighwayShield(currentHighway[0]);
+  }
+
+  // ---------- DMS message signs ----------
+  async function fetchMessageSignsIfNeeded() {
+    const now = Date.now();
+    if (now - lastMsgSignFetch < MSG_SIGN_POLL_MS) return;
+    lastMsgSignFetch = now;
+    if (!DRIVENC_API_KEY) {
+      setDebug({ messageSigns: 'DRIVENC_API_KEY not set — sign up at drivenc.gov/developers/doc' });
+      return;
+    }
+    try {
+      const url = `${DRIVENC_MSG_URL}?key=${encodeURIComponent(DRIVENC_API_KEY)}&format=json`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      messageSigns = await resp.json();
+    } catch (err) {
+      // Common cause: DriveNC's API doesn't send CORS headers for browser
+      // fetches — if so this will throw a generic "Failed to fetch" and
+      // you'll need a small same-origin proxy in front of DRIVENC_MSG_URL.
+      console.warn('Message sign fetch failed:', err);
+    }
+  }
+
+  function pickActiveMessageSign(lat, lon) {
+    if (!messageSigns.length || !currentHighway || !currentHighway.length) return null;
+
+    const dirMatches = (signDir) => {
+      if (!highwayDirectionLabel) return true; // direction not locked yet — don't filter it out
+      if (!signDir || signDir === 'None') return false;
+      if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
+      return signDir === highwayDirectionLabel;
+    };
+
+    const candidates = messageSigns
+      .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
+      .filter(s => dirMatches(s.DirectionOfTravel))
+      .filter(s => currentHighway.some(h => (s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
+        || (s.Roadway || '').toUpperCase().includes(h)))
+      .map(s => {
+        const straightDist = haversineMeters(lat, lon, s.Latitude, s.Longitude);
+        const bearingToSign = bearingDeg(lat, lon, s.Latitude, s.Longitude);
+        const dist = lastStableBearing === null
+          ? straightDist
+          : straightDist * Math.cos(toRad(angleDiff(bearingToSign, lastStableBearing)));
+        return { sign: s, dist };
+      })
+      .filter(c => c.dist >= -SWAP_BUFFER_M && c.dist <= MSG_SIGN_RANGE_M);
+
+    candidates.sort((a, b) => a.dist - b.dist);
+    return candidates.length ? candidates[0] : null;
+  }
+
+  function speakMessage(text) {
+    if (!('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel(); // don't stack overlapping announcements
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 0.95;
+      window.speechSynthesis.speak(utter);
+    } catch (err) {
+      console.warn('Speech synthesis failed:', err);
+    }
+  }
+
+  async function updateMessageBanner(lat, lon) {
+    await fetchMessageSignsIfNeeded();
+    const active = pickActiveMessageSign(lat, lon);
+
+    if (!active) {
+      msgBannerEl.style.display = 'none';
+      activeSignId = null;
+      return;
+    }
+
+    const msgText = active.sign.Messages.join(' • ');
+    msgBannerEl.innerHTML = '';
+    const main = document.createElement('div');
+    main.textContent = msgText;
+    const meta = document.createElement('span');
+    meta.className = 'msg-meta';
+    meta.textContent = `${formatDistance(Math.max(0, active.dist))} ahead`;
+    msgBannerEl.appendChild(main);
+    msgBannerEl.appendChild(meta);
+    msgBannerEl.style.display = 'block';
+
+    // Speak only when this is a genuinely new sign/message, not every poll.
+    const signKey = active.sign.Id + '::' + msgText;
+    if (signKey !== activeSignId && msgText !== lastSpokenMessage) {
+      speakMessage(msgText);
+      lastSpokenMessage = msgText;
+    }
+    activeSignId = signKey;
   }
 
   // ---------- Candidate camera scoring ----------
@@ -856,6 +1216,9 @@
     }
     updateScanBarState();
 
+    updateMilepostAndDirection(lat, lon);
+    updateMessageBanner(lat, lon);
+
     const debugScored = getScoredCameras(lat, lon, -SWAP_BUFFER_M, MAX_SEARCH_DIST_M);
     debugContent.textContent = JSON.stringify({
       highway: currentHighway,
@@ -912,6 +1275,21 @@
     browseList = [];
     browseIndex = 0;
     lastKnownPos = null;
+    currentMilepost = null;
+    lastMilepostCheck = 0;
+    mmTrend = null;
+    pendingMmTrend = null;
+    pendingMmTrendCount = 0;
+    highwayDirectionLabel = null;
+    shieldLoadedFor = null;
+    messageSigns = [];
+    lastMsgSignFetch = 0;
+    activeSignId = null;
+    lastSpokenMessage = null;
+    highwayShieldEl.style.display = 'none';
+    mmSignEl.style.display = 'none';
+    directionLabelEl.textContent = '';
+    msgBannerEl.style.display = 'none';
     slotOrder.forEach(el => {
       destroySlotEl(el);
       el.dataset.camId = '';
