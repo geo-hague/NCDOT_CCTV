@@ -274,7 +274,7 @@
   const MIN_DISPLACEMENT_M = 40;     // min movement before recomputing bearing
   const BEARING_DISAGREE_DEG = 45;   // how much new bearing must differ to challenge current direction
   const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to flip direction
-  const HIGHWAY_RECHECK_MS = 15000;  // re-run highway snap at most this often
+  const HIGHWAY_RECHECK_MS = 6000;   // re-run highway snap at most this often
   const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
   const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
   const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
@@ -291,8 +291,6 @@
   const MILEMARKER_QUERY_URL = 'https://services.arcgis.com/NuWFvHYDMVmmxMeM/arcgis/rest/services/NCDOT_Mile_Markers_Published_View/FeatureServer/0/query';
   const MILEMARKER_SEARCH_RADIUS_M = 900;  // ~0.56mi — wide enough to bracket the two nearest signs
   const MILEMARKER_RECHECK_MS = 8000;      // how often we re-query for the current milepost
-  const MM_TREND_CONFIRM_COUNT = 2;        // consecutive readings needed to confirm ascending/descending
-                                            // (fallback only — used when a marker has no RouteDirection)
 
   // ---- Highway shield images (Wikipedia / Wikimedia Commons) ----
   // Special:FilePath redirects straight to the file, so it works as a plain
@@ -330,9 +328,6 @@
   // above, which is a raw compass bearing used only for camera ahead/behind math.
   let currentMilepost = null;
   let lastMilepostCheck = 0;
-  let mmTrend = null;              // 'ascending' | 'descending' | null
-  let pendingMmTrend = null;
-  let pendingMmTrendCount = 0;
   let highwayDirectionLabel = null; // "Eastbound" | "Northbound" | "Southbound" | "Westbound"
   let shieldLoadedFor = null;      // which normalized ref the shield <img> currently shows
 
@@ -619,9 +614,26 @@
     }
   }
 
-  // Uses the two nearest matching-route signs to linearly interpolate the
-  // driver's position to a tenth of a mile, and prefers each sign's own
-  // RouteDirection attribute over our own ascending/descending guess.
+  // Direction is derived from our actual GPS travel bearing, not from
+  // "whichever mile marker happens to be closest" — on a divided highway
+  // the opposite-direction carriageway's marker is often only a few dozen
+  // feet away across the median, so distance alone flips constantly.
+  // Route parity (even/odd) tells us which axis the route runs on; the
+  // bearing tells us which way along that axis we're actually moving.
+  function bearingToNcdotDirection(bearing, parsedRef) {
+    if (bearing == null || !parsedRef) return null;
+    const rad = toRad(bearing);
+    return parsedRef.isEven
+      ? (Math.sin(rad) >= 0 ? 'Eastbound' : 'Westbound')   // even routes run E-W
+      : (Math.cos(rad) >= 0 ? 'Northbound' : 'Southbound'); // odd routes run N-S
+  }
+
+  const MM_SNAP_RADIUS_M = 160.9; // 0.1 mile — within this, use the sign's exact value instead of interpolating
+
+  // Uses the two nearest matching-route-AND-matching-direction signs to
+  // linearly interpolate the driver's position to a tenth of a mile. Signs
+  // on the opposite carriageway are excluded entirely via the bearing-derived
+  // direction, which also fixes direction flip-flopping.
   async function updateMilepostAndDirection(lat, lon) {
     const now = Date.now();
     if (now - lastMilepostCheck < MILEMARKER_RECHECK_MS) return;
@@ -633,6 +645,10 @@
     if (!features.length) { setDebug({ milepostLookup: 'no mile markers within search radius' }); return; }
 
     const parsedForRef = currentHighway.map(parseHighwayRef).find(Boolean);
+    const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
+    // Bearing not stable yet (e.g. right after GPS lock) — fall back to
+    // whatever direction we last had, rather than guessing from distance.
+    highwayDirectionLabel = bearingDirection || highwayDirectionLabel;
 
     const withMeta = features.map(f => {
       const a = f.attributes || {};
@@ -643,54 +659,47 @@
       return { mp, dist, routeName: a.RouteName, direction: a.RouteDirection || null };
     }).filter(f => f.mp != null && routeNameMatches(f.routeName, parsedForRef));
 
-    if (!withMeta.length) {
-      setDebug({ milepostLookup: 'no matching-route markers nearby', sampleRouteNames: features.slice(0, 5).map(f => f.attributes && f.attributes.RouteName) });
+    // Reject opposite-carriageway markers whenever we know our direction and
+    // the marker declares its own. Markers with no RouteDirection attribute
+    // are kept as a fallback pool only if nothing direction-matches.
+    let candidates = withMeta;
+    if (highwayDirectionLabel) {
+      const sameDirection = withMeta.filter(f => f.direction === highwayDirectionLabel);
+      if (sameDirection.length) candidates = sameDirection;
+      else candidates = withMeta.filter(f => !f.direction); // no directional data at all — can't exclude them
+    }
+
+    if (!candidates.length) {
+      setDebug({ milepostLookup: 'no matching-route markers in our direction of travel', sampleRouteNames: features.slice(0, 5).map(f => f.attributes && f.attributes.RouteName) });
       return;
     }
 
-    withMeta.sort((a, b) => a.dist - b.dist);
+    candidates.sort((a, b) => a.dist - b.dist);
     let interpolated;
-    if (withMeta.length >= 2) {
-      const [a, b] = withMeta;
+    if (candidates[0].dist <= MM_SNAP_RADIUS_M) {
+      // Close enough to a real sign — use its exact printed value.
+      interpolated = candidates[0].mp;
+    } else if (candidates.length >= 2) {
+      const [a, b] = candidates;
       const total = a.dist + b.dist;
       interpolated = total > 0 ? (a.mp * b.dist + b.mp * a.dist) / total : a.mp;
     } else {
-      interpolated = withMeta[0].mp;
+      interpolated = candidates[0].mp;
     }
-    interpolated = Math.round(interpolated * 10) / 10;
-
-    // Trend fallback (ascending/descending), only used if the nearest
-    // marker doesn't already tell us its direction.
-    if (currentMilepost !== null && interpolated !== currentMilepost) {
-      const newTrend = interpolated > currentMilepost ? 'ascending' : 'descending';
-      if (mmTrend === null) {
-        mmTrend = newTrend;
-      } else if (newTrend === mmTrend) {
-        pendingMmTrend = null; pendingMmTrendCount = 0;
-      } else {
-        if (pendingMmTrend === newTrend) pendingMmTrendCount++;
-        else { pendingMmTrend = newTrend; pendingMmTrendCount = 1; }
-        if (pendingMmTrendCount >= MM_TREND_CONFIRM_COUNT) {
-          mmTrend = newTrend; pendingMmTrend = null; pendingMmTrendCount = 0;
-        }
-      }
-    }
-    currentMilepost = interpolated;
-
-    const nearestDirection = withMeta[0].direction;
-    if (nearestDirection) {
-      highwayDirectionLabel = nearestDirection;
-    } else if (parsedForRef && mmTrend) {
-      highwayDirectionLabel = mmTrend === 'ascending'
-        ? (parsedForRef.isEven ? 'Eastbound' : 'Northbound')
-        : (parsedForRef.isEven ? 'Westbound' : 'Southbound');
-    }
+    currentMilepost = Math.round(interpolated * 10) / 10;
 
     mmValueEl.textContent = currentMilepost.toFixed(1);
     mmSignEl.style.display = 'flex';
     directionLabelEl.textContent = shortDirection(highwayDirectionLabel);
     updateHighwayShield(currentHighway[0]);
-    setDebug({ milepost: currentMilepost, trend: mmTrend, direction: highwayDirectionLabel, source: nearestDirection ? 'sign RouteDirection' : 'ascending/descending fallback' });
+    setDebug({
+      milepost: currentMilepost,
+      direction: highwayDirectionLabel,
+      directionSource: bearingDirection ? 'GPS bearing' : 'carried over (bearing not stable)',
+      bearing: lastStableBearing,
+      candidateCount: candidates.length,
+      snapped: candidates[0].dist <= MM_SNAP_RADIUS_M,
+    });
   }
 
   // ---------- DMS message signs (via proxy) ----------
@@ -1199,6 +1208,13 @@
       } else {
         // Disagrees with current highway — require repeated confirmation
         // before switching, so one bad overpass reading doesn't flip us.
+        // Exception: if the new reading shares NO refs at all with what we
+        // have now (e.g. US-74 -> I-26, a clean route change rather than
+        // multiplex-signage jitter like "I-40" vs "I-40/I-85"), trust it
+        // right away — ambiguity debouncing doesn't apply here.
+        const sharesAnyRef = currentHighway.some(h => snap.normalizedList.includes(h));
+        const confirmationsNeeded = sharesAnyRef ? HIGHWAY_CONFIRM_COUNT : 1;
+
         const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
         if (pendingKey === snapKey) {
           pendingHighwayCount++;
@@ -1206,11 +1222,16 @@
           pendingHighway = snap.normalizedList;
           pendingHighwayCount = 1;
         }
-        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
+        if (pendingHighwayCount >= confirmationsNeeded) {
           currentHighway = pendingHighway;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
+          // New route — old milepost/shield are meaningless now; force a
+          // fresh lookup instead of showing stale I-26 data while on US-74's numbers.
+          currentMilepost = null;
+          lastMilepostCheck = 0;
+          shieldLoadedFor = null;
         }
       }
 
@@ -1290,9 +1311,6 @@
     lastKnownPos = null;
     currentMilepost = null;
     lastMilepostCheck = 0;
-    mmTrend = null;
-    pendingMmTrend = null;
-    pendingMmTrendCount = 0;
     highwayDirectionLabel = null;
     shieldLoadedFor = null;
     messageSigns = [];
