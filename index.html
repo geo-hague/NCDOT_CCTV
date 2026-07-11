@@ -278,18 +278,15 @@
   const MANIFEST_TIMEOUT_MS = 12000; // if a stream hasn't started playing within this long, treat as stalled
   const MAX_STREAM_RETRIES = 3;      // automatic retry attempts before showing a manual "tap to retry" button
 
-  // ---- Mile marker lookup (NCDOT ArcGIS mile marker layer) ----
-  // NCDOT publishes green mile-marker sign locations as a queryable ArcGIS
-  // FeatureServer/MapServer layer. We use the generic ArcGIS REST "query"
-  // operation (geometry + distance search), which is a stable, documented
-  // interface even though the exact field names in NCDOT's schema aren't
-  // publicly documented — see findMilepostField()/findRouteField() below,
-  // which inspect whatever fields come back rather than hardcoding names.
-  // If NCDOT changes the service path, update MILEMARKER_QUERY_URL only.
-  const MILEMARKER_QUERY_URL = 'https://gis11.services.ncdot.gov/arcgis/rest/services/NCDOT_MileMarker_Hatching/MapServer/1/query';
-  const MILEMARKER_SEARCH_RADIUS_M = 900;  // ~0.56mi — wide enough to bracket the two nearest mileposts
-  const MILEMARKER_RECHECK_MS = 8000;      // how often we re-query for nearby mileposts
-  const MM_TREND_CONFIRM_COUNT = 2;        // consecutive milepost readings needed to confirm ascending/descending
+  // ---- Mile marker lookup (NCDOT's real mile marker sign inventory) ----
+  // Hosted ArcGIS Online feature service — actual sign locations, not
+  // cartographic hatching. Fields include RouteName, SignMP (the number
+  // printed on the sign), RouteDirection, Latitude/Longitude.
+  const MILEMARKER_QUERY_URL = 'https://services.arcgis.com/NuWFvHYDMVmmxMeM/arcgis/rest/services/NCDOT_Mile_Markers_Published_View/FeatureServer/0/query';
+  const MILEMARKER_SEARCH_RADIUS_M = 900;  // ~0.56mi — wide enough to bracket the two nearest signs
+  const MILEMARKER_RECHECK_MS = 8000;      // how often we re-query for the current milepost
+  const MM_TREND_CONFIRM_COUNT = 2;        // consecutive readings needed to confirm ascending/descending
+                                            // (fallback only — used when a marker has no RouteDirection)
 
   // ---- Highway shield images (Wikipedia / Wikimedia Commons) ----
   // Special:FilePath redirects straight to the file, so it works as a plain
@@ -297,14 +294,17 @@
   // of likely filenames per route type and fall back silently if none load.
   const COMMONS_FILEPATH = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 
-  // ---- DriveNC message signs (DMS) ----
-  // Public NCDOT endpoint: https://www.drivenc.gov/help/endpoint/messagesigns
-  // Requires a free developer key from https://www.drivenc.gov (Developers ->
-  // API Documentation -> Sign up). Paste it below.
-  const DRIVENC_API_KEY = '';  // <-- put your DriveNC developer key here
-  const DRIVENC_MSG_URL = 'https://www.drivenc.gov/api/v2/get/messagesigns';
+  // ---- DriveNC message signs (DMS), via a small proxy ----
+  // DriveNC's API needs a developer key, and GitHub Pages can't keep a key
+  // secret (it's a static site — anything in the JS is public). So instead
+  // of calling DriveNC directly, the browser calls a tiny serverless proxy
+  // that holds the key server-side and forwards the request. See
+  // messagesigns-worker/ for the ~15-line Cloudflare Worker to deploy (free
+  // tier, no server to maintain) and messagesigns-worker/README.md for setup.
+  // Point this at your deployed worker URL once it's live.
+  const MSG_SIGN_PROXY_URL = 'https://ncdotdms.m-c-hunt429.workers.dev/';
   const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles
-  const MSG_SIGN_POLL_MS = 20000;     // re-poll signs this often so a sign 10mi out
+  const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                        // can't silently change message before we reach it
 
   // ---------- State ----------
@@ -559,20 +559,18 @@
   }
 
   // ---------- Mile marker lookup ----------
-  // Finds whichever numeric-looking field holds the milepost value and
-  // whichever text field holds the route ref, without assuming exact names —
-  // NCDOT's public schema for this layer isn't formally documented.
-  function findMilepostField(attrs) {
-    const keys = Object.keys(attrs);
-    let k = keys.find(k => /^milepost$/i.test(k)) || keys.find(k => /mile/i.test(k) && typeof attrs[k] === 'number');
-    return k || null;
-  }
-  function findRouteField(attrs) {
-    const keys = Object.keys(attrs);
-    return keys.find(k => /^(route|rte|roadway|rteclass|road)/i.test(k)) || null;
+  // Route matching against RouteName is done loosely (contains the type+number,
+  // or just the bare number) since NCDOT's RouteName formatting isn't fully
+  // documented (e.g. "I-40", "US 401", "NC-16" have all been observed in similar feeds).
+  function routeNameMatches(routeName, parsedRef) {
+    if (!routeName || !parsedRef) return false;
+    const s = routeName.toUpperCase();
+    return s.includes(`${parsedRef.type}-${parsedRef.number}`) ||
+           s.includes(`${parsedRef.type} ${parsedRef.number}`) ||
+           s.includes(String(parsedRef.number));
   }
 
-  async function queryNearestMileposts(lat, lon) {
+  async function queryNearestMileMarkers(lat, lon) {
     const params = new URLSearchParams({
       f: 'json',
       geometry: `${lon},${lat}`,
@@ -581,55 +579,46 @@
       spatialRel: 'esriSpatialRelIntersects',
       distance: String(MILEMARKER_SEARCH_RADIUS_M),
       units: 'esriSRUnit_Meter',
-      outFields: '*',
-      returnGeometry: 'true',
-      outSR: '4326',
+      outFields: 'RouteName,SignMP,RouteMP,RouteDirection,Latitude,Longitude',
+      returnGeometry: 'false',
     });
     try {
       const resp = await fetch(`${MILEMARKER_QUERY_URL}?${params.toString()}`);
       if (!resp.ok) return { error: `HTTP ${resp.status}` };
       const data = await resp.json();
-      if (!data.features || !data.features.length) return { features: [] };
-      return { features: data.features };
+      if (data.error) return { error: JSON.stringify(data.error) };
+      return { features: data.features || [] };
     } catch (err) {
       return { error: err.message };
     }
   }
 
-  // Uses the two nearest mileposts on the locked highway to linearly
-  // interpolate the driver's position to a tenth of a mile.
+  // Uses the two nearest matching-route signs to linearly interpolate the
+  // driver's position to a tenth of a mile, and prefers each sign's own
+  // RouteDirection attribute over our own ascending/descending guess.
   async function updateMilepostAndDirection(lat, lon) {
     const now = Date.now();
     if (now - lastMilepostCheck < MILEMARKER_RECHECK_MS) return;
     lastMilepostCheck = now;
     if (!currentHighway || !currentHighway.length) return;
 
-    const { features, error } = await queryNearestMileposts(lat, lon);
-    if (error || !features || !features.length) {
-      setDebug({ milepostLookup: error || 'no features found nearby' });
-      return;
-    }
+    const { features, error } = await queryNearestMileMarkers(lat, lon);
+    if (error) { setDebug({ milepostLookup: error }); return; }
+    if (!features.length) { setDebug({ milepostLookup: 'no mile markers within search radius' }); return; }
 
     const parsedForRef = currentHighway.map(parseHighwayRef).find(Boolean);
-    const routeCandidates = parsedForRef
-      ? [parsedForRef.type + '-' + parsedForRef.number, String(parsedForRef.number)]
-      : currentHighway;
 
     const withMeta = features.map(f => {
-      const attrs = f.attributes || {};
-      const mmField = findMilepostField(attrs);
-      const rtField = findRouteField(attrs);
-      const mp = mmField ? parseFloat(attrs[mmField]) : NaN;
-      const routeVal = rtField ? String(attrs[rtField]).toUpperCase() : '';
-      const geom = f.geometry || {};
-      const dist = (geom.x != null && geom.y != null)
-        ? haversineMeters(lat, lon, geom.y, geom.x)
+      const a = f.attributes || {};
+      const mp = a.SignMP != null ? a.SignMP : a.RouteMP;
+      const dist = (a.Latitude != null && a.Longitude != null)
+        ? haversineMeters(lat, lon, a.Latitude, a.Longitude)
         : Infinity;
-      return { mp, routeVal, dist };
-    }).filter(f => !isNaN(f.mp) && routeCandidates.some(rc => f.routeVal.includes(rc)));
+      return { mp, dist, routeName: a.RouteName, direction: a.RouteDirection || null };
+    }).filter(f => f.mp != null && routeNameMatches(f.routeName, parsedForRef));
 
-    if (withMeta.length < 1) {
-      setDebug({ milepostLookup: 'no matching-route mileposts in range', sampleFields: Object.keys(features[0].attributes || {}) });
+    if (!withMeta.length) {
+      setDebug({ milepostLookup: 'no matching-route markers nearby', sampleRouteNames: features.slice(0, 5).map(f => f.attributes && f.attributes.RouteName) });
       return;
     }
 
@@ -638,14 +627,14 @@
     if (withMeta.length >= 2) {
       const [a, b] = withMeta;
       const total = a.dist + b.dist;
-      // Weighted toward whichever marker we're closer to.
       interpolated = total > 0 ? (a.mp * b.dist + b.mp * a.dist) / total : a.mp;
     } else {
       interpolated = withMeta[0].mp;
     }
     interpolated = Math.round(interpolated * 10) / 10;
 
-    // Trend (ascending/descending) with hysteresis, same pattern as bearing lock.
+    // Trend fallback (ascending/descending), only used if the nearest
+    // marker doesn't already tell us its direction.
     if (currentMilepost !== null && interpolated !== currentMilepost) {
       const newTrend = interpolated > currentMilepost ? 'ascending' : 'descending';
       if (mmTrend === null) {
@@ -662,40 +651,38 @@
     }
     currentMilepost = interpolated;
 
-    if (parsedForRef && mmTrend) {
-      if (mmTrend === 'ascending') {
-        highwayDirectionLabel = parsedForRef.isEven ? 'Eastbound' : 'Northbound';
-      } else {
-        highwayDirectionLabel = parsedForRef.isEven ? 'Westbound' : 'Southbound';
-      }
+    const nearestDirection = withMeta[0].direction;
+    if (nearestDirection) {
+      highwayDirectionLabel = nearestDirection;
+    } else if (parsedForRef && mmTrend) {
+      highwayDirectionLabel = mmTrend === 'ascending'
+        ? (parsedForRef.isEven ? 'Eastbound' : 'Northbound')
+        : (parsedForRef.isEven ? 'Westbound' : 'Southbound');
     }
 
-    // ---- Render ----
     mmValueEl.textContent = currentMilepost.toFixed(1);
     mmSignEl.style.display = 'flex';
     directionLabelEl.textContent = highwayDirectionLabel || '';
     updateHighwayShield(currentHighway[0]);
+    setDebug({ milepost: currentMilepost, trend: mmTrend, direction: highwayDirectionLabel, source: nearestDirection ? 'sign RouteDirection' : 'ascending/descending fallback' });
   }
 
-  // ---------- DMS message signs ----------
+  // ---------- DMS message signs (via proxy) ----------
   async function fetchMessageSignsIfNeeded() {
     const now = Date.now();
     if (now - lastMsgSignFetch < MSG_SIGN_POLL_MS) return;
     lastMsgSignFetch = now;
-    if (!DRIVENC_API_KEY) {
-      setDebug({ messageSigns: 'DRIVENC_API_KEY not set — sign up at drivenc.gov/developers/doc' });
+    if (!MSG_SIGN_PROXY_URL || MSG_SIGN_PROXY_URL.includes('YOUR-WORKER-SUBDOMAIN')) {
+      setDebug({ messageSigns: 'MSG_SIGN_PROXY_URL not configured — deploy messagesigns-worker/ and update the constant' });
       return;
     }
     try {
-      const url = `${DRIVENC_MSG_URL}?key=${encodeURIComponent(DRIVENC_API_KEY)}&format=json`;
-      const resp = await fetch(url);
+      const resp = await fetch(MSG_SIGN_PROXY_URL);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       messageSigns = await resp.json();
+      if (!Array.isArray(messageSigns)) throw new Error('unexpected response shape: ' + JSON.stringify(messageSigns).slice(0, 200));
     } catch (err) {
-      // Common cause: DriveNC's API doesn't send CORS headers for browser
-      // fetches — if so this will throw a generic "Failed to fetch" and
-      // you'll need a small same-origin proxy in front of DRIVENC_MSG_URL.
-      console.warn('Message sign fetch failed:', err);
+      setDebug({ messageSigns: `proxy fetch failed: ${err.message}` });
     }
   }
 
