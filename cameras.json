@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-10T11:51:56.868Z",
-  "count": 1046,
+  "updated": "2026-07-11T10:14:35.105Z",
+  "count": 1044,
   "cameras": [
     {
       "id": 4020,
@@ -433,16 +433,6 @@
       "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5181_l/index.m3u8"
     },
     {
-      "id": 4067,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.43816,
-      "lon": -80.65192,
-      "location": "CCTV10-I85-55.15S",
-      "county": null,
-      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5182_l/index.m3u8"
-    },
-    {
       "id": 4068,
       "roadway": "Morehead",
       "direction": "Northbound",
@@ -481,16 +471,6 @@
       "location": "CCTV10-US29_BRUTONSMITH",
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5186_l/index.m3u8"
-    },
-    {
-      "id": 4072,
-      "roadway": "US-29",
-      "direction": "Both Directions",
-      "lat": 35.3495,
-      "lon": -80.6907,
-      "location": "CCTV10-US29_MOREHEAD",
-      "county": null,
-      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5187_l/index.m3u8"
     },
     {
       "id": 4073,
@@ -2685,7 +2665,7 @@
     {
       "id": 5052,
       "roadway": "I-40",
-      "direction": "Eastbound",
+      "direction": "Westbound",
       "lat": 35.82147,
       "lon": -83.15371,
       "location": "PCCTVSW-002_I40-446.6W_TN",
@@ -3563,6 +3543,16 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6140_l/index.m3u8"
     },
     {
+      "id": 5338,
+      "roadway": "US-17 BUS",
+      "direction": "Eastbound",
+      "lat": 36.29544,
+      "lon": -76.2341,
+      "location": "CCTV01-US17Bus_GRIFFIN",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6141_l/index.m3u8"
+    },
+    {
       "id": 5339,
       "roadway": "US-17 BUS",
       "direction": "Eastbound",
@@ -4103,16 +4093,6 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5472_l/index.m3u8"
     },
     {
-      "id": 5396,
-      "roadway": "US-70",
-      "direction": "Westbound",
-      "lat": 35.26605,
-      "lon": -77.67615,
-      "location": "CCTV02-US70-380W_NC148",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
-    },
-    {
       "id": 5397,
       "roadway": "Other",
       "direction": "Both Directions",
@@ -4351,6 +4331,16 @@
       "location": "CCTV04-I95-141M_NC43",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8"
     },
     {
       "id": 5430,
@@ -8713,16 +8703,6 @@
       "videoUrl": "https://cftse07.services.ncdot.gov:8887/chan-6044_l/index.m3u8"
     },
     {
-      "id": 5917,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.58304,
-      "lon": -80.55176,
-      "location": "CCTV09-I85-68.5S",
-      "county": null,
-      "videoUrl": "https://cftse08.services.ncdot.gov:8887/chan-6045_l/index.m3u8"
-    },
-    {
       "id": 5918,
       "roadway": "I-85",
       "direction": "Northbound",
@@ -8731,16 +8711,6 @@
       "location": "CCTV09-I85-68N_NC152",
       "county": null,
       "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6046_l/index.m3u8"
-    },
-    {
-      "id": 5919,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.59168,
-      "lon": -80.54153,
-      "location": "CCTV09-I85-69S",
-      "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6047_l/index.m3u8"
     },
     {
       "id": 5920,
@@ -9191,6 +9161,16 @@
       "location": "CCTV09-US421-239N_JONESTOWN",
       "county": null,
       "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6103_l/index.m3u8"
+    },
+    {
+      "id": 5976,
+      "roadway": "US-421",
+      "direction": "Southbound",
+      "lat": 36.0719459,
+      "lon": -80.3583334,
+      "location": "CCTV09-US421-240S_PEACEHAVEN",
+      "county": null,
+      "videoUrl": "https://cftse07.services.ncdot.gov:8887/chan-6104_l/index.m3u8"
     },
     {
       "id": 5977,
