@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NC Highway Cams</title>
+<title>NC Traffic</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.8/hls.min.js"></script>
 <style>
   :root {
@@ -276,7 +276,7 @@
   const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to flip direction
   const HIGHWAY_RECHECK_MS = 6000;   // re-run highway snap at most this often
   const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
-  const MAX_SEARCH_DIST_M = 40000;   // ~25 miles — cameras farther than this on your highway are ignored
+  const MAX_SEARCH_DIST_M = 24140.2; // ~15 miles — cameras farther than this on your highway are ignored
   const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
                                       // "nearest"/"next" camera, counting down through negative
                                       // distance, until it's this far behind you
@@ -307,7 +307,7 @@
   // tier, no server to maintain) and messagesigns-worker/README.md for setup.
   // Point this at your deployed worker URL once it's live.
   const MSG_SIGN_PROXY_URL = 'https://ncdotdms.m-c-hunt429.workers.dev/';
-  const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles
+  const MSG_SIGN_RANGE_M = 16093.4;   // 10 miles
   const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                        // can't silently change message before we reach it
 
@@ -1214,41 +1214,39 @@
     if (now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
       lastHighwayCheck = now;
       const snap = await snapToHighway(lat, lon);
-      const snapKey = snap.normalizedList.length ? [...snap.normalizedList].sort().join('/') : null;
-      const currentKey = currentHighway ? [...currentHighway].sort().join('/') : null;
 
-      if (!snapKey) {
-        // No confident match this round (e.g. mid-interchange with no
-        // tagged ref within radius, or an Overpass request failure) —
-        // don't clear currentHighway on a single miss, just leave it
-        // as-is until we get a real reading. Also don't touch pending —
-        // a blank reading shouldn't erase progress toward a real switch.
-      } else if (!currentHighway) {
-        // First lock — accept immediately, nothing to debounce against yet.
+      if (!snap.normalizedList || !snap.normalizedList.length) {
+        // No confident match this round or API error — skip out safely
+        setDebug({ overpassError: snap.error });
+        return;
+      }
+
+      // First lock — accept immediately
+      if (!currentHighway) {
         currentHighway = snap.normalizedList;
         highwayText.textContent = currentHighway.join(' / ');
-      } else if (snapKey === currentKey) {
-        // Re-confirms what we already have. IMPORTANT: don't reset any
-        // pending switch here — near an interchange, Overpass readings can
-        // legitimately alternate between e.g. "US-74" and "I-26/US-74"
-        // (different nearby way segments fall in/out of the search radius
-        // as you move a few meters), and resetting on every re-confirmation
-        // of the old value meant a genuinely new highway could never
-        // accumulate enough consecutive confirmations to win — a permanent
-        // deadlock. We only clear pending below, when a THIRD, different
-        // candidate shows up.
-      } else {
-        // Disagrees with current highway — require repeated confirmation
-        const sharesAnyRef = currentHighway.some(h => snap.normalizedList.includes(h));
-        const confirmationsNeeded = sharesAnyRef ? HIGHWAY_CONFIRM_COUNT : 1;
+        updateHighwayShield(primaryHighwayRef(currentHighway));
+        return;
+      }
 
-        // FIX: Check if the new snap shares elements with the pending highway 
-        // instead of doing a strict string comparison of the sorted keys.
+      // Check if the new reading shares ANY route with the currently locked highway
+      const confirmsCurrent = snap.normalizedList.some(h => currentHighway.includes(h));
+
+      if (confirmsCurrent) {
+        // It's a variation of our current route (e.g., concurrency shift). 
+        // Update the active list to the most complete version found, then clear pending.
+        if (snap.normalizedList.length > currentHighway.length) {
+          currentHighway = snap.normalizedList;
+          highwayText.textContent = currentHighway.join(' / ');
+        }
+        pendingHighway = null;
+        pendingHighwayCount = 0;
+      } else {
+        // Genuinely a brand new highway corridor. Debounce it.
         const matchesPending = pendingHighway && snap.normalizedList.some(h => pendingHighway.includes(h));
 
         if (matchesPending) {
           pendingHighwayCount++;
-          // Optionally upgrade pendingHighway to include concurrent refs if found
           if (snap.normalizedList.length > pendingHighway.length) {
             pendingHighway = snap.normalizedList;
           }
@@ -1257,13 +1255,14 @@
           pendingHighwayCount = 1;
         }
 
-        if (pendingHighwayCount >= confirmationsNeeded) {
+        // Flipped to an entirely new road network
+        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
           currentHighway = pendingHighway;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
           
-          // New route — clear old state
+          // Clear tracking metrics for new corridor
           currentMilepost = null;
           lastMilepostCheck = 0;
           shieldLoadedFor = null;
@@ -1273,12 +1272,10 @@
       setDebug({
         rawRef: snap.rawName,
         normalizedList: snap.normalizedList,
-        snapKey,
-        currentKey,
-        overpassError: snap.error,
         locked: currentHighway,
         pending: pendingHighway,
-        pendingCount: pendingHighwayCount
+        pendingCount: pendingHighwayCount,
+        overpassError: snap.error
       });
     }
 
