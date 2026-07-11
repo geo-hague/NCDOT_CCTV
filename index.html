@@ -1238,32 +1238,33 @@
         // deadlock. We only clear pending below, when a THIRD, different
         // candidate shows up.
       } else {
-        // Disagrees with current highway — require repeated confirmation
-        const sharesAnyRef = currentHighway.some(h => snap.normalizedList.includes(h));
-        const confirmationsNeeded = sharesAnyRef ? HIGHWAY_CONFIRM_COUNT : 1;
+        // We have a discrepancy between what we display and what we scanned.
+        // Let's check if we are just dropping or adding a route from a multiplex sequence.
+        const isSubset = snap.normalizedList.every(h => currentHighway.includes(h)) || 
+                         currentHighway.every(h => snap.normalizedList.includes(h));
 
-        // FIX: Check if the new snap shares elements with the pending highway 
-        // instead of doing a strict string comparison of the sorted keys.
-        const matchesPending = pendingHighway && snap.normalizedList.some(h => pendingHighway.includes(h));
-
-        if (matchesPending) {
-          pendingHighwayCount++;
-          // Optionally upgrade pendingHighway to include concurrent refs if found
-          if (snap.normalizedList.length > pendingHighway.length) {
+        if (!isSubset) {
+          // This is a completely different highway system cross-over. Require confirmation.
+          const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
+          if (pendingKey === snapKey) {
+            pendingHighwayCount++;
+          } else {
             pendingHighway = snap.normalizedList;
+            pendingHighwayCount = 1;
           }
         } else {
+          // It's a multiplex adjustment (e.g., dropping/adding a route). Force immediate switch.
           pendingHighway = snap.normalizedList;
-          pendingHighwayCount = 1;
+          pendingHighwayCount = HIGHWAY_CONFIRM_COUNT; 
         }
 
-        if (pendingHighwayCount >= confirmationsNeeded) {
+        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
           currentHighway = pendingHighway;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
           
-          // New route — clear old state
+          // Clean house so the system updates images/mileposts instantly
           currentMilepost = null;
           lastMilepostCheck = 0;
           shieldLoadedFor = null;
