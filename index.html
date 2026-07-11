@@ -76,6 +76,47 @@
   .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
   video { width: 100%; height: 100%; object-fit: contain; display: block; }
 
+  .video-loading {
+    position: absolute; inset: 0; display: none;
+    align-items: center; justify-content: center; flex-direction: column; gap: 10px;
+    background: rgba(0,0,0,0.55); color: var(--text-dim); font-size: 12px;
+    pointer-events: none;
+  }
+  .video-wrapper.loading .video-loading { display: flex; }
+  .spinner {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .video-retry {
+    display: none; position: absolute; inset: 0; z-index: 5;
+    flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+    background: rgba(0,0,0,0.75); color: var(--warn); font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer; width: 100%; height: 100%;
+  }
+  .video-wrapper.stalled .video-retry { display: flex; }
+  .video-retry .retry-icon { font-size: 22px; }
+
+  #scan-bar {
+    position: sticky; top: 45px; z-index: 15;
+    display: flex; gap: 8px; padding: 10px 12px;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  #scan-bar button {
+    flex: 1; padding: 12px 8px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  #scan-bar button:disabled { opacity: 0.35; cursor: default; }
+  #scan-behind-btn { text-align: left; }
+  #scan-ahead-btn { text-align: right; }
+  #scan-locate-btn {
+    flex: 0 0 52px; font-size: 18px; border-color: var(--accent); color: var(--accent);
+  }
+  #scan-locate-btn.active { background: var(--accent); color: #041016; }
+  #cam-list.browsing { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+
   #debug {
     margin: 12px; padding: 10px 12px; border-radius: 8px;
     background: var(--panel); border: 1px solid var(--line);
@@ -113,6 +154,12 @@
       <span id="gps-text">Locating…</span>
     </div>
     <div class="highway" id="highway-text">—</div>
+  </div>
+
+  <div id="scan-bar">
+    <button id="scan-behind-btn">◀ Behind</button>
+    <button id="scan-locate-btn" title="Return to live tracking">🎯</button>
+    <button id="scan-ahead-btn">Ahead ▶</button>
   </div>
 
   <div id="sim-panel">
@@ -170,6 +217,9 @@
   const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
                                       // "nearest"/"next" camera, counting down through negative
                                       // distance, until it's this far behind you
+  const BROWSE_RANGE_M = 80467;      // ~50 miles — how far the manual ahead/behind scan can look
+  const MANIFEST_TIMEOUT_MS = 12000; // if a stream hasn't started playing within this long, treat as stalled
+  const MAX_STREAM_RETRIES = 3;      // automatic retry attempts before showing a manual "tap to retry" button
 
   // ---------- State ----------
   let allCameras = [];
@@ -360,13 +410,14 @@
     }
   }
 
-  // ---------- Candidate camera selection ----------
-  function getUpcomingCameras(lat, lon) {
+  // ---------- Candidate camera scoring ----------
+  // Returns ALL cameras on the locked highway(s) within [minDist, maxDist] of
+  // signed distance (negative = behind, positive = ahead), sorted ascending.
+  // Callers decide how much of this list they need — live tracking takes
+  // just the top two, manual browse mode pages through the whole thing.
+  function getScoredCameras(lat, lon, minDist, maxDist) {
     if (!currentHighway || !currentHighway.length) return [];
 
-    // Direction the camera itself faces doesn't matter here — we only care
-    // that it's on one of the currently-locked refs (handles concurrent
-    // routes like I-40/I-85 without favoring whichever OSM lists first).
     const candidates = allCameras.filter(c => currentHighway.includes(normalizeHighwayName(c.roadway)));
 
     const scored = candidates.map(c => {
@@ -386,11 +437,40 @@
       }
 
       return { cam: c, dist };
-    }).filter(s => s.dist >= -SWAP_BUFFER_M && s.dist <= MAX_SEARCH_DIST_M);
+    }).filter(s => s.dist >= minDist && s.dist <= maxDist);
 
-    // Ascending: most-behind-but-still-in-view first, then increasingly ahead.
     scored.sort((a, b) => a.dist - b.dist);
-    return scored.slice(0, 2);
+    return scored;
+  }
+
+  // Picks which two cameras should occupy the Nearest/Next slots, biased
+  // toward keeping whatever's already displayed unless a different camera
+  // is a clear (SWAP_MARGIN_M) improvement — this is what stops the display
+  // from flickering back and forth between two similarly-distanced cameras
+  // as GPS/bearing noise makes their relative ranking jitter tick to tick.
+  function pickWithHysteresis(scoredAsc, prevIds) {
+    const byId = new Map(scoredAsc.map(s => [String(s.cam.id), s]));
+    const result = [null, null];
+    const consumed = new Set();
+
+    for (let i = 0; i < 2; i++) {
+      const prevId = prevIds[i];
+      if (prevId && byId.has(prevId)) {
+        result[i] = byId.get(prevId);
+        consumed.add(prevId);
+      }
+    }
+
+    const remaining = scoredAsc.filter(s => !consumed.has(String(s.cam.id)));
+    for (let i = 0; i < 2; i++) {
+      if (!result[i] && remaining.length) {
+        const best = remaining.shift();
+        result[i] = best;
+        consumed.add(String(best.cam.id));
+      }
+    }
+
+    return result.filter(Boolean);
   }
 
   // ---------- Video slot rendering ----------
@@ -410,6 +490,135 @@
       try { hls.detachMedia(); hls.destroy(); } catch (e) {}
       hlsByEl.delete(el);
     }
+    if (el._manifestTimeout) {
+      clearTimeout(el._manifestTimeout);
+      el._manifestTimeout = null;
+    }
+    el._retryCount = 0;
+  }
+
+  function setLoadingState(el, isLoading) {
+    const wrapper = el.querySelector('.video-wrapper');
+    if (wrapper) wrapper.classList.toggle('loading', isLoading);
+  }
+
+  function showRetryUI(el) {
+    const wrapper = el.querySelector('.video-wrapper');
+    if (wrapper) wrapper.classList.add('stalled');
+  }
+
+  function hideRetryUI(el) {
+    const wrapper = el.querySelector('.video-wrapper');
+    if (wrapper) wrapper.classList.remove('stalled');
+  }
+
+  // Attaches (and, on failure, retries/recovers) a stream for the given
+  // camera into the given slot element. Cellular connections can be slow
+  // enough that a manifest never arrives or segments stall entirely, so
+  // this handles three layers of recovery: automatic hls.js error
+  // recovery, a small number of automatic full reconnect attempts with
+  // backoff, and finally a manual "tap to retry" button if all of that
+  // fails — so a slow/dead camera never just sits there black forever
+  // with no explanation or way to recover.
+  function attachStream(el, cam) {
+    const video = el.querySelector('video');
+    setLoadingState(el, true);
+    hideRetryUI(el);
+    el._retryCount = 0;
+
+    function armManifestTimeout() {
+      if (el._manifestTimeout) clearTimeout(el._manifestTimeout);
+      el._manifestTimeout = setTimeout(() => {
+        handleFailure();
+      }, MANIFEST_TIMEOUT_MS);
+    }
+
+    function clearManifestTimeout() {
+      if (el._manifestTimeout) {
+        clearTimeout(el._manifestTimeout);
+        el._manifestTimeout = null;
+      }
+    }
+
+    function handleFailure() {
+      clearManifestTimeout();
+      setLoadingState(el, false);
+      showRetryUI(el);
+    }
+
+    function startLoad() {
+      destroySlotEl(el); // clear any previous instance/timer for this element
+      hideRetryUI(el);
+      setLoadingState(el, true);
+      armManifestTimeout();
+
+      if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+        const hls = new Hls({
+          maxBufferLength: 6,
+          lowLatencyMode: true,
+          manifestLoadingTimeOut: 10000,
+          manifestLoadingMaxRetry: 2,
+        });
+        hls.loadSource(cam.videoUrl);
+        hls.attachMedia(video);
+        hlsByEl.set(el, hls);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          clearManifestTimeout();
+          setLoadingState(el, false);
+          video.play().catch(() => {});
+        });
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (!data.fatal) return;
+          if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+            try { hls.recoverMediaError(); return; } catch (e) { /* fall through to reconnect */ }
+          }
+          if (el._retryCount < MAX_STREAM_RETRIES) {
+            el._retryCount++;
+            const backoffMs = 1500 * el._retryCount;
+            setTimeout(startLoad, backoffMs);
+          } else {
+            handleFailure();
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = cam.videoUrl;
+        video.addEventListener('loadedmetadata', () => {
+          clearManifestTimeout();
+          setLoadingState(el, false);
+          video.play().catch(() => {});
+        }, { once: true });
+        video.addEventListener('error', () => {
+          if (el._retryCount < MAX_STREAM_RETRIES) {
+            el._retryCount++;
+            setTimeout(startLoad, 1500 * el._retryCount);
+          } else {
+            handleFailure();
+          }
+        }, { once: true });
+      } else {
+        clearManifestTimeout();
+        setLoadingState(el, false);
+        handleFailure();
+      }
+    }
+
+    video.addEventListener('waiting', () => setLoadingState(el, true));
+    video.addEventListener('playing', () => { setLoadingState(el, false); hideRetryUI(el); });
+
+    startLoad();
+
+    // Manual retry button click (delegated once per element via a data flag).
+    if (!el._retryHandlerBound) {
+      el._retryHandlerBound = true;
+      el.addEventListener('click', (e) => {
+        const wrapper = el.querySelector('.video-wrapper');
+        if (wrapper && wrapper.classList.contains('stalled')) {
+          startLoad();
+        }
+      });
+    }
   }
 
   function renderCameraIntoEl(el, camWithDist, label) {
@@ -417,7 +626,9 @@
       destroySlotEl(el);
       el.dataset.camId = '';
       el.className = 'cam-slot empty';
-      if (label === 'Next') {
+      if (label === 'Browsing') {
+        el.textContent = 'No more cameras in this direction.';
+      } else if (label === 'Next') {
         el.textContent = '—';
       } else if (!currentHighway || !currentHighway.length) {
         el.textContent = 'Waiting for highway lock…';
@@ -451,26 +662,21 @@
         <span class="cam-dist">${distText}</span>
       </div>
       <div class="cam-location">${cam.location || ''}</div>
-      <div class="video-wrapper"><video muted autoplay playsinline webkit-playsinline></video></div>
+      <div class="video-wrapper">
+        <video muted autoplay playsinline webkit-playsinline></video>
+        <div class="video-loading"><div class="spinner"></div><div>Loading stream…</div></div>
+        <button class="video-retry" type="button">
+          <span class="retry-icon">⟳</span>
+          <span>Stream stalled — tap to retry</span>
+        </button>
+      </div>
     `;
 
-    const video = el.querySelector('video');
-    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-      const hls = new Hls({ maxBufferLength: 6, lowLatencyMode: true });
-      hls.loadSource(cam.videoUrl);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
-      });
-      hlsByEl.set(el, hls);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = cam.videoUrl;
-      video.addEventListener('loadedmetadata', () => video.play().catch(() => {}));
-    }
+    attachStream(el, cam);
   }
 
-  function updateDisplay(scoredCams) {
-    const labels = ['Nearest', 'Next'];
+  function updateDisplay(scoredCams, labels) {
+    labels = labels || ['Nearest', 'Next'];
     const desiredIds = scoredCams.map(s => String(s.cam.id));
 
     // Prefer keeping each camera in the element that already has it live,
@@ -497,8 +703,88 @@
     });
   }
 
+  // ---------- Manual ahead/behind browse mode ----------
+  // Lets you page through cameras further out than the live nearest/next
+  // window without waiting to physically drive there. Snapshots the camera
+  // list at the moment you first press a button (using your last known
+  // position), then Ahead/Behind just walk an index through that snapshot.
+  // Live GPS tracking (highway lock, direction) keeps running underneath so
+  // "locate" can snap straight back to an accurate live view.
+  let lastKnownPos = null;
+  let browseActive = false;
+  let browseList = [];
+  let browseIndex = 0;
+
+  const behindBtn = document.getElementById('scan-behind-btn');
+  const aheadBtn = document.getElementById('scan-ahead-btn');
+  const locateBtn = document.getElementById('scan-locate-btn');
+  const camListEl = document.getElementById('cam-list');
+
+  function updateScanBarState() {
+    camListEl.classList.toggle('browsing', browseActive);
+    locateBtn.classList.toggle('active', browseActive);
+    behindBtn.disabled = !browseActive && !lastKnownPos;
+    aheadBtn.disabled = !browseActive && !lastKnownPos;
+    if (browseActive) {
+      behindBtn.disabled = browseIndex <= 0;
+      aheadBtn.disabled = browseIndex >= browseList.length - 1;
+    }
+  }
+
+  function liveUpdate() {
+    if (!lastKnownPos) return;
+    const scoredFull = getScoredCameras(lastKnownPos.lat, lastKnownPos.lon, -SWAP_BUFFER_M, MAX_SEARCH_DIST_M);
+    const prevIds = slotOrder.map(el => el.dataset.camId || null);
+    const selected = pickWithHysteresis(scoredFull, prevIds);
+    updateDisplay(selected, ['Nearest', 'Next']);
+  }
+
+  function renderBrowse() {
+    const pair = [browseList[browseIndex], browseList[browseIndex + 1]].filter(Boolean);
+    updateDisplay(pair, ['Browsing', 'Browsing']);
+    updateScanBarState();
+  }
+
+  function enterBrowseIfNeeded() {
+    if (browseActive || !lastKnownPos || !currentHighway || !currentHighway.length) return false;
+    const list = getScoredCameras(lastKnownPos.lat, lastKnownPos.lon, -BROWSE_RANGE_M, BROWSE_RANGE_M);
+    if (!list.length) return false;
+    // Start browsing from whichever camera is currently closest to your
+    // actual position, so the first tap moves logically forward/back from
+    // where you already are rather than jumping to the list's edge.
+    let closestIdx = 0, closestAbs = Infinity;
+    list.forEach((s, i) => { const a = Math.abs(s.dist); if (a < closestAbs) { closestAbs = a; closestIdx = i; } });
+    browseList = list;
+    browseIndex = closestIdx;
+    browseActive = true;
+    return true;
+  }
+
+  function moveAhead() {
+    const justEntered = enterBrowseIfNeeded();
+    if (!browseActive) return;
+    if (!justEntered) browseIndex = Math.min(browseIndex + 1, Math.max(0, browseList.length - 1));
+    renderBrowse();
+  }
+
+  function moveBehind() {
+    const justEntered = enterBrowseIfNeeded();
+    if (!browseActive) return;
+    if (!justEntered) browseIndex = Math.max(browseIndex - 1, 0);
+    renderBrowse();
+  }
+
+  function locate() {
+    browseActive = false;
+    browseList = [];
+    browseIndex = 0;
+    liveUpdate();
+    updateScanBarState();
+  }
+
   // ---------- Main position handling (shared by real GPS and simulator) ----------
   async function handlePosition(lat, lon, source) {
+    lastKnownPos = { lat, lon };
 
     gpsDot.className = 'dot live';
     gpsText.textContent = `${lat.toFixed(5)}, ${lon.toFixed(5)}${source === 'sim' ? ' (simulated)' : ''}`;
@@ -555,14 +841,18 @@
       });
     }
 
-    const upcoming = getUpcomingCameras(lat, lon);
-    updateDisplay(upcoming);
+    if (!browseActive) {
+      liveUpdate();
+    }
+    updateScanBarState();
 
+    const debugScored = getScoredCameras(lat, lon, -SWAP_BUFFER_M, MAX_SEARCH_DIST_M);
     debugContent.textContent = JSON.stringify({
       highway: currentHighway,
       direction: currentDirectionLabel,
       bearing: lastStableBearing ? Math.round(lastStableBearing) : null,
-      candidates: upcoming.map(s => ({ id: s.cam.id, dist: Math.round(s.dist), loc: s.cam.location }))
+      browseActive,
+      candidates: debugScored.map(s => ({ id: s.cam.id, dist: Math.round(s.dist), loc: s.cam.location }))
     }, null, 2);
   }
 
@@ -608,6 +898,10 @@
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
     highwayText.textContent = '—';
+    browseActive = false;
+    browseList = [];
+    browseIndex = 0;
+    lastKnownPos = null;
     slotOrder.forEach(el => {
       destroySlotEl(el);
       el.dataset.camId = '';
@@ -674,6 +968,11 @@
       stopSimulation();
       gpsText.textContent = 'Simulation stopped.';
     });
+
+    aheadBtn.addEventListener('click', moveAhead);
+    behindBtn.addEventListener('click', moveBehind);
+    locateBtn.addEventListener('click', locate);
+    updateScanBarState();
 
     if (!navigator.geolocation) {
       gpsText.textContent = 'Geolocation not supported on this device/browser.';
