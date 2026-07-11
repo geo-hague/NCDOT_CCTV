@@ -1202,7 +1202,7 @@
   }
 
   // ---------- Main position handling (shared by real GPS and simulator) ----------
-  async function handlePosition(lat, lon, source) {
+async function handlePosition(lat, lon, source) {
     lastKnownPos = { lat, lon };
 
     gpsDot.className = 'dot live';
@@ -1243,23 +1243,9 @@
         const isSubset = snap.normalizedList.every(h => currentHighway.includes(h)) || 
                          currentHighway.every(h => snap.normalizedList.includes(h));
 
-        if (!isSubset) {
-          // This is a completely different highway system cross-over. Require confirmation.
-          const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
-          if (pendingKey === snapKey) {
-            pendingHighwayCount++;
-          } else {
-            pendingHighway = snap.normalizedList;
-            pendingHighwayCount = 1;
-          }
-        } else {
-          // It's a multiplex adjustment (e.g., dropping/adding a route). Force immediate switch.
-          pendingHighway = snap.normalizedList;
-          pendingHighwayCount = HIGHWAY_CONFIRM_COUNT; 
-        }
-
-        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
-          currentHighway = pendingHighway;
+        if (isSubset) {
+          // If it's a multiplex modification, cut through the counter loops and force it immediately
+          currentHighway = snap.normalizedList;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
@@ -1268,6 +1254,26 @@
           currentMilepost = null;
           lastMilepostCheck = 0;
           shieldLoadedFor = null;
+        } else {
+          // This is a completely different highway system cross-over. Require confirmation.
+          const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
+          if (pendingKey === snapKey) {
+            pendingHighwayCount++;
+          } else {
+            pendingHighway = snap.normalizedList;
+            pendingHighwayCount = 1;
+          }
+
+          if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
+            currentHighway = pendingHighway;
+            highwayText.textContent = currentHighway.join(' / ');
+            pendingHighway = null;
+            pendingHighwayCount = 0;
+            
+            currentMilepost = null;
+            lastMilepostCheck = 0;
+            shieldLoadedFor = null;
+          }
         }
       }
 
