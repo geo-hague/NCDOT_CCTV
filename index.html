@@ -1202,7 +1202,7 @@
   }
 
   // ---------- Main position handling (shared by real GPS and simulator) ----------
-async function handlePosition(lat, lon, source) {
+  async function handlePosition(lat, lon, source) {
     lastKnownPos = { lat, lon };
 
     gpsDot.className = 'dot live';
@@ -1239,9 +1239,11 @@ async function handlePosition(lat, lon, source) {
         // candidate shows up.
       } else {
         // We have a discrepancy between what we display and what we scanned.
-        // Let's check if we are just dropping or adding a route from a multiplex sequence.
-        const isSubset = snap.normalizedList.every(h => currentHighway.includes(h)) || 
-                         currentHighway.every(h => snap.normalizedList.includes(h));
+        // Safety check: ensure currentHighway is an array before evaluating subset rules.
+        const isSubset = Array.isArray(currentHighway) && (
+                         snap.normalizedList.every(h => currentHighway.includes(h)) || 
+                         currentHighway.every(h => snap.normalizedList.includes(h))
+        );
 
         if (isSubset) {
           // If it's a multiplex modification, cut through the counter loops and force it immediately
@@ -1256,8 +1258,10 @@ async function handlePosition(lat, lon, source) {
           shieldLoadedFor = null;
         } else {
           // This is a completely different highway system cross-over. Require confirmation.
+          const innerSnapKey = snap.normalizedList.length ? [...snap.normalizedList].sort().join('/') : null;
           const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
-          if (pendingKey === snapKey) {
+          
+          if (pendingKey === innerSnapKey) {
             pendingHighwayCount++;
           } else {
             pendingHighway = snap.normalizedList;
