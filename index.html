@@ -1239,28 +1239,31 @@
         // candidate shows up.
       } else {
         // Disagrees with current highway — require repeated confirmation
-        // before switching, so one bad overpass reading doesn't flip us.
-        // Exception: if the new reading shares NO refs at all with what we
-        // have now (e.g. US-74 -> I-26, a clean route change rather than
-        // multiplex-signage jitter like "I-40" vs "I-40/I-85"), trust it
-        // right away — ambiguity debouncing doesn't apply here.
         const sharesAnyRef = currentHighway.some(h => snap.normalizedList.includes(h));
         const confirmationsNeeded = sharesAnyRef ? HIGHWAY_CONFIRM_COUNT : 1;
 
-        const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
-        if (pendingKey === snapKey) {
+        // FIX: Check if the new snap shares elements with the pending highway 
+        // instead of doing a strict string comparison of the sorted keys.
+        const matchesPending = pendingHighway && snap.normalizedList.some(h => pendingHighway.includes(h));
+
+        if (matchesPending) {
           pendingHighwayCount++;
+          // Optionally upgrade pendingHighway to include concurrent refs if found
+          if (snap.normalizedList.length > pendingHighway.length) {
+            pendingHighway = snap.normalizedList;
+          }
         } else {
           pendingHighway = snap.normalizedList;
           pendingHighwayCount = 1;
         }
+
         if (pendingHighwayCount >= confirmationsNeeded) {
           currentHighway = pendingHighway;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
-          // New route — old milepost/shield are meaningless now; force a
-          // fresh lookup instead of showing stale I-26 data while on US-74's numbers.
+          
+          // New route — clear old state
           currentMilepost = null;
           lastMilepostCheck = 0;
           shieldLoadedFor = null;
