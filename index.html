@@ -1287,7 +1287,7 @@
     }
     updateScanBarState();
 
-    updateMilepostAndDirection(lat, lon);
+    await updateMilepostAndDirection(lat, lon);
     updateMessageBanner(lat, lon);
 
     const debugScored = getScoredCameras(lat, lon, -SWAP_BUFFER_M, MAX_SEARCH_DIST_M);
