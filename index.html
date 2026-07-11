@@ -24,8 +24,10 @@
     overflow-x: hidden;
   }
 
-  #status-bar {
+  #top-bar-group {
     position: sticky; top: 0; z-index: 20;
+  }
+  #status-bar {
     background: var(--panel); border-bottom: 1px solid var(--line);
     padding: 10px 14px;
     display: flex; align-items: center; justify-content: space-between;
@@ -74,9 +76,11 @@
   }
 
   /* ---- Amber DMS message banner ---- */
+  /* Lives inside #top-bar-group (not sticky itself) so it just adds to the
+     sticky group's natural height — no hardcoded pixel offset to go stale
+     when the shield image loads or the banner shows/hides. */
   #msg-sign-banner {
     display: none;
-    position: sticky; top: 45px; z-index: 18;
     background: #1a1400; border-bottom: 2px solid var(--warn);
     color: var(--warn); font-weight: 800; text-transform: uppercase;
     letter-spacing: 0.03em; text-align: center;
@@ -145,7 +149,7 @@
   .video-retry .retry-icon { font-size: 22px; }
 
   #scan-bar {
-    position: sticky; top: 45px; z-index: 15;
+    position: sticky; top: var(--top-group-h, 53px); z-index: 15;
     display: flex; gap: 8px; padding: 10px 12px;
     background: var(--panel); border-bottom: 1px solid var(--line);
   }
@@ -193,25 +197,27 @@
 </head>
 <body>
 
-  <div id="status-bar">
-    <div>
-      <span class="dot searching" id="gps-dot"></span>
-      <span id="gps-text">Locating…</span>
-    </div>
-    <div class="highway-block" id="highway-block">
-      <img id="highway-shield" class="highway-shield" alt="">
-      <div class="highway-info">
-        <div class="highway" id="highway-text">—</div>
-        <div class="direction-label" id="direction-label"></div>
+  <div id="top-bar-group">
+    <div id="status-bar">
+      <div>
+        <span class="dot searching" id="gps-dot"></span>
+        <span id="gps-text">Locating…</span>
       </div>
-      <div class="mile-marker-sign" id="mile-marker-sign">
-        <div class="mm-label">MILE</div>
-        <div class="mm-value" id="mm-value">—</div>
+      <div class="highway-block" id="highway-block">
+        <img id="highway-shield" class="highway-shield" alt="">
+        <div class="highway-info">
+          <div class="highway" id="highway-text">—</div>
+          <div class="direction-label" id="direction-label"></div>
+        </div>
+        <div class="mile-marker-sign" id="mile-marker-sign">
+          <div class="mm-label">MILE</div>
+          <div class="mm-value" id="mm-value">—</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="msg-sign-banner" role="alert"></div>
+    <div id="msg-sign-banner" role="alert"></div>
+  </div>
 
   <div id="scan-bar">
     <button id="scan-behind-btn">◀ Behind</button>
@@ -302,7 +308,7 @@
   // messagesigns-worker/ for the ~15-line Cloudflare Worker to deploy (free
   // tier, no server to maintain) and messagesigns-worker/README.md for setup.
   // Point this at your deployed worker URL once it's live.
-  const MSG_SIGN_PROXY_URL = 'https://ncdotdms.m-c-hunt429.workers.dev/';
+  const MSG_SIGN_PROXY_URL = 'https://YOUR-WORKER-SUBDOMAIN.workers.dev/messagesigns';
   const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles
   const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                        // can't silently change message before we reach it
@@ -526,6 +532,14 @@
     return { type: m[1], number: parseInt(m[2], 10), isEven: parseInt(m[2], 10) % 2 === 0 };
   }
 
+  // Display-only shortening ("Northbound" -> "North"). The full word is kept
+  // in highwayDirectionLabel itself since DriveNC's DirectionOfTravel field
+  // uses the full "Northbound"/"Eastbound"/etc. and dirMatches() compares
+  // against it directly.
+  function shortDirection(label) {
+    return label ? label.replace(/bound$/i, '') : '';
+  }
+
   // Try a short list of plausible Wikimedia Commons filenames for a route
   // shield, falling back through the list via onerror. Special:FilePath
   // redirects directly to the image so no API round-trip is needed.
@@ -542,6 +556,7 @@
     const parsed = parseHighwayRef(normalizedRef);
     if (!parsed) {
       highwayShieldEl.style.display = 'none';
+      highwayText.style.display = '';
       shieldLoadedFor = normalizedRef;
       return;
     }
@@ -549,9 +564,20 @@
     let i = 0;
     shieldLoadedFor = normalizedRef;
     const tryNext = () => {
-      if (i >= candidates.length) { highwayShieldEl.style.display = 'none'; return; }
+      if (i >= candidates.length) {
+        // Every candidate filename 404'd — fall back to showing the text.
+        highwayShieldEl.style.display = 'none';
+        highwayText.style.display = '';
+        return;
+      }
       highwayShieldEl.onerror = tryNext;
-      highwayShieldEl.onload = () => { highwayShieldEl.style.display = ''; };
+      highwayShieldEl.onload = () => {
+        // BUG FIX: style.display = '' clears the inline style and falls back
+        // to the stylesheet's `display: none`, so the image loaded but never
+        // actually appeared. Must set an explicit visible value here.
+        highwayShieldEl.style.display = 'inline-block';
+        highwayText.style.display = 'none'; // shield replaces the "I-40" text
+      };
       highwayShieldEl.src = COMMONS_FILEPATH + encodeURIComponent(candidates[i]);
       i++;
     };
@@ -662,7 +688,7 @@
 
     mmValueEl.textContent = currentMilepost.toFixed(1);
     mmSignEl.style.display = 'flex';
-    directionLabelEl.textContent = highwayDirectionLabel || '';
+    directionLabelEl.textContent = shortDirection(highwayDirectionLabel);
     updateHighwayShield(currentHighway[0]);
     setDebug({ milepost: currentMilepost, trend: mmTrend, direction: highwayDirectionLabel, source: nearestDirection ? 'sign RouteDirection' : 'ascending/descending fallback' });
   }
@@ -1274,6 +1300,7 @@
     activeSignId = null;
     lastSpokenMessage = null;
     highwayShieldEl.style.display = 'none';
+    highwayText.style.display = '';
     mmSignEl.style.display = 'none';
     directionLabelEl.textContent = '';
     msgBannerEl.style.display = 'none';
@@ -1334,9 +1361,29 @@
     if (document.visibilityState === 'visible') acquireWakeLock();
   });
 
+  // The sticky group's height changes whenever the shield image finishes
+  // loading, the mile marker sign appears, or the message banner shows/hides.
+  // #scan-bar's sticky offset needs to track that exactly, or it'll overlap/
+  // hide behind the group — which is what was causing the banner and scan
+  // bar to visually flicker in and out.
+  function observeTopBarGroupHeight() {
+    const group = document.getElementById('top-bar-group');
+    if (!group) return;
+    const apply = () => {
+      document.documentElement.style.setProperty('--top-group-h', `${group.offsetHeight}px`);
+    };
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(apply).observe(group);
+    } else {
+      window.addEventListener('resize', apply);
+    }
+    apply();
+  }
+
   async function init() {
     await loadCameras();
     acquireWakeLock();
+    observeTopBarGroupHeight();
 
     document.getElementById('sim-start-btn').addEventListener('click', startSimulation);
     document.getElementById('sim-stop-btn').addEventListener('click', () => {
