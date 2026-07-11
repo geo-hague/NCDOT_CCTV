@@ -456,13 +456,25 @@
         if (!data.elements || !data.elements.length) {
           return { rawName: null, normalizedList: [], error: null };
         }
-        const tags = data.elements[0].tags || {};
-        let sources = [];
-        if (tags.ref) {
-          sources = tags.ref.split(';').map(s => s.trim()).filter(Boolean);
-        } else if (tags.name) {
-          sources = [tags.name.trim()];
+        // IMPORTANT: don't just look at elements[0]. Divided highways are
+        // almost always split into separate way segments in OSM (one per
+        // carriageway direction, plus ramps/merges), and several can sit
+        // within the search radius at once — Overpass's ordering of them
+        // is arbitrary, not proximity-ranked. At a concurrency (e.g. I-26
+        // running with US-74), taking only the first element risks picking
+        // a segment tagged with just one of the two refs. So union refs
+        // across every nearby element instead.
+        const refSet = new Set();
+        let nameFallback = null;
+        for (const el of data.elements) {
+          const t = el.tags || {};
+          if (t.ref) {
+            t.ref.split(';').map(s => s.trim()).filter(Boolean).forEach(r => refSet.add(r));
+          } else if (!nameFallback && t.name) {
+            nameFallback = t.name.trim();
+          }
         }
+        const sources = refSet.size ? [...refSet] : (nameFallback ? [nameFallback] : []);
         if (!sources.length) return { rawName: null, normalizedList: [], error: null };
 
         const normalizedList = sources.map(normalizeHighwayName).filter(Boolean);
@@ -525,6 +537,21 @@
     const m = ref.match(/^(I|US|NC)-(\d+)$/);
     if (!m) return null;
     return { type: m[1], number: parseInt(m[2], 10), isEven: parseInt(m[2], 10) % 2 === 0 };
+  }
+
+  // When multiple routes are concurrent (e.g. I-26 running with US-74),
+  // NCDOT's mile markers and exit numbers follow the Interstate designation,
+  // not whichever ref happened to sort first out of Overpass. Used for
+  // milepost lookups and the shield — NOT for the on-screen "I-26 / US-74"
+  // text, which still shows the full concurrency, and NOT for camera
+  // matching, which already checks against every ref in the list.
+  function primaryHighwayRef(list) {
+    if (!list || !list.length) return null;
+    const priority = { I: 0, US: 1, NC: 2 };
+    return [...list].sort((a, b) => {
+      const pa = parseHighwayRef(a), pb = parseHighwayRef(b);
+      return (pa ? priority[pa.type] : 99) - (pb ? priority[pb.type] : 99);
+    })[0];
   }
 
   // Display-only shortening ("Northbound" -> "North"). The full word is kept
@@ -644,7 +671,7 @@
     if (error) { setDebug({ milepostLookup: error }); return; }
     if (!features.length) { setDebug({ milepostLookup: 'no mile markers within search radius' }); return; }
 
-    const parsedForRef = currentHighway.map(parseHighwayRef).find(Boolean);
+    const parsedForRef = parseHighwayRef(primaryHighwayRef(currentHighway));
     const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
     // Bearing not stable yet (e.g. right after GPS lock) — fall back to
     // whatever direction we last had, rather than guessing from distance.
@@ -691,7 +718,7 @@
     mmValueEl.textContent = currentMilepost.toFixed(1);
     mmSignEl.style.display = 'flex';
     directionLabelEl.textContent = shortDirection(highwayDirectionLabel);
-    updateHighwayShield(currentHighway[0]);
+    updateHighwayShield(primaryHighwayRef(currentHighway));
     setDebug({
       milepost: currentMilepost,
       direction: highwayDirectionLabel,
