@@ -1238,46 +1238,35 @@
         // deadlock. We only clear pending below, when a THIRD, different
         // candidate shows up.
       } else {
-        // We have a discrepancy between what we display and what we scanned.
-        // Safety check: ensure currentHighway is an array before evaluating subset rules.
-        const isSubset = Array.isArray(currentHighway) && (
-                         snap.normalizedList.every(h => currentHighway.includes(h)) || 
-                         currentHighway.every(h => snap.normalizedList.includes(h))
-        );
+        // Disagrees with current highway — require repeated confirmation
+        const sharesAnyRef = currentHighway.some(h => snap.normalizedList.includes(h));
+        const confirmationsNeeded = sharesAnyRef ? HIGHWAY_CONFIRM_COUNT : 1;
 
-        if (isSubset) {
-          // If it's a multiplex modification, cut through the counter loops and force it immediately
-          currentHighway = snap.normalizedList;
+        // FIX: Check if the new snap shares elements with the pending highway 
+        // instead of doing a strict string comparison of the sorted keys.
+        const matchesPending = pendingHighway && snap.normalizedList.some(h => pendingHighway.includes(h));
+
+        if (matchesPending) {
+          pendingHighwayCount++;
+          // Optionally upgrade pendingHighway to include concurrent refs if found
+          if (snap.normalizedList.length > pendingHighway.length) {
+            pendingHighway = snap.normalizedList;
+          }
+        } else {
+          pendingHighway = snap.normalizedList;
+          pendingHighwayCount = 1;
+        }
+
+        if (pendingHighwayCount >= confirmationsNeeded) {
+          currentHighway = pendingHighway;
           highwayText.textContent = currentHighway.join(' / ');
           pendingHighway = null;
           pendingHighwayCount = 0;
           
-          // Clean house so the system updates images/mileposts instantly
+          // New route — clear old state
           currentMilepost = null;
           lastMilepostCheck = 0;
           shieldLoadedFor = null;
-        } else {
-          // This is a completely different highway system cross-over. Require confirmation.
-          const innerSnapKey = snap.normalizedList.length ? [...snap.normalizedList].sort().join('/') : null;
-          const pendingKey = pendingHighway ? [...pendingHighway].sort().join('/') : null;
-          
-          if (pendingKey === innerSnapKey) {
-            pendingHighwayCount++;
-          } else {
-            pendingHighway = snap.normalizedList;
-            pendingHighwayCount = 1;
-          }
-
-          if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
-            currentHighway = pendingHighway;
-            highwayText.textContent = currentHighway.join(' / ');
-            pendingHighway = null;
-            pendingHighwayCount = 0;
-            
-            currentMilepost = null;
-            lastMilepostCheck = 0;
-            shieldLoadedFor = null;
-          }
         }
       }
 
