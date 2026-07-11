@@ -326,6 +326,9 @@
   let pendingBearingCount = 0;
   let posHistory = [];            // [{lat,lon,t}]
   let lastHighwayCheck = 0;
+  let highwayCheckSeq = 0; // bumped on every new snapToHighway request; lets a
+                            // resolving fetch tell whether it's still the latest
+                            // in-flight request or a stale one that arrived late
 
   // Mile marker / NCDOT-convention direction (Eastbound/Northbound/etc, derived
   // from ascending/descending mileposts) — separate from currentDirectionLabel
@@ -1219,7 +1222,13 @@
     const now = Date.now();
     if (now - lastHighwayCheck > HIGHWAY_RECHECK_MS) {
       lastHighwayCheck = now;
+      const mySeq = ++highwayCheckSeq;
       const snap = await snapToHighway(lat, lon);
+      if (mySeq === highwayCheckSeq) {
+      // A newer position's request would have already bumped highwayCheckSeq
+      // past mySeq while this one was in flight, if it landed first — in
+      // which case this response is stale and applying it would overwrite
+      // fresher state, so we just skip the whole block below.
       const snapKeys = snap.normalizedList; // e.g., ["I-40", "US-74"]
 
       if (snapKeys.length === 0) {
@@ -1264,6 +1273,7 @@
         pending: pendingHighway,
         pendingCount: pendingHighwayCount
       });
+      }
     }
 
     if (!browseActive) {
@@ -1325,6 +1335,7 @@
     pendingHighway = null;
     pendingHighwayCount = 0;
     lastHighwayCheck = 0;
+    highwayCheckSeq = 0;
     highwayText.textContent = '—';
     browseActive = false;
     browseList = [];
