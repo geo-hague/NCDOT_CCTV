@@ -102,8 +102,12 @@
     transition: opacity 0.35s ease, transform 0.35s ease;
   }
   .cam-slot.empty {
-    display: flex; align-items: center; justify-content: center;
-    min-height: 120px; color: var(--text-dim); font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px; /* Forces the empty/loading state to match the live video height */
+    color: var(--text-dim);
+    font-size: 14px;
   }
   .cam-slot.fading-out { opacity: 0; transform: scale(0.98); }
 
