@@ -158,7 +158,7 @@
 
   <div id="scan-bar">
     <button id="scan-behind-btn">◀ Behind</button>
-    <button id="scan-locate-btn" title="Return to live tracking">🎯</button>
+    <button id="scan-locate-btn" title="Return to live tracking">🚗</button>
     <button id="scan-ahead-btn">Ahead ▶</button>
   </div>
 
@@ -470,7 +470,17 @@
       }
     }
 
-    return result.filter(Boolean);
+    // Keeping a camera "stuck" to whichever slot it previously occupied
+    // (above) avoids restarting its video — but it says nothing about
+    // whether that camera is still actually the nearer of the two. Sort by
+    // real distance now so "Nearest" always shows the smaller distance;
+    // the id-based DOM matching in updateDisplay() still relocates the
+    // physical element rather than rebuilding it, so this reordering is
+    // free of video interruption even when it swaps position.
+    const filtered = result.filter(Boolean);
+    filtered.sort((a, b) => a.dist - b.dist);
+
+    return filtered;
   }
 
   // ---------- Video slot rendering ----------
