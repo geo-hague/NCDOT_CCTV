@@ -756,7 +756,8 @@
     if (!messageSigns.length || !currentHighway || !currentHighway.length) return null;
 
     const dirMatches = (signDir) => {
-      if (!highwayDirectionLabel) return true; // direction not locked yet — don't filter it out
+      if (!highwayDirectionLabel) return false; // our own direction isn't known yet — can't confirm
+                                                  // a directional sign applies to us, so don't show it
       if (!signDir || signDir === 'None') return false;
       if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
       return signDir === highwayDirectionLabel;
@@ -1236,27 +1237,23 @@
         pendingHighway = null;
         pendingHighwayCount = 0;
       } else {
-        // 3. ROUTE TRANSITION: We are genuinely on a completely different road.
-        // Require a confirmation count to handle overpass/interchange jitter.
-        if (pendingHighway && snapKeys.some(h => pendingHighway.includes(h))) {
-          pendingHighwayCount++;
-        } else {
-          pendingHighway = snapKeys;
-          pendingHighwayCount = 1;
-        }
+        // 3. ROUTE TRANSITION: We are genuinely on a completely different road
+        // (dropping/adding a concurrent route is handled above and switches
+        // instantly — this only fires when NONE of the old refs remain).
+        // Switch immediately; there's no confirm-count delay here anymore.
+        // Overpass/interchange jitter mostly shows up as a brief EXTRA ref
+        // appearing alongside the real one, which the overlap branch above
+        // already absorbs without ever reaching this branch.
+        currentHighway = snapKeys;
+        highwayText.textContent = currentHighway.join(' / ');
+        pendingHighway = null;
+        pendingHighwayCount = 0;
 
-        // 4. CONFIRM SWITCH: The new road is stable, switch over entirely.
-        if (pendingHighwayCount >= HIGHWAY_CONFIRM_COUNT) {
-          currentHighway = pendingHighway;
-          highwayText.textContent = currentHighway.join(' / ');
-          pendingHighway = null;
-          pendingHighwayCount = 0;
-          
-          // Clear route-specific tracking so it recalculates for the new highway
-          currentMilepost = null;
-          lastMilepostCheck = 0;
-          shieldLoadedFor = null;
-        }
+        // Clear route-specific tracking so it recalculates for the new highway
+        currentMilepost = null;
+        lastMilepostCheck = 0;
+        shieldLoadedFor = null;
+        highwayDirectionLabel = null;
       }
 
       setDebug({
