@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-11T10:14:35.105Z",
-  "count": 1044,
+  "updated": "2026-07-12T10:27:55.005Z",
+  "count": 1041,
   "cameras": [
     {
       "id": 4020,
@@ -4843,16 +4843,6 @@
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5560_l/index.m3u8"
     },
     {
-      "id": 5484,
-      "roadway": "I-85",
-      "direction": "Northbound",
-      "lat": 36.34113,
-      "lon": -78.40745,
-      "location": "CCTV05-I85-214N_NC39",
-      "county": null,
-      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5561_l/index.m3u8"
-    },
-    {
       "id": 5485,
       "roadway": "I-85",
       "direction": "Northbound",
@@ -6821,16 +6811,6 @@
       "location": "CCTV06-I95-56S_I95BUS",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5776_l/index.m3u8"
-    },
-    {
-      "id": 5698,
-      "roadway": "I-95",
-      "direction": "Southbound",
-      "lat": 35.11255,
-      "lon": -78.76613,
-      "location": "CCTV06-I95-58S",
-      "county": null,
-      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5778_l/index.m3u8"
     },
     {
       "id": 5699,
@@ -9161,16 +9141,6 @@
       "location": "CCTV09-US421-239N_JONESTOWN",
       "county": null,
       "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6103_l/index.m3u8"
-    },
-    {
-      "id": 5976,
-      "roadway": "US-421",
-      "direction": "Southbound",
-      "lat": 36.0719459,
-      "lon": -80.3583334,
-      "location": "CCTV09-US421-240S_PEACEHAVEN",
-      "county": null,
-      "videoUrl": "https://cftse07.services.ncdot.gov:8887/chan-6104_l/index.m3u8"
     },
     {
       "id": 5977,
