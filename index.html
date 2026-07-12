@@ -890,20 +890,38 @@
     }
   }
 
+  // Some DMS entries report DirectionOfTravel as "Unknown" (or omit it
+  // entirely) even though the sign's own ID encodes it, e.g. "DMS13-I40-60W"
+  // is westbound. Only used as a fallback — DirectionOfTravel is trusted
+  // whenever it actually says something.
+  function directionFromSignId(id) {
+    if (!id) return null;
+    const m = /([NSEW])$/i.exec(String(id).trim());
+    if (!m) return null;
+    const map = { N: 'Northbound', S: 'Southbound', E: 'Eastbound', W: 'Westbound' };
+    return map[m[1].toUpperCase()];
+  }
+
   function pickActiveMessageSign(lat, lon) {
     if (!messageSigns.length || !currentHighway || !currentHighway.length) return null;
 
-    const dirMatches = (signDir) => {
+    const dirMatches = (s) => {
       if (!highwayDirectionLabel) return false; // our own direction isn't known yet — can't confirm
                                                   // a directional sign applies to us, so don't show it
-      if (!signDir || signDir === 'None') return false;
-      if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
-      return signDir === highwayDirectionLabel;
+      const signDir = s.DirectionOfTravel;
+      if (signDir && signDir !== 'None' && signDir !== 'Unknown') {
+        if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
+        return signDir === highwayDirectionLabel;
+      }
+      // DirectionOfTravel is missing/None/Unknown — fall back to the sign ID's
+      // trailing N/S/E/W letter instead of refusing to show the sign at all.
+      const inferred = directionFromSignId(s.Id);
+      return inferred ? inferred === highwayDirectionLabel : false;
     };
 
     const candidates = messageSigns
       .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
-      .filter(s => dirMatches(s.DirectionOfTravel))
+      .filter(s => dirMatches(s))
       .filter(s => currentHighway.some(h => (s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
         || (s.Roadway || '').toUpperCase().includes(h)))
       .map(s => {
