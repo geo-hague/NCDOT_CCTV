@@ -891,15 +891,15 @@
   }
 
   // Some DMS entries report DirectionOfTravel as "Unknown" (or omit it
-  // entirely) even though the sign's own ID encodes it, e.g. "DMS13-I40-60W"
+  // entirely) even though the sign's own Name encodes it, e.g. "DMS13-I40-60W"
   // is westbound. Only used as a fallback — DirectionOfTravel is trusted
-  // whenever it actually says something.
-  function directionFromSignId(id) {
-    if (!id) return null;
-    const m = /([NSEW])$/i.exec(String(id).trim());
-    if (!m) return null;
+  // whenever it actually says something. Only Name is checked — other fields
+  // like Id can also contain "DMS" without actually encoding direction.
+  function directionFromSignId(s) {
     const map = { N: 'Northbound', S: 'Southbound', E: 'Eastbound', W: 'Westbound' };
-    return map[m[1].toUpperCase()];
+    if (typeof s.Name !== 'string') return null;
+    const m = /([NSEW])\s*[)\]]*\s*$/i.exec(s.Name.trim());
+    return m ? map[m[1].toUpperCase()] : null;
   }
 
   function pickActiveMessageSign(lat, lon) {
@@ -915,9 +915,31 @@
       }
       // DirectionOfTravel is missing/None/Unknown — fall back to the sign ID's
       // trailing N/S/E/W letter instead of refusing to show the sign at all.
-      const inferred = directionFromSignId(s.Id);
+      const inferred = directionFromSignId(s);
       return inferred ? inferred === highwayDirectionLabel : false;
     };
+
+    if (highwayDirectionLabel) {
+      const nearbyForDebug = messageSigns
+        .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
+        .map(s => ({ s, dist: haversineMeters(lat, lon, s.Latitude, s.Longitude) }))
+        .filter(x => x.dist <= MSG_SIGN_RANGE_M)
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 5)
+        .map(x => ({
+          raw: x.s, // full object — check this if the field name assumptions above are wrong
+          Roadway: x.s.Roadway,
+          DirectionOfTravel: x.s.DirectionOfTravel,
+          inferredDirection: directionFromSignId(x.s),
+          dirMatched: dirMatches(x.s),
+          roadwayMatched: currentHighway.some(h => (x.s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
+            || (x.s.Roadway || '').toUpperCase().includes(h)),
+          distMi: Math.round(x.dist / 160.934) / 10,
+        }));
+      if (nearbyForDebug.length) {
+        console.log('[DMS debug] our direction:', highwayDirectionLabel, 'currentHighway:', currentHighway, nearbyForDebug);
+      }
+    }
 
     const candidates = messageSigns
       .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
