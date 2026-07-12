@@ -178,8 +178,9 @@
     background: var(--panel); border-bottom: 1px solid var(--line);
   }
   #scan-bar button {
-    flex: 1; padding: 12px 8px; border-radius: 8px; border: 1px solid var(--line);
+    flex: 1; padding: 12px 6px; border-radius: 8px; border: 1px solid var(--line);
     background: var(--bg); color: var(--text); font-size: 14px; font-weight: 600; cursor: pointer;
+    white-space: nowrap;
   }
   #scan-bar button:disabled { opacity: 0.35; cursor: default; }
   #scan-behind-btn { text-align: left; }
@@ -250,9 +251,9 @@
   </div>
 
   <div id="scan-bar">
-    <button id="scan-behind-btn">◀ Camera Behind</button>
-    <button id="scan-locate-btn" title="Return to live tracking">Closest Camera</button>
-    <button id="scan-ahead-btn">Camera Ahead ▶</button>
+    <button id="scan-behind-btn">◀ Cam Behind</button>
+    <button id="scan-locate-btn" title="Return to live tracking">Closest Cam</button>
+    <button id="scan-ahead-btn">Cam Ahead ▶</button>
   </div>
 
   <div id="cam-list">
@@ -1114,7 +1115,7 @@
       // (position may have changed, e.g. Next -> Nearest) and distance.
       const labelEl = el.querySelector('.cam-label');
       const distEl = el.querySelector('.cam-dist');
-      if (labelEl) labelEl.textContent = `${label} — ${cam.roadway}`;
+      if (labelEl) labelEl.textContent = label;
       if (distEl) distEl.textContent = distText;
       return;
     }
@@ -1125,7 +1126,7 @@
     el.className = 'cam-slot';
     el.innerHTML = `
       <div class="cam-header">
-        <span class="cam-label">${label} — ${cam.roadway}</span>
+        <span class="cam-label">${label}</span>
         <span class="cam-dist">${distText}</span>
       </div>
       <div class="cam-location">${cam.location || ''}</div>
