@@ -66,6 +66,9 @@
     display: flex; align-items: center; gap: 8px;
     margin-left: auto;
   }
+  .shield-group {
+    display: flex; align-items: flex-end; gap: 6px;
+  }
   .shield-wrap {
     display: flex; flex-direction: column; align-items: center; line-height: 1.1; gap: 1px;
   }
@@ -233,10 +236,7 @@
         <div class="speed-value" id="speed-value">—</div>
       </div>
       <div class="highway-block" id="highway-block">
-        <div class="shield-wrap">
-          <div class="direction-label" id="direction-label"></div>
-          <img id="highway-shield" class="highway-shield" alt="">
-        </div>
+        <div class="shield-group" id="shield-group"></div>
         <div class="highway-info">
           <div class="highway" id="highway-text">—</div>
         </div>
@@ -365,7 +365,9 @@
   let currentMilepost = null;
   let lastMilepostCheck = 0;
   let highwayDirectionLabel = null; // "Eastbound" | "Northbound" | "Southbound" | "Westbound"
-  let shieldLoadedFor = null;      // which normalized ref the shield <img> currently shows
+  let shieldGroupRefs = null;      // normalized ref list the shield group currently shows
+  let shieldDirEls = {};           // ref -> its direction-label element, so direction text
+                                    // can be refreshed without rebuilding/re-fetching shields
 
   // Message signs (DMS)
   let messageSigns = [];
@@ -378,8 +380,7 @@
   const gpsText = document.getElementById('gps-text');
   const speedValueEl = document.getElementById('speed-value');
   const highwayText = document.getElementById('highway-text');
-  const highwayShieldEl = document.getElementById('highway-shield');
-  const directionLabelEl = document.getElementById('direction-label');
+  const shieldGroupEl = document.getElementById('shield-group');
   const mmSignEl = document.getElementById('mile-marker-sign');
   const mmValueEl = document.getElementById('mm-value');
   const msgBannerEl = document.getElementById('msg-sign-banner');
@@ -602,6 +603,26 @@
     })[0];
   }
 
+  // Which ref(s) to show a shield+direction for. Two (or more) concurrent
+  // Interstates is the one case where there's genuinely no single "correct"
+  // choice — e.g. I-40/I-85 near Durham/Hillsborough is signed and
+  // mile-marked as I-85 in one stretch and as I-40 in another depending on
+  // which route "owns" that segment, and that ownership isn't something we
+  // can determine from OSM tag order. So instead of guessing one, show every
+  // Interstate ref concurrently present, each with its own GPS-bearing-
+  // derived direction. Non-Interstate concurrencies (e.g. I-26/US-74) still
+  // collapse to a single primary ref as before.
+  function getShieldRefs(list) {
+    if (!list || !list.length) return [];
+    const interstates = list.filter(r => {
+      const p = parseHighwayRef(r);
+      return p && p.type === 'I';
+    });
+    if (interstates.length >= 2) return interstates;
+    const primary = primaryHighwayRef(list);
+    return primary ? [primary] : [];
+  }
+
   // Display-only shortening ("Northbound" -> "North"). The full word is kept
   // in highwayDirectionLabel itself since DriveNC's DirectionOfTravel field
   // uses the full "Northbound"/"Eastbound"/etc. and dirMatches() compares
@@ -621,37 +642,84 @@
     return [];
   }
 
-  function updateHighwayShield(normalizedRef) {
-    if (shieldLoadedFor === normalizedRef) return;
-    const parsed = parseHighwayRef(normalizedRef);
-    if (!parsed) {
-      highwayShieldEl.style.display = 'none';
-      highwayText.style.display = '';
-      shieldLoadedFor = normalizedRef;
-      return;
-    }
-    const candidates = shieldCandidates(parsed);
-    let i = 0;
-    shieldLoadedFor = normalizedRef;
-    const tryNext = () => {
-      if (i >= candidates.length) {
-        // Every candidate filename 404'd — fall back to showing the text.
-        highwayShieldEl.style.display = 'none';
-        highwayText.style.display = '';
+  // Builds one .shield-wrap (direction label + shield img, falling back to
+  // plain text) per ref passed in. Normally just the primary ref, but when
+  // driving a multi-interstate concurrency (e.g. I-40/I-85) we're told to
+  // show every interstate's own shield and its own GPS-bearing-derived
+  // direction side by side, since either could be the one signed/mile-marked
+  // at this exact spot and there's no single "correct" one to pick.
+  function updateHighwayShields(refs) {
+    const key = refs.join('|');
+    if (shieldGroupRefs === key) return;
+    shieldGroupRefs = key;
+
+    shieldGroupEl.innerHTML = '';
+    shieldDirEls = {};
+    refs.forEach(ref => {
+      const parsed = parseHighwayRef(ref);
+      const wrap = document.createElement('div');
+      wrap.className = 'shield-wrap';
+
+      const dirEl = document.createElement('div');
+      dirEl.className = 'direction-label';
+      const dir = bearingToNcdotDirection(lastStableBearing, parsed) || highwayDirectionLabel;
+      dirEl.textContent = shortDirection(dir);
+      wrap.appendChild(dirEl);
+      shieldDirEls[ref] = dirEl;
+
+      if (!parsed) {
+        const textEl = document.createElement('div');
+        textEl.className = 'highway';
+        textEl.textContent = ref;
+        wrap.appendChild(textEl);
+        shieldGroupEl.appendChild(wrap);
         return;
       }
-      highwayShieldEl.onerror = tryNext;
-      highwayShieldEl.onload = () => {
-        // BUG FIX: style.display = '' clears the inline style and falls back
-        // to the stylesheet's `display: none`, so the image loaded but never
-        // actually appeared. Must set an explicit visible value here.
-        highwayShieldEl.style.display = 'inline-block';
-        highwayText.style.display = 'none'; // shield replaces the "I-40" text
+
+      const img = document.createElement('img');
+      img.className = 'highway-shield';
+      img.alt = ref;
+      const textFallback = document.createElement('div');
+      textFallback.className = 'highway';
+      textFallback.textContent = ref;
+      textFallback.style.display = 'none';
+
+      const candidates = shieldCandidates(parsed);
+      let i = 0;
+      const tryNext = () => {
+        if (i >= candidates.length) {
+          img.style.display = 'none';
+          textFallback.style.display = '';
+          return;
+        }
+        img.onerror = tryNext;
+        img.onload = () => {
+          img.style.display = 'inline-block';
+          textFallback.style.display = 'none';
+        };
+        img.src = COMMONS_FILEPATH + encodeURIComponent(candidates[i]);
+        i++;
       };
-      highwayShieldEl.src = COMMONS_FILEPATH + encodeURIComponent(candidates[i]);
-      i++;
-    };
-    tryNext();
+      tryNext();
+
+      wrap.appendChild(img);
+      wrap.appendChild(textFallback);
+      shieldGroupEl.appendChild(wrap);
+    });
+    // The old dedicated highway-text element is redundant once every ref has
+    // its own fallback text baked into its shield-wrap; keep it hidden.
+    highwayText.style.display = 'none';
+  }
+
+  // Updates each currently-shown shield's direction text from the latest
+  // bearing without touching the shield images themselves (those only need
+  // to change when the set of refs changes, not every time direction ticks).
+  function refreshShieldDirections() {
+    Object.keys(shieldDirEls).forEach(ref => {
+      const parsed = parseHighwayRef(ref);
+      const dir = bearingToNcdotDirection(lastStableBearing, parsed) || highwayDirectionLabel;
+      if (dir) shieldDirEls[ref].textContent = shortDirection(dir);
+    });
   }
 
   // ---------- Mile marker lookup ----------
@@ -719,12 +787,6 @@
     if (error) { setDebug({ milepostLookup: error }); return; }
     if (!features.length) { setDebug({ milepostLookup: 'no mile markers within search radius' }); return; }
 
-    const parsedForRef = parseHighwayRef(primaryHighwayRef(currentHighway));
-    const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
-    // Bearing not stable yet (e.g. right after GPS lock) — fall back to
-    // whatever direction we last had, rather than guessing from distance.
-    highwayDirectionLabel = bearingDirection || highwayDirectionLabel;
-
     const withMeta = features.map(f => {
       const a = f.attributes || {};
       const mp = a.SignMP != null ? a.SignMP : a.RouteMP;
@@ -732,23 +794,50 @@
         ? haversineMeters(lat, lon, a.Latitude, a.Longitude)
         : Infinity;
       return { mp, dist, routeName: a.RouteName, direction: a.RouteDirection || null };
-    }).filter(f => f.mp != null && routeNameMatches(f.routeName, parsedForRef));
+    });
 
-    // Reject opposite-carriageway markers whenever we know our direction and
-    // the marker declares its own. Markers with no RouteDirection attribute
-    // are kept as a fallback pool only if nothing direction-matches.
-    let candidates = withMeta;
-    if (highwayDirectionLabel) {
-      const sameDirection = withMeta.filter(f => f.direction === highwayDirectionLabel);
-      if (sameDirection.length) candidates = sameDirection;
-      else candidates = withMeta.filter(f => !f.direction); // no directional data at all — can't exclude them
+    // Try every candidate ref (both Interstates of a multiplex, or just the
+    // single primary ref otherwise) and use whichever one actually has mile
+    // markers here — rather than committing to one ref up front by guesswork
+    // and having the whole lookup silently fail if that guess is the one
+    // NCDOT doesn't mile-mark at this particular spot (e.g. I-40/I-85: the
+    // markers switch between belonging to I-40 and I-85 depending on where
+    // you are, regardless of which ref sorts "primary").
+    const tryRefs = getShieldRefs(currentHighway);
+    let matched = null;
+    for (const ref of tryRefs) {
+      const parsedForRef = parseHighwayRef(ref);
+      if (!parsedForRef) continue;
+      const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
+      const routeCandidates = withMeta.filter(f => f.mp != null && routeNameMatches(f.routeName, parsedForRef));
+      if (!routeCandidates.length) continue;
+
+      // Reject opposite-carriageway markers whenever we know our direction and
+      // the marker declares its own. Markers with no RouteDirection attribute
+      // are kept as a fallback pool only if nothing direction-matches.
+      let candidates = routeCandidates;
+      const dirGuess = bearingDirection || highwayDirectionLabel;
+      if (dirGuess) {
+        const sameDirection = routeCandidates.filter(f => f.direction === dirGuess);
+        if (sameDirection.length) candidates = sameDirection;
+        else candidates = routeCandidates.filter(f => !f.direction);
+      }
+      if (!candidates.length) continue;
+
+      matched = { ref, parsedForRef, bearingDirection, candidates };
+      break;
     }
 
-    if (!candidates.length) {
+    if (!matched) {
       setDebug({ milepostLookup: 'no matching-route markers in our direction of travel', sampleRouteNames: features.slice(0, 5).map(f => f.attributes && f.attributes.RouteName) });
       return;
     }
 
+    // Bearing not stable yet (e.g. right after GPS lock) — fall back to
+    // whatever direction we last had, rather than guessing from distance.
+    highwayDirectionLabel = matched.bearingDirection || highwayDirectionLabel;
+
+    const candidates = matched.candidates;
     candidates.sort((a, b) => a.dist - b.dist);
     let interpolated;
     if (candidates[0].dist <= MM_SNAP_RADIUS_M) {
@@ -765,12 +854,13 @@
 
     mmValueEl.textContent = currentMilepost.toFixed(1);
     mmSignEl.style.display = 'flex';
-    directionLabelEl.textContent = shortDirection(highwayDirectionLabel);
-    updateHighwayShield(primaryHighwayRef(currentHighway));
+    updateHighwayShields(tryRefs);
+    refreshShieldDirections();
     setDebug({
       milepost: currentMilepost,
+      milepostRef: matched.ref,
       direction: highwayDirectionLabel,
-      directionSource: bearingDirection ? 'GPS bearing' : 'carried over (bearing not stable)',
+      directionSource: matched.bearingDirection ? 'GPS bearing' : 'carried over (bearing not stable)',
       bearing: lastStableBearing,
       candidateCount: candidates.length,
       snapped: candidates[0].dist <= MM_SNAP_RADIUS_M,
@@ -1283,11 +1373,13 @@
         // 1. First lock of the drive — accept immediately
         currentHighway = snapKeys;
         highwayText.textContent = currentHighway.join(' / ');
+        updateHighwayShields(getShieldRefs(currentHighway));
       } else if (currentHighway.some(h => snapKeys.includes(h))) {
         // 2. STABILITY CHECK: We are still on our currently locked highway/multiplex.
         // Update the array and UI immediately to match any changes (like dropping/adding a route).
         currentHighway = snapKeys; 
         highwayText.textContent = currentHighway.join(' / ');
+        updateHighwayShields(getShieldRefs(currentHighway));
         pendingHighway = null;
         pendingHighwayCount = 0;
       } else {
@@ -1300,13 +1392,13 @@
         // already absorbs without ever reaching this branch.
         currentHighway = snapKeys;
         highwayText.textContent = currentHighway.join(' / ');
+        updateHighwayShields(getShieldRefs(currentHighway));
         pendingHighway = null;
         pendingHighwayCount = 0;
 
         // Clear route-specific tracking so it recalculates for the new highway
         currentMilepost = null;
         lastMilepostCheck = 0;
-        shieldLoadedFor = null;
         highwayDirectionLabel = null;
       }
 
@@ -1390,15 +1482,15 @@
     currentMilepost = null;
     lastMilepostCheck = 0;
     highwayDirectionLabel = null;
-    shieldLoadedFor = null;
+    shieldGroupRefs = null;
+    shieldDirEls = {};
     messageSigns = [];
     lastMsgSignFetch = 0;
     activeSignId = null;
     lastSpokenMessage = null;
-    highwayShieldEl.style.display = 'none';
+    shieldGroupEl.innerHTML = '';
     highwayText.style.display = '';
     mmSignEl.style.display = 'none';
-    directionLabelEl.textContent = '';
     speedValueEl.textContent = '—';
     msgBannerEl.style.display = 'none';
     slotOrder.forEach(el => {
