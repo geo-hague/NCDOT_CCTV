@@ -20,7 +20,7 @@ async function snapToHighway(lat, lon) {
   const query = `
     [out:json][timeout:10];
     way(around:${SNAP_RADIUS_M},${lat},${lon})
-      [highway~"^(motorway|trunk|primary)$"];
+      [highway~"^(motorway|trunk)$"];
     out tags;
   `;
 
