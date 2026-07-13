@@ -18,6 +18,7 @@ let highwayCheckAppliedSeq = 0; // seq of the last response we actually applied;
                           // a response only gets discarded if a newer one already
                           // beat it to being applied, not just because a newer
                           // request was fired while this one was still in flight
+let overpassFailStreak = 0; // consecutive Overpass failures (network error, non-2xx, incl. 429) — drives exponential backoff so a rate-limit doesn't just get hammered again 6s later
 
 // Mile marker / NCDOT-convention direction (Eastbound/Northbound/etc, derived
 // from ascending/descending mileposts) — separate from currentDirectionLabel
