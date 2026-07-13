@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-12T10:27:55.005Z",
-  "count": 1041,
+  "updated": "2026-07-13T12:05:53.637Z",
+  "count": 1039,
   "cameras": [
     {
       "id": 4020,
@@ -4803,6 +4803,16 @@
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5554_l/index.m3u8"
     },
     {
+      "id": 5478,
+      "roadway": "US-70 BYP",
+      "direction": "Westbound",
+      "lat": 35.30412,
+      "lon": -77.81847,
+      "location": "CCTV04-US70BYP-370W_US70",
+      "county": null,
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
+    },
+    {
       "id": 5480,
       "roadway": "I-587",
       "direction": "Southbound",
@@ -4841,6 +4851,16 @@
       "location": "CCTV05-I85-213S_US158",
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5560_l/index.m3u8"
+    },
+    {
+      "id": 5484,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 36.34113,
+      "lon": -78.40745,
+      "location": "CCTV05-I85-214N_NC39",
+      "county": null,
+      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5561_l/index.m3u8"
     },
     {
       "id": 5485,
@@ -7863,16 +7883,6 @@
       "videoUrl": "https://cftse02.services.ncdot.gov:8887/chan-5943_l/index.m3u8"
     },
     {
-      "id": 5824,
-      "roadway": "I-73",
-      "direction": "Southbound",
-      "lat": 36.05048,
-      "lon": -79.91605,
-      "location": "CCTV07-I73-102S_US70",
-      "county": null,
-      "videoUrl": "https://cftse04.services.ncdot.gov:8887/chan-5944_l/index.m3u8"
-    },
-    {
       "id": 5825,
       "roadway": "I-73",
       "direction": "Northbound",
@@ -8201,16 +8211,6 @@
       "location": "CCTV07-I840-18W_HUFFINEMILL",
       "county": null,
       "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-5987_l/index.m3u8"
-    },
-    {
-      "id": 5861,
-      "roadway": "I-840",
-      "direction": "Eastbound",
-      "lat": 36.08955,
-      "lon": -79.69795,
-      "location": "CCTV07-I840-19E_US70",
-      "county": null,
-      "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-5988_l/index.m3u8"
     },
     {
       "id": 5862,
@@ -9153,16 +9153,6 @@
       "videoUrl": "https://cftse08.services.ncdot.gov:8887/chan-6105_l/index.m3u8"
     },
     {
-      "id": 5978,
-      "roadway": "US-52",
-      "direction": "Northbound",
-      "lat": 36.072183,
-      "lon": -80.2283534,
-      "location": "CCTV09-US52-107.5N_WAUGHTOWN",
-      "county": null,
-      "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6106_l/index.m3u8"
-    },
-    {
       "id": 5979,
       "roadway": "US-52",
       "direction": "Southbound",
@@ -9801,16 +9791,6 @@
       "location": "CCTV05-NC98-DURHAMRD",
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-6321_l/index.m3u8"
-    },
-    {
-      "id": 6051,
-      "roadway": "US-1",
-      "direction": "Northbound",
-      "lat": 36.01367,
-      "lon": -78.51691,
-      "location": "CCTV05-US1-SR1135",
-      "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6322_l/index.m3u8"
     },
     {
       "id": 6052,
