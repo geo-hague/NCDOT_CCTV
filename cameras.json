@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-13T12:05:53.637Z",
-  "count": 1039,
+  "updated": "2026-07-14T10:46:20.711Z",
+  "count": 1038,
   "cameras": [
     {
       "id": 4020,
@@ -1733,16 +1733,6 @@
       "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5416_l/index.m3u8"
     },
     {
-      "id": 4229,
-      "roadway": "I-240",
-      "direction": "Eastbound",
-      "lat": 35.59258,
-      "lon": -82.56377,
-      "location": "CCTV13-I240-4E_PATTON",
-      "county": null,
-      "videoUrl": "https://cfase02.services.ncdot.gov:8887/chan-5417_l/index.m3u8"
-    },
-    {
       "id": 4733,
       "roadway": "I-240",
       "direction": "Westbound",
@@ -2861,16 +2851,6 @@
       "location": "CCTV13-I240-4M_I26",
       "county": null,
       "videoUrl": "https://cfase04.services.ncdot.gov:8887/chan-5418_l/index.m3u8"
-    },
-    {
-      "id": 5126,
-      "roadway": "I-240",
-      "direction": "Southbound",
-      "lat": 35.59699,
-      "lon": -82.55947,
-      "location": "CCTV13-I240-4W_MONTFORD",
-      "county": null,
-      "videoUrl": "https://cfase05.services.ncdot.gov:8887/chan-5419_l/index.m3u8"
     },
     {
       "id": 5128,
@@ -4801,16 +4781,6 @@
       "location": "CCTV04-US70BYP-364E_PARKSTOWN",
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5554_l/index.m3u8"
-    },
-    {
-      "id": 5478,
-      "roadway": "US-70 BYP",
-      "direction": "Westbound",
-      "lat": 35.30412,
-      "lon": -77.81847,
-      "location": "CCTV04-US70BYP-370W_US70",
-      "county": null,
-      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
     },
     {
       "id": 5480,
@@ -8213,6 +8183,16 @@
       "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-5987_l/index.m3u8"
     },
     {
+      "id": 5861,
+      "roadway": "I-840",
+      "direction": "Eastbound",
+      "lat": 36.08955,
+      "lon": -79.69795,
+      "location": "CCTV07-I840-19E_US70",
+      "county": null,
+      "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-5988_l/index.m3u8"
+    },
+    {
       "id": 5862,
       "roadway": "I-285",
       "direction": "Northbound",
@@ -9151,6 +9131,16 @@
       "location": "CCTV09-US421-242N_LEWISVILLE",
       "county": null,
       "videoUrl": "https://cftse08.services.ncdot.gov:8887/chan-6105_l/index.m3u8"
+    },
+    {
+      "id": 5978,
+      "roadway": "US-52",
+      "direction": "Northbound",
+      "lat": 36.072183,
+      "lon": -80.2283534,
+      "location": "CCTV09-US52-107.5N_WAUGHTOWN",
+      "county": null,
+      "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6106_l/index.m3u8"
     },
     {
       "id": 5979,
