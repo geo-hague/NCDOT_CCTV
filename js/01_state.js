@@ -48,7 +48,9 @@ const msgBannerEl = document.getElementById('msg-sign-banner');
 const slotEls = [document.getElementById('slot-0'), document.getElementById('slot-1')];
 const debugContent = document.getElementById('debug-content');
 
+let debugState = {};
 function setDebug(obj) {
-  debugContent.textContent = JSON.stringify(obj, null, 2);
+  Object.assign(debugState, obj);
+  debugContent.textContent = JSON.stringify(debugState, null, 2);
 }
 
