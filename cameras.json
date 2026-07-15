@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-14T10:46:20.711Z",
-  "count": 1038,
+  "updated": "2026-07-15T10:49:24.964Z",
+  "count": 1042,
   "cameras": [
     {
       "id": 4020,
@@ -1723,16 +1723,6 @@
       "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-5414_l/index.m3u8"
     },
     {
-      "id": 4228,
-      "roadway": "I-240",
-      "direction": "Eastbound",
-      "lat": 35.58917,
-      "lon": -82.57924,
-      "location": "CCTV13-I240-3E_I26",
-      "county": null,
-      "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5416_l/index.m3u8"
-    },
-    {
       "id": 4733,
       "roadway": "I-240",
       "direction": "Westbound",
@@ -3034,7 +3024,7 @@
     },
     {
       "id": 5287,
-      "roadway": "US-421",
+      "roadway": "Other",
       "direction": "Westbound",
       "lat": 36.55299,
       "lon": -80.74247,
@@ -5943,6 +5933,26 @@
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5676_l/index.m3u8"
     },
     {
+      "id": 5599,
+      "roadway": "I-40",
+      "direction": "Southbound",
+      "lat": 35.75666,
+      "lon": -78.7184,
+      "location": "CCTV05-I40-294W",
+      "county": null,
+      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5677_l/index.m3u8"
+    },
+    {
+      "id": 5600,
+      "roadway": "I-40",
+      "direction": "Eastbound",
+      "lat": 35.75163,
+      "lon": -78.69455,
+      "location": "CCTV05-I40-295E_TRAILWOOD",
+      "county": null,
+      "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5678_l/index.m3u8"
+    },
+    {
       "id": 5601,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -7533,6 +7543,16 @@
       "videoUrl": "https://cftse04.services.ncdot.gov:8887/chan-5893_l/index.m3u8"
     },
     {
+      "id": 5782,
+      "roadway": "US-421",
+      "direction": "Northbound",
+      "lat": 36.10288,
+      "lon": -80.0282,
+      "location": "CCTV07-US421-220N",
+      "county": null,
+      "videoUrl": "https://cftse05.services.ncdot.gov:8887/chan-5894_l/index.m3u8"
+    },
+    {
       "id": 5783,
       "roadway": "NC-68",
       "direction": "Southbound",
@@ -8901,6 +8921,26 @@
       "location": "CCTV09-US29-NC152",
       "county": null,
       "videoUrl": "https://cftse04.services.ncdot.gov:8887/chan-6077_l/index.m3u8"
+    },
+    {
+      "id": 5950,
+      "roadway": "US-421",
+      "direction": "Southbound",
+      "lat": 36.10807,
+      "lon": -80.05457,
+      "location": "CCTV09-US421-221.5S",
+      "county": null,
+      "videoUrl": "https://cftse05.services.ncdot.gov:8887/chan-6078_l/index.m3u8"
+    },
+    {
+      "id": 5951,
+      "roadway": "US-421",
+      "direction": "Northbound",
+      "lat": 36.10679,
+      "lon": -80.04573,
+      "location": "CCTV09-US421-221N_MACYGROVE",
+      "county": null,
+      "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6079_l/index.m3u8"
     },
     {
       "id": 5952,
