@@ -62,9 +62,21 @@ function normalizeHighwayName(raw) {
 
 // ---------- Load static camera list ----------
 async function loadCameras() {
-  const resp = await fetch(CAMERAS_URL);
-  const data = await resp.json();
-  allCameras = data.cameras || [];
-  console.log(`Loaded ${allCameras.length} cameras.`);
+  try {
+    const resp = await fetch(CAMERAS_URL);
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    allCameras = data.cameras || [];
+    console.log(`Loaded ${allCameras.length} cameras.`);
+  } catch (err) {
+    // Camera load failing (CORS block, network error, endpoint down, etc.)
+    // must NOT stop the rest of the app from starting — init() awaits this
+    // function, so an uncaught throw here would silently kill GPS watching
+    // and the simulation button along with it. Fail loud in the debug
+    // panel instead, and keep going with an empty camera list.
+    allCameras = [];
+    setDebug({ camerasLoadError: err.message });
+    console.error('Failed to load NC cameras:', err);
+  }
 }
 
