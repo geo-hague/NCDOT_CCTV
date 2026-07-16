@@ -26,10 +26,21 @@ async function fetchMessageSignsIfNeeded() {
 // is westbound. Only used as a fallback — DirectionOfTravel is trusted
 // whenever it actually says something. Only Name is checked — other fields
 // like Id can also contain "DMS" without actually encoding direction.
+//
+// Also handles I-485's "Inner"/"Outer" convention: confirmed names end in
+// a trailing I or O (e.g. an I-485 sign ending "...66O" for Outer), same
+// trailing-letter pattern as N/S/E/W just with different letters. This is
+// naturally safe against false matches on other highways' signs even
+// though "I"/"O" are common letters: the trailing-letter regex only fires
+// as a fallback when DirectionOfTravel doesn't already say something
+// useful, and its result is only ever accepted if it equals
+// highwayDirectionLabel — which can only BE "Inner"/"Outer" when we're
+// actually locked onto I-485 in the first place, and the caller
+// separately requires the sign's Roadway to match our currentHighway too.
 function directionFromSignId(s) {
-  const map = { N: 'Northbound', S: 'Southbound', E: 'Eastbound', W: 'Westbound' };
+  const map = { N: 'Northbound', S: 'Southbound', E: 'Eastbound', W: 'Westbound', I: 'Inner', O: 'Outer' };
   if (typeof s.Name !== 'string') return null;
-  const m = /([NSEW])\s*[)\]]*\s*$/i.exec(s.Name.trim());
+  const m = /([NSEWIO])\s*[)\]]*\s*$/i.exec(s.Name.trim());
   return m ? map[m[1].toUpperCase()] : null;
 }
 

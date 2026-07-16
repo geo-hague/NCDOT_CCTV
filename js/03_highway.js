@@ -372,23 +372,55 @@ async function updateMilepostAndDirection(lat, lon) {
   for (const ref of tryRefs) {
     const parsedForRef = parseHighwayRef(ref);
     if (!parsedForRef) continue;
-    const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
     const routeCandidates = withMeta.filter(f => f.mp != null && routeNameMatches(f.routeName, parsedForRef));
     if (!routeCandidates.length) continue;
 
-    // Reject opposite-carriageway markers whenever we know our direction and
-    // the marker declares its own. Markers with no RouteDirection attribute
-    // are kept as a fallback pool only if nothing direction-matches.
-    let candidates = routeCandidates;
-    const dirGuess = bearingDirection || highwayDirectionLabel;
-    if (dirGuess) {
-      const sameDirection = routeCandidates.filter(f => f.direction === dirGuess);
-      if (sameDirection.length) candidates = sameDirection;
-      else candidates = routeCandidates.filter(f => !f.direction);
+    const isLoop = LOOP_HIGHWAYS.includes(ref);
+    let candidates;
+    let resolvedDirection; // what becomes highwayDirectionLabel for this match
+
+    if (isLoop) {
+      // Loop highways don't have a fixed compass direction — you head
+      // every cardinal direction at different points around the loop, so
+      // bearing-derived "Northbound"/etc. is meaningless here. NCDOT tags
+      // each marker's carriageway directly as "Inner"/"Outer" instead, but
+      // (confirmed) Inner and Outer signs sit at the SAME physical point
+      // in the median rather than on separated carriageways — so unlike a
+      // normal divided highway, distance can't tell us which one we're on;
+      // both are always roughly equidistant. What DOES work: I-485's
+      // mileposts are defined to increase clockwise (confirmed: mile 0 is
+      // at the I-77/US-21 interchange, numbering runs clockwise), and
+      // Inner = clockwise, Outer = counterclockwise — so whether the
+      // milepost is ascending or descending along our actual direction of
+      // travel tells us Inner vs Outer directly. That's resolved below via
+      // the same single-poll ahead/behind bearing-projection technique
+      // already used for the odd/even override on regular highways, just
+      // with a different mapping (ascending=Inner, descending=Outer
+      // instead of odd/even-based cardinal directions).
+      //
+      // Since Inner/Outer signs at a given point are co-located and (per
+      // NCDOT convention) should show the SAME mile number either way,
+      // pooling every candidate regardless of its direction tag is safe
+      // for the milepost VALUE — direction is resolved separately below.
+      candidates = routeCandidates;
+      resolvedDirection = null; // deliberately not set here — see the ascending/descending block below
+    } else {
+      const bearingDirection = bearingToNcdotDirection(lastStableBearing, parsedForRef);
+      candidates = routeCandidates;
+      // Reject opposite-carriageway markers whenever we know our direction
+      // and the marker declares its own. Markers with no RouteDirection
+      // attribute are kept as a fallback pool only if nothing direction-matches.
+      const dirGuess = bearingDirection || highwayDirectionLabel;
+      if (dirGuess) {
+        const sameDirection = routeCandidates.filter(f => f.direction === dirGuess);
+        if (sameDirection.length) candidates = sameDirection;
+        else candidates = routeCandidates.filter(f => !f.direction);
+      }
+      resolvedDirection = bearingDirection;
     }
     if (!candidates.length) continue;
 
-    matched = { ref, parsedForRef, bearingDirection, candidates };
+    matched = { ref, parsedForRef, resolvedDirection, candidates, isLoop };
     break;
   }
 
@@ -399,7 +431,11 @@ async function updateMilepostAndDirection(lat, lon) {
 
   // Bearing not stable yet (e.g. right after GPS lock) — fall back to
   // whatever direction we last had, rather than guessing from distance.
-  highwayDirectionLabel = matched.bearingDirection || highwayDirectionLabel;
+  // For loop highways, matched.resolvedDirection is always null (direction
+  // there is resolved entirely by the ascending/descending check further
+  // below, not here), so this line is a no-op that just preserves
+  // whatever Inner/Outer value was already known from a previous poll.
+  highwayDirectionLabel = matched.resolvedDirection || highwayDirectionLabel;
 
   const candidates = matched.candidates;
   candidates.sort((a, b) => a.dist - b.dist);
@@ -425,16 +461,21 @@ async function updateMilepostAndDirection(lat, lon) {
   // their MP values directly. No need to wait across multiple polls for
   // this, unlike a naive "compare this reading to the last one" approach.
   //
-  // This matters because some highway segments physically curve away from
-  // their nominal compass direction — e.g. I-85 between Gastonia and
-  // Charlotte is signed "northbound" the whole way, but the road there
-  // runs east-southeast, which a bearing-only check reads as southbound.
-  // Mile markers always increase in the highway's true SIGNED direction
-  // regardless of local road geometry, so once we can tell which marker is
-  // ahead vs behind, this is authoritative: odd-numbered routes run
+  // For regular highways, this matters because some segments physically
+  // curve away from their nominal compass direction — e.g. I-85 between
+  // Gastonia and Charlotte is signed "northbound" the whole way, but the
+  // road there runs east-southeast, which a bearing-only check reads as
+  // southbound. Mile markers always increase in the highway's true SIGNED
+  // direction regardless of local road geometry: odd-numbered routes run
   // nominally north-south (ascending = Northbound, descending =
   // Southbound); even-numbered ones run nominally east-west (ascending =
   // Eastbound, descending = Westbound).
+  //
+  // For loop highways (I-485), this is the ONLY way direction gets
+  // resolved at all — there's no fallback bearing-derived guess to
+  // overwrite, since a loop has no fixed compass direction. Confirmed
+  // NCDOT convention: mileposts increase clockwise, Inner = clockwise, so
+  // ascending = Inner, descending = Outer.
   //
   // Uses whatever bearing estimate we have, even a not-yet-"stable"
   // (unconfirmed) one — this is a one-shot direction check, not the
@@ -453,9 +494,11 @@ async function updateMilepostAndDirection(lat, lon) {
     const behind = withProjection.filter(c => c.proj <= 0).sort((a, b) => b.proj - a.proj)[0];
     if (ahead && behind && ahead.mp !== behind.mp) {
       const ascending = ahead.mp > behind.mp;
-      highwayDirectionLabel = matched.parsedForRef.isEven
-        ? (ascending ? 'Eastbound' : 'Westbound')
-        : (ascending ? 'Northbound' : 'Southbound');
+      highwayDirectionLabel = matched.isLoop
+        ? (ascending ? 'Inner' : 'Outer')
+        : (matched.parsedForRef.isEven
+            ? (ascending ? 'Eastbound' : 'Westbound')
+            : (ascending ? 'Northbound' : 'Southbound'));
     }
   }
 

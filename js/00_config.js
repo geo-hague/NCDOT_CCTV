@@ -10,6 +10,14 @@ const BEARING_CONFIRM_COUNT = 2;   // consecutive disagreeing samples needed to 
 const HIGHWAY_RECHECK_MS = 6000;   // re-run highway snap at most this often (base rate — backs off on repeated failures, see overpassFailStreak in 01_state.js)
 const HIGHWAY_RECHECK_MAX_MS = 90000; // cap for the exponential backoff below, so we never go longer than 90s between attempts even during a sustained outage/rate-limit
 const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before switching displayed highway
+// Highways where mile markers use a carriageway label ("Inner"/"Outer")
+// instead of a compass direction — currently just I-485 (Charlotte's
+// full-loop beltway). Bearing-derived direction is actively wrong on a
+// loop (you head every cardinal direction at different points around it),
+// so these get special-cased in updateMilepostAndDirection() in
+// 03_highway.js to trust the mile marker service's own Inner/Outer field
+// instead of deriving anything from bearing.
+const LOOP_HIGHWAYS = ['I-485'];
 const MAX_SEARCH_DIST_M = 24140.2; // ~15 miles — cameras farther than this on your highway are ignored
 const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
                                     // "nearest"/"next" camera, counting down through negative
