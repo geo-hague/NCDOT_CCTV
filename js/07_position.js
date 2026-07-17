@@ -21,6 +21,19 @@ async function handlePosition(lat, lon, source) {
   handlePositionBusy = true;
   try {
     await handlePositionInner(lat, lon, source);
+  } catch (err) {
+    // Surface the error into the debug panel, not just the console. A
+    // throw anywhere inside handlePositionInner() silently kills
+    // everything downstream of it (cameras, mile markers, direction) while
+    // leaving earlier debug keys sitting there looking fine — which is
+    // exactly the failure mode that made this hard to pin down. If
+    // handlePositionError shows up in the panel, its message and stack
+    // name the real culprit directly.
+    setDebug({
+      handlePositionError: err && err.message ? err.message : String(err),
+      handlePositionStack: err && err.stack ? String(err.stack).split('\n').slice(0, 4).join(' | ') : null,
+    });
+    console.error('handlePosition failed:', err);
   } finally {
     handlePositionBusy = false;
   }

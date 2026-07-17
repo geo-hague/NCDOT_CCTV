@@ -19,6 +19,15 @@ const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before s
 // instead of deriving anything from bearing.
 const LOOP_HIGHWAYS = ['I-485'];
 const MAX_SEARCH_DIST_M = 32186.9; // 20 miles — cameras farther than this on your highway are ignored
+const SECONDARY_REF_RANGE_M = 804.672; // 0.5 miles — when multiple routes are concurrent
+                                    // (e.g. locked to ["I-26","US-25","US-74"]), only the
+                                    // PRIMARY ref gets the full search radius above. Secondary
+                                    // refs are capped to this much tighter window, since a real
+                                    // concurrency is a short physical overlap, not a long shared
+                                    // stretch — without this, a camera tagged e.g. "US-25" miles
+                                    // away on a DIVERGED parallel alignment (same route number,
+                                    // different road once the concurrency ends) would incorrectly
+                                    // show up just because that number is part of the current lock.
 const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
                                     // "nearest"/"next" camera, counting down through negative
                                     // distance, until it's this far behind you
