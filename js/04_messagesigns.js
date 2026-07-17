@@ -138,7 +138,12 @@ let msgBrowseIndex = 0;
 
 function enterMsgBrowseIfNeeded() {
   if (msgBrowseActive || !lastKnownPos) return false;
-  const list = getScoredMessageSigns(lastKnownPos.lat, lastKnownPos.lon, -MSG_SIGN_RANGE_M, MSG_SIGN_RANGE_M);
+  // Uses BROWSE_RANGE_M (same ~50mi range camera browsing uses) rather
+  // than the tighter MSG_SIGN_RANGE_M live-detection radius — browsing
+  // should be able to scan as far ahead as camera browsing does; live
+  // auto-detection stays at its original tighter range so a random sign
+  // 50 miles out doesn't trigger the live banner/speech.
+  const list = getScoredMessageSigns(lastKnownPos.lat, lastKnownPos.lon, -BROWSE_RANGE_M, BROWSE_RANGE_M);
   if (!list.length) return false;
   // Start browsing from whichever sign is currently closest to your actual
   // position, so the first tap moves logically forward/back from where
@@ -172,23 +177,25 @@ function exitMsgBrowse() {
   if (lastKnownPos) updateMessageBanner(lastKnownPos.lat, lastKnownPos.lon);
 }
 
-// Shows/hides the small ◀ N/M ▶ controls row and updates its state. Kept
-// deliberately minimal (mobile real estate) — hidden entirely unless
-// there's more than one sign to actually page between, so it adds zero
-// footprint on quiet stretches of highway.
-function renderMessageBrowseControls(totalCount, currentIndex) {
+// Shows/hides the small ◀ Closest ▶ controls row. Kept deliberately
+// minimal (mobile real estate) — hidden entirely unless there's at least
+// one sign to browse to, so it adds zero footprint on quiet stretches of
+// highway. The middle button is a static "Closest" label (not a counter —
+// a bare N/M number didn't mean anything at a glance) that returns to live
+// tracking, matching the camera scan bar's "Closest Cam" button.
+function renderMessageBrowseControls(hasBrowsableSigns) {
   const controls = document.getElementById('msg-scan-controls');
   if (!controls) return; // markup not present — degrade silently rather than throw
   const counter = document.getElementById('msg-scan-counter-btn');
   const behindBtn = document.getElementById('msg-scan-behind-btn');
   const aheadBtn = document.getElementById('msg-scan-ahead-btn');
 
-  if (totalCount <= 1) {
+  if (!hasBrowsableSigns && !msgBrowseActive) {
     controls.style.display = 'none';
     return;
   }
   controls.style.display = '';
-  counter.textContent = `${Math.max(currentIndex, 0) + 1}/${totalCount}`;
+  counter.textContent = 'Closest';
   counter.classList.toggle('active', msgBrowseActive);
   if (msgBrowseActive) {
     behindBtn.disabled = msgBrowseIndex <= 0;
@@ -220,21 +227,20 @@ async function updateMessageBanner(lat, lon) {
   // the existing live-message display keeps working either way.
   const contentEl = document.getElementById('msg-banner-content') || msgBannerEl;
 
-  let active, totalCount, currentIndex, isLive;
+  let active, isLive, hasBrowsableSigns;
   if (msgBrowseActive) {
     active = msgBrowseList[msgBrowseIndex] || null;
-    totalCount = msgBrowseList.length;
-    currentIndex = msgBrowseIndex;
     isLive = false;
+    hasBrowsableSigns = msgBrowseList.length > 0;
   } else {
     active = pickActiveMessageSign(lat, lon);
-    const wideList = getScoredMessageSigns(lat, lon, -MSG_SIGN_RANGE_M, MSG_SIGN_RANGE_M);
-    totalCount = wideList.length;
-    currentIndex = active ? wideList.findIndex(x => x.sign.Id === active.sign.Id) : -1;
     isLive = true;
+    // Same wide BROWSE_RANGE_M used to populate browsing, just to decide
+    // whether the arrows are worth showing at all right now.
+    hasBrowsableSigns = getScoredMessageSigns(lat, lon, -BROWSE_RANGE_M, BROWSE_RANGE_M).length > 0;
   }
 
-  renderMessageBrowseControls(totalCount, currentIndex);
+  renderMessageBrowseControls(hasBrowsableSigns);
 
   if (!active) {
     msgBannerEl.style.display = 'none';
@@ -250,7 +256,7 @@ async function updateMessageBanner(lat, lon) {
   meta.className = 'msg-meta';
   meta.textContent = isLive
     ? `${formatDistance(Math.max(0, active.dist))} ahead`
-    : `${formatDistance(Math.abs(active.dist))} ${active.dist >= 0 ? 'ahead' : 'behind'} — browsing`;
+    : `${formatDistance(Math.abs(active.dist))} ${active.dist >= 0 ? 'ahead' : 'behind'}`;
   contentEl.appendChild(main);
   contentEl.appendChild(meta);
   msgBannerEl.style.display = 'block';
