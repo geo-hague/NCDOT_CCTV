@@ -3,8 +3,30 @@
 // shares top-level `let`/`const` scope with the other js/*.js files.
 
 // ---------- Main position handling (shared by real GPS and simulator) ----------
-// ---------- Main position handling (shared by real GPS and simulator) ----------
+let handlePositionBusy = false; // guards against overlapping calls — see handlePosition() below
+
 async function handlePosition(lat, lon, source) {
+  // A slow Overpass response (the awaits below) combined with the sim's
+  // tick interval — which fires on schedule regardless of whether the
+  // previous handlePosition() call has finished — can let two calls run
+  // concurrently. Without this guard, a newer call could read
+  // currentHighway (or write its own setDebug snapshot) at a moment the
+  // older, still-in-flight call hasn't finished updating it yet, which is
+  // exactly what produced contradictory debug output (a stale "highway"
+  // value sitting next to a fresh "locked" one) and cameras/mile markers
+  // intermittently coming up empty. Simply skipping the newer call is
+  // safe — position updates happen frequently, so dropping one is
+  // harmless, unlike corrupting shared state via an interleaved read/write.
+  if (handlePositionBusy) return;
+  handlePositionBusy = true;
+  try {
+    await handlePositionInner(lat, lon, source);
+  } finally {
+    handlePositionBusy = false;
+  }
+}
+
+async function handlePositionInner(lat, lon, source) {
   lastKnownPos = { lat, lon };
 
   gpsDot.className = 'dot live';
@@ -141,6 +163,7 @@ function startSimulation() {
 
   // Reset tracking state so the sim starts clean
   clearDebug();
+  handlePositionBusy = false;
   posHistory = [];
   lastStableBearing = null;
   pendingBearing = null;
