@@ -18,7 +18,7 @@ const HIGHWAY_CONFIRM_COUNT = 2;   // consecutive matching reads needed before s
 // 03_highway.js to trust the mile marker service's own Inner/Outer field
 // instead of deriving anything from bearing.
 const LOOP_HIGHWAYS = ['I-485'];
-const MAX_SEARCH_DIST_M = 24140.2; // ~15 miles — cameras farther than this on your highway are ignored
+const MAX_SEARCH_DIST_M = 32186.9; // 20 miles — cameras farther than this on your highway are ignored
 const SWAP_BUFFER_M = 402.336;     // 1320 ft (1/4 mile) — a camera stays the displayed
                                     // "nearest"/"next" camera, counting down through negative
                                     // distance, until it's this far behind you
@@ -49,7 +49,7 @@ const COMMONS_FILEPATH = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 // tier, no server to maintain) and messagesigns-worker/README.md for setup.
 // Point this at your deployed worker URL once it's live.
 const MSG_SIGN_PROXY_URL = 'https://ncdotdms.m-c-hunt429.workers.dev/';
-const MSG_SIGN_RANGE_M = 16093.4;   // 10 miles
+const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles — matches MAX_SEARCH_DIST_M (cameras)
 const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                      // can't silently change message before we reach it
 
