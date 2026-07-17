@@ -140,6 +140,7 @@ function startSimulation() {
   }
 
   // Reset tracking state so the sim starts clean
+  clearDebug();
   posHistory = [];
   lastStableBearing = null;
   pendingBearing = null;
