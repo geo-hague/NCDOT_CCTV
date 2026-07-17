@@ -44,22 +44,58 @@ function directionFromSignId(s) {
   return m ? map[m[1].toUpperCase()] : null;
 }
 
+// Extracted from the old inline dirMatches()/roadway-check so both the
+// live "closest sign" pick and manual ahead/behind browsing use the exact
+// same eligibility rules — otherwise browsing could show a sign live
+// detection would never have picked (or vice versa), which would be a
+// confusing inconsistency.
+function messageSignDirMatches(s) {
+  if (!highwayDirectionLabel) return false; // our own direction isn't known yet — can't confirm
+                                              // a directional sign applies to us, so don't show it
+  const signDir = s.DirectionOfTravel;
+  if (signDir && signDir !== 'None' && signDir !== 'Unknown') {
+    if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
+    return signDir === highwayDirectionLabel;
+  }
+  // DirectionOfTravel is missing/None/Unknown — fall back to the sign ID's
+  // trailing letter instead of refusing to show the sign at all.
+  const inferred = directionFromSignId(s);
+  return inferred ? inferred === highwayDirectionLabel : false;
+}
+
+function messageSignRoadwayMatches(s) {
+  return currentHighway.some(h => (s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
+    || (s.Roadway || '').toUpperCase().includes(h));
+}
+
+// Direction+roadway-filtered, signed-distance-scored, sorted-nearest-first
+// list of active (non-blank) message signs — shared basis for both the
+// live "closest" pick and manual browsing. minDist/maxDist let callers use
+// a tight window (live: a small negative buffer so a sign doesn't vanish
+// the instant you pass it) or the full symmetric range (browsing: can page
+// backward the same distance it can page forward), mirroring
+// getScoredCameras() in 05_cameras.js.
+function getScoredMessageSigns(lat, lon, minDist, maxDist) {
+  if (!messageSigns.length || !currentHighway || !currentHighway.length || !highwayDirectionLabel) return [];
+
+  return messageSigns
+    .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
+    .filter(messageSignDirMatches)
+    .filter(messageSignRoadwayMatches)
+    .map(s => {
+      const straightDist = haversineMeters(lat, lon, s.Latitude, s.Longitude);
+      const bearingToSign = bearingDeg(lat, lon, s.Latitude, s.Longitude);
+      const dist = lastStableBearing === null
+        ? straightDist
+        : straightDist * Math.cos(toRad(angleDiff(bearingToSign, lastStableBearing)));
+      return { sign: s, dist };
+    })
+    .filter(c => c.dist >= minDist && c.dist <= maxDist)
+    .sort((a, b) => a.dist - b.dist);
+}
+
 function pickActiveMessageSign(lat, lon) {
   if (!messageSigns.length || !currentHighway || !currentHighway.length) return null;
-
-  const dirMatches = (s) => {
-    if (!highwayDirectionLabel) return false; // our own direction isn't known yet — can't confirm
-                                                // a directional sign applies to us, so don't show it
-    const signDir = s.DirectionOfTravel;
-    if (signDir && signDir !== 'None' && signDir !== 'Unknown') {
-      if (signDir === 'All Directions' || signDir === 'Both Directions') return true;
-      return signDir === highwayDirectionLabel;
-    }
-    // DirectionOfTravel is missing/None/Unknown — fall back to the sign ID's
-    // trailing N/S/E/W letter instead of refusing to show the sign at all.
-    const inferred = directionFromSignId(s);
-    return inferred ? inferred === highwayDirectionLabel : false;
-  };
 
   if (highwayDirectionLabel) {
     const nearbyForDebug = messageSigns
@@ -73,9 +109,8 @@ function pickActiveMessageSign(lat, lon) {
         Roadway: x.s.Roadway,
         DirectionOfTravel: x.s.DirectionOfTravel,
         inferredDirection: directionFromSignId(x.s),
-        dirMatched: dirMatches(x.s),
-        roadwayMatched: currentHighway.some(h => (x.s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
-          || (x.s.Roadway || '').toUpperCase().includes(h)),
+        dirMatched: messageSignDirMatches(x.s),
+        roadwayMatched: messageSignRoadwayMatches(x.s),
         distMi: Math.round(x.dist / 160.934) / 10,
       }));
     if (nearbyForDebug.length) {
@@ -83,23 +118,85 @@ function pickActiveMessageSign(lat, lon) {
     }
   }
 
-  const candidates = messageSigns
-    .filter(s => s.Messages && s.Messages.length && s.Messages[0] !== 'NO_MESSAGE')
-    .filter(s => dirMatches(s))
-    .filter(s => currentHighway.some(h => (s.Roadway || '').toUpperCase().includes(h.replace('-', ''))
-      || (s.Roadway || '').toUpperCase().includes(h)))
-    .map(s => {
-      const straightDist = haversineMeters(lat, lon, s.Latitude, s.Longitude);
-      const bearingToSign = bearingDeg(lat, lon, s.Latitude, s.Longitude);
-      const dist = lastStableBearing === null
-        ? straightDist
-        : straightDist * Math.cos(toRad(angleDiff(bearingToSign, lastStableBearing)));
-      return { sign: s, dist };
-    })
-    .filter(c => c.dist >= -SWAP_BUFFER_M && c.dist <= MSG_SIGN_RANGE_M);
+  const scored = getScoredMessageSigns(lat, lon, -SWAP_BUFFER_M, MSG_SIGN_RANGE_M);
+  return scored.length ? scored[0] : null;
+}
 
-  candidates.sort((a, b) => a.dist - b.dist);
-  return candidates.length ? candidates[0] : null;
+// ---------- Manual ahead/behind DMS browsing ----------
+// Lets you page through message signs further out than the live nearest
+// match, without changing what the live auto-detected banner (and its
+// one-time speech) shows — mirrors the camera browse pattern in
+// 06_browse.js. Snapshots the sign list at the moment you first press a
+// button (using your last known position), then Ahead/Behind just walk an
+// index through that snapshot. Only ever includes signs with an active
+// message (per your call — a page full of "no message" signs would just
+// be clutter, not useful information) and stays direction-filtered, same
+// eligibility rules as live detection via getScoredMessageSigns() above.
+let msgBrowseActive = false;
+let msgBrowseList = [];
+let msgBrowseIndex = 0;
+
+function enterMsgBrowseIfNeeded() {
+  if (msgBrowseActive || !lastKnownPos) return false;
+  const list = getScoredMessageSigns(lastKnownPos.lat, lastKnownPos.lon, -MSG_SIGN_RANGE_M, MSG_SIGN_RANGE_M);
+  if (!list.length) return false;
+  // Start browsing from whichever sign is currently closest to your actual
+  // position, so the first tap moves logically forward/back from where
+  // you already are rather than jumping to the list's edge.
+  let closestIdx = 0, closestAbs = Infinity;
+  list.forEach((s, i) => { const a = Math.abs(s.dist); if (a < closestAbs) { closestAbs = a; closestIdx = i; } });
+  msgBrowseList = list;
+  msgBrowseIndex = closestIdx;
+  msgBrowseActive = true;
+  return true;
+}
+
+function moveMsgAhead() {
+  const justEntered = enterMsgBrowseIfNeeded();
+  if (!msgBrowseActive) return;
+  if (!justEntered) msgBrowseIndex = Math.min(msgBrowseIndex + 1, Math.max(0, msgBrowseList.length - 1));
+  updateMessageBanner(lastKnownPos.lat, lastKnownPos.lon);
+}
+
+function moveMsgBehind() {
+  const justEntered = enterMsgBrowseIfNeeded();
+  if (!msgBrowseActive) return;
+  if (!justEntered) msgBrowseIndex = Math.max(msgBrowseIndex - 1, 0);
+  updateMessageBanner(lastKnownPos.lat, lastKnownPos.lon);
+}
+
+function exitMsgBrowse() {
+  msgBrowseActive = false;
+  msgBrowseList = [];
+  msgBrowseIndex = 0;
+  if (lastKnownPos) updateMessageBanner(lastKnownPos.lat, lastKnownPos.lon);
+}
+
+// Shows/hides the small ◀ N/M ▶ controls row and updates its state. Kept
+// deliberately minimal (mobile real estate) — hidden entirely unless
+// there's more than one sign to actually page between, so it adds zero
+// footprint on quiet stretches of highway.
+function renderMessageBrowseControls(totalCount, currentIndex) {
+  const controls = document.getElementById('msg-scan-controls');
+  if (!controls) return; // markup not present — degrade silently rather than throw
+  const counter = document.getElementById('msg-scan-counter-btn');
+  const behindBtn = document.getElementById('msg-scan-behind-btn');
+  const aheadBtn = document.getElementById('msg-scan-ahead-btn');
+
+  if (totalCount <= 1) {
+    controls.style.display = 'none';
+    return;
+  }
+  controls.style.display = '';
+  counter.textContent = `${Math.max(currentIndex, 0) + 1}/${totalCount}`;
+  counter.classList.toggle('active', msgBrowseActive);
+  if (msgBrowseActive) {
+    behindBtn.disabled = msgBrowseIndex <= 0;
+    aheadBtn.disabled = msgBrowseIndex >= msgBrowseList.length - 1;
+  } else {
+    behindBtn.disabled = false; // live mode's arrows always just START browsing from here
+    aheadBtn.disabled = false;
+  }
 }
 
 function speakMessage(text) {
@@ -116,30 +213,56 @@ function speakMessage(text) {
 
 async function updateMessageBanner(lat, lon) {
   await fetchMessageSignsIfNeeded();
-  const active = pickActiveMessageSign(lat, lon);
+
+  // Falls back to writing straight into msgBannerEl if the new
+  // #msg-banner-content wrapper hasn't been added to index.html yet —
+  // browsing controls just won't appear until that markup's in place, but
+  // the existing live-message display keeps working either way.
+  const contentEl = document.getElementById('msg-banner-content') || msgBannerEl;
+
+  let active, totalCount, currentIndex, isLive;
+  if (msgBrowseActive) {
+    active = msgBrowseList[msgBrowseIndex] || null;
+    totalCount = msgBrowseList.length;
+    currentIndex = msgBrowseIndex;
+    isLive = false;
+  } else {
+    active = pickActiveMessageSign(lat, lon);
+    const wideList = getScoredMessageSigns(lat, lon, -MSG_SIGN_RANGE_M, MSG_SIGN_RANGE_M);
+    totalCount = wideList.length;
+    currentIndex = active ? wideList.findIndex(x => x.sign.Id === active.sign.Id) : -1;
+    isLive = true;
+  }
+
+  renderMessageBrowseControls(totalCount, currentIndex);
 
   if (!active) {
     msgBannerEl.style.display = 'none';
-    activeSignId = null;
+    if (isLive) activeSignId = null;
     return;
   }
 
   const msgText = active.sign.Messages.join(' • ');
-  msgBannerEl.innerHTML = '';
+  contentEl.innerHTML = '';
   const main = document.createElement('div');
   main.textContent = msgText;
   const meta = document.createElement('span');
   meta.className = 'msg-meta';
-  meta.textContent = `${formatDistance(Math.max(0, active.dist))} ahead`;
-  msgBannerEl.appendChild(main);
-  msgBannerEl.appendChild(meta);
+  meta.textContent = isLive
+    ? `${formatDistance(Math.max(0, active.dist))} ahead`
+    : `${formatDistance(Math.abs(active.dist))} ${active.dist >= 0 ? 'ahead' : 'behind'} — browsing`;
+  contentEl.appendChild(main);
+  contentEl.appendChild(meta);
   msgBannerEl.style.display = 'block';
 
-  // Speak only when this is a genuinely new sign/message, not every poll.
-  const signKey = active.sign.Id + '::' + msgText;
-  if (signKey !== activeSignId && msgText !== lastSpokenMessage) {
-    speakMessage(msgText);
-    lastSpokenMessage = msgText;
+  // Speak only for the live, auto-detected sign — never while manually
+  // browsing — and only when it's a genuinely new sign/message, not every poll.
+  if (isLive) {
+    const signKey = active.sign.Id + '::' + msgText;
+    if (signKey !== activeSignId && msgText !== lastSpokenMessage) {
+      speakMessage(msgText);
+      lastSpokenMessage = msgText;
+    }
+    activeSignId = signKey;
   }
-  activeSignId = signKey;
 }

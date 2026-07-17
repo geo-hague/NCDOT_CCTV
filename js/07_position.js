@@ -163,6 +163,9 @@ function startSimulation() {
   shieldDirEls = {};
   messageSigns = [];
   lastMsgSignFetch = 0;
+  msgBrowseActive = false;
+  msgBrowseList = [];
+  msgBrowseIndex = 0;
   activeSignId = null;
   lastSpokenMessage = null;
   shieldGroupEl.innerHTML = '';
