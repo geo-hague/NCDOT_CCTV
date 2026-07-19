@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-18T10:18:00.170Z",
-  "count": 1028,
+  "updated": "2026-07-19T10:27:41.919Z",
+  "count": 1030,
   "cameras": [
     {
       "id": 4020,
@@ -1743,6 +1743,16 @@
       "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5416_l/index.m3u8"
     },
     {
+      "id": 4229,
+      "roadway": "I-240",
+      "direction": "Eastbound",
+      "lat": 35.59258,
+      "lon": -82.56377,
+      "location": "CCTV13-I240-4E_PATTON",
+      "county": null,
+      "videoUrl": "https://cfase02.services.ncdot.gov:8887/chan-5417_l/index.m3u8"
+    },
+    {
       "id": 4733,
       "roadway": "I-240",
       "direction": "Westbound",
@@ -2863,6 +2873,16 @@
       "videoUrl": "https://cfase04.services.ncdot.gov:8887/chan-5418_l/index.m3u8"
     },
     {
+      "id": 5126,
+      "roadway": "I-240",
+      "direction": "Southbound",
+      "lat": 35.59699,
+      "lon": -82.55947,
+      "location": "CCTV13-I240-4W_MONTFORD",
+      "county": null,
+      "videoUrl": "https://cfase05.services.ncdot.gov:8887/chan-5419_l/index.m3u8"
+    },
+    {
       "id": 5128,
       "roadway": "US-25",
       "direction": "Northbound",
@@ -3403,6 +3423,16 @@
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6126_l/index.m3u8"
     },
     {
+      "id": 5324,
+      "roadway": "NC-344",
+      "direction": "Eastbound",
+      "lat": 36.28144,
+      "lon": -76.22347,
+      "location": "CCTV01-NC344_PEARTREE",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8"
+    },
+    {
       "id": 5325,
       "roadway": "NC-344",
       "direction": "Eastbound",
@@ -3521,6 +3551,16 @@
       "location": "CCTV01-US17_US17Bus",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6140_l/index.m3u8"
+    },
+    {
+      "id": 5338,
+      "roadway": "US-17 BUS",
+      "direction": "Eastbound",
+      "lat": 36.29544,
+      "lon": -76.2341,
+      "location": "CCTV01-US17Bus_GRIFFIN",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6141_l/index.m3u8"
     },
     {
       "id": 5339,
@@ -4301,6 +4341,16 @@
       "location": "CCTV04-I95-141M_NC43",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8"
     },
     {
       "id": 5430,
@@ -5123,16 +5173,6 @@
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5594_l/index.m3u8"
     },
     {
-      "id": 5518,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.74707,
-      "lon": -78.89388,
-      "location": "CCTV05-NC540_US64",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5595_l/index.m3u8"
-    },
-    {
       "id": 5519,
       "roadway": "NC-540",
       "direction": "Eastbound",
@@ -5211,16 +5251,6 @@
       "location": "CCTV05-NC540-58.5E_OLIVECHAPEL",
       "county": null,
       "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5604_l/index.m3u8"
-    },
-    {
-      "id": 5528,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.74738,
-      "lon": -78.89164,
-      "location": "CCTV05-NC540-59.5W_US64",
-      "county": null,
-      "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-5605_l/index.m3u8"
     },
     {
       "id": 5529,
@@ -6151,16 +6181,6 @@
       "location": "CCTV05-I440-7W_US70",
       "county": null,
       "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-5704_l/index.m3u8"
-    },
-    {
-      "id": 5626,
-      "roadway": "Edwards Mill",
-      "direction": "Southbound",
-      "lat": 35.80734,
-      "lon": -78.72382,
-      "location": "CCTV05-EDWARDSMILL_WADE",
-      "county": null,
-      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
     },
     {
       "id": 5627,
