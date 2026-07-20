@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-19T10:27:41.919Z",
+  "updated": "2026-07-20T11:44:58.058Z",
   "count": 1030,
   "cameras": [
     {
@@ -451,16 +451,6 @@
       "location": "CCTV10-MOREHEAD_PERFORMANCE",
       "county": null,
       "videoUrl": "https://cfmse01.services.ncdot.gov:8887/chan-5183_l/index.m3u8"
-    },
-    {
-      "id": 4069,
-      "roadway": "NC-16",
-      "direction": "Southbound",
-      "lat": 35.25059,
-      "lon": -80.85729,
-      "location": "CCTV10-NC16-BEATTIESFORD",
-      "county": null,
-      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5184_l/index.m3u8"
     },
     {
       "id": 4070,
@@ -4791,6 +4781,16 @@
       "location": "CCTV04-US70BYP-364E_PARKSTOWN",
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5554_l/index.m3u8"
+    },
+    {
+      "id": 5478,
+      "roadway": "US-70 BYP",
+      "direction": "Westbound",
+      "lat": 35.30412,
+      "lon": -77.81847,
+      "location": "CCTV04-US70BYP-370W_US70",
+      "county": null,
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
     },
     {
       "id": 5480,
