@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-24T11:03:03.182Z",
-  "count": 1049,
+  "updated": "2026-07-24T17:59:44.501Z",
+  "count": 1054,
   "cameras": [
     {
       "id": 4020,
@@ -2863,6 +2863,16 @@
       "videoUrl": "https://cfase06.services.ncdot.gov:8887/chan-5371_l/index.m3u8"
     },
     {
+      "id": 5122,
+      "roadway": "I-26",
+      "direction": "Southbound",
+      "lat": 35.6156,
+      "lon": -82.57283,
+      "location": "CCTV13-I26-25W_BROADWAY",
+      "county": null,
+      "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5372_l/index.m3u8"
+    },
+    {
       "id": 5123,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -3973,6 +3983,16 @@
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5457_l/index.m3u8"
     },
     {
+      "id": 5381,
+      "roadway": "US-70",
+      "direction": "Both Directions",
+      "lat": 35.12698,
+      "lon": -77.13387,
+      "location": "CCTV02-US70-411M_NC43",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5458_l/index.m3u8"
+    },
+    {
       "id": 5382,
       "roadway": "US-70",
       "direction": "Both Directions",
@@ -4103,6 +4123,16 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5472_l/index.m3u8"
     },
     {
+      "id": 5396,
+      "roadway": "US-70",
+      "direction": "Westbound",
+      "lat": 35.26605,
+      "lon": -77.67615,
+      "location": "CCTV02-US70-380W_NC148",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
+    },
+    {
       "id": 5397,
       "roadway": "Other",
       "direction": "Both Directions",
@@ -4203,16 +4233,6 @@
       "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5485_l/index.m3u8"
     },
     {
-      "id": 5412,
-      "roadway": "I-140",
-      "direction": "Both Directions",
-      "lat": 34.25853,
-      "lon": -78.08003,
-      "location": "CCTV03-I140-5M_US74",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5489_l/index.m3u8"
-    },
-    {
       "id": 5413,
       "roadway": "I-40",
       "direction": "Eastbound",
@@ -4263,6 +4283,16 @@
       "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5496_l/index.m3u8"
     },
     {
+      "id": 5420,
+      "roadway": "I-95",
+      "direction": "Southbound",
+      "lat": 35.70265,
+      "lon": -78.04637,
+      "location": "CCTV04-I95-116S_NC42",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5497_l/index.m3u8"
+    },
+    {
       "id": 5421,
       "roadway": "I-95",
       "direction": "Southbound",
@@ -4311,6 +4341,16 @@
       "location": "CCTV04-I95-132M_WESTMOUNT",
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5503_l/index.m3u8"
+    },
+    {
+      "id": 5427,
+      "roadway": "I-95",
+      "direction": "Both Directions",
+      "lat": 35.9815,
+      "lon": -77.87695,
+      "location": "CCTV04-I95-138M_US64",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5504_l/index.m3u8"
     },
     {
       "id": 5428,
@@ -4753,6 +4793,16 @@
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5549_l/index.m3u8"
     },
     {
+      "id": 5473,
+      "roadway": "US-70 BYP",
+      "direction": "Both Directions",
+      "lat": 35.42564,
+      "lon": -77.97984,
+      "location": "CCTV04-US70BYP-356M_US117",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5550_l/index.m3u8"
+    },
+    {
       "id": 5474,
       "roadway": "US-70 BYP",
       "direction": "Westbound",
@@ -4791,6 +4841,16 @@
       "location": "CCTV04-US70BYP-364E_PARKSTOWN",
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5554_l/index.m3u8"
+    },
+    {
+      "id": 5478,
+      "roadway": "US-70 BYP",
+      "direction": "Westbound",
+      "lat": 35.30412,
+      "lon": -77.81847,
+      "location": "CCTV04-US70BYP-370W_US70",
+      "county": null,
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
     },
     {
       "id": 5480,
@@ -5231,16 +5291,6 @@
       "location": "CCTV05-NC540-56.8W_SALEM",
       "county": null,
       "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5602_l/index.m3u8"
-    },
-    {
-      "id": 5527,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.73225,
-      "lon": -78.89229,
-      "location": "CCTV05-NC540-58.5E_OLIVECHAPEL",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5604_l/index.m3u8"
     },
     {
       "id": 5529,
@@ -5913,24 +5963,14 @@
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5676_l/index.m3u8"
     },
     {
-      "id": 5600,
-      "roadway": "I-40",
-      "direction": "Eastbound",
-      "lat": 35.75163,
-      "lon": -78.69455,
-      "location": "CCTV05-I40-295E_TRAILWOOD",
-      "county": null,
-      "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5678_l/index.m3u8"
-    },
-    {
-      "id": 5601,
+      "id": 5599,
       "roadway": "I-40",
       "direction": "Southbound",
-      "lat": 35.75775,
-      "lon": -78.66476,
-      "location": "CCTV05-I40-297W_LAKEWHEELER",
+      "lat": 35.75666,
+      "lon": -78.7184,
+      "location": "CCTV05-I40-294W",
       "county": null,
-      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5679_l/index.m3u8"
+      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5677_l/index.m3u8"
     },
     {
       "id": 5602,
@@ -9031,6 +9071,16 @@
       "location": "CCTV09-US421-228S_LINVILLE",
       "county": null,
       "videoUrl": "https://cftse10.services.ncdot.gov:8887/chan-6085_l/index.m3u8"
+    },
+    {
+      "id": 5958,
+      "roadway": "US-421",
+      "direction": "Both Directions",
+      "lat": 36.106264,
+      "lon": -80.180046,
+      "location": "CCTV09-US421-229M",
+      "county": null,
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6086_l/index.m3u8"
     },
     {
       "id": 5960,
