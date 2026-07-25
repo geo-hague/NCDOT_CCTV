@@ -62,3 +62,4 @@ const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles — matches MAX_SEARCH_DIST_M (c
 const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                      // can't silently change message before we reach it
 
+const STREAM_TOKEN_PROXY_URL = 'https://ncdotcctv.m-c-hunt429.workers.dev/';
