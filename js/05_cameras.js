@@ -162,6 +162,14 @@ function hideRetryUI(el) {
   if (wrapper) wrapper.classList.remove('stalled');
 }
 
+// Attaches (and, on failure, retries/recovers) a stream for the given
+// camera into the given slot element. Cellular connections can be slow
+// enough that a manifest never arrives or segments stall entirely, so
+// this handles three layers of recovery: automatic hls.js error
+// recovery, a small number of automatic full reconnect attempts with
+// backoff, and finally a manual "tap to retry" button if all of that
+// fails — so a slow/dead camera never just sits there black forever
+// with no explanation or way to recover.
 // Turns a camera's tokenless base URL into a playable one by asking the
 // worker for a fresh ?token=... (minted per sourceId). Falls back to the
 // bare URL if anything is missing/fails.
@@ -187,14 +195,6 @@ async function resolveStreamUrl(cam) {
   }
 }
 
-// Attaches (and, on failure, retries/recovers) a stream for the given
-// camera into the given slot element. Cellular connections can be slow
-// enough that a manifest never arrives or segments stall entirely, so
-// this handles three layers of recovery: automatic hls.js error
-// recovery, a small number of automatic full reconnect attempts with
-// backoff, and finally a manual "tap to retry" button if all of that
-// fails — so a slow/dead camera never just sits there black forever
-// with no explanation or way to recover.
 function attachStream(el, cam) {
   const video = el.querySelector('video');
   setLoadingState(el, true);

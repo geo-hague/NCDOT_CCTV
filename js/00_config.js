@@ -58,8 +58,13 @@ const COMMONS_FILEPATH = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
 // tier, no server to maintain) and messagesigns-worker/README.md for setup.
 // Point this at your deployed worker URL once it's live.
 const MSG_SIGN_PROXY_URL = 'https://ncdotdms.m-c-hunt429.workers.dev/';
+
+// ---- Stream token proxy (Cloudflare Worker) ----
+// Camera .m3u8 streams now require a per-view ?token=... The browser can't call
+// the token endpoint directly (cross-origin), so this worker mints one from a
+// camera's sourceId/systemSourceId. See token-worker.js.
+const STREAM_TOKEN_PROXY_URL = 'https://ncdotcctv.m-c-hunt429.workers.dev/';
 const MSG_SIGN_RANGE_M = 32186.9;   // 20 miles — matches MAX_SEARCH_DIST_M (cameras)
 const MSG_SIGN_POLL_MS = 30000;     // re-poll signs this often so a sign 10mi out
                                      // can't silently change message before we reach it
 
-const STREAM_TOKEN_PROXY_URL = 'https://ncdotcctv.m-c-hunt429.workers.dev/';
