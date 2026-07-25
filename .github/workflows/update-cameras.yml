@@ -20,16 +20,14 @@ jobs:
         env:
           CAMERA_API_KEY: ${{ secrets.CAMERA_API_KEY }}
         run: node fetch-cameras.js
-      # fetch writes a tokenless cameras.json; immediately mint tokens back in so
-      # the site isn't left tokenless until the next mint run.
-      - name: Mint fresh tokens
+      - name: Merge credentials into cameras.json
         run: |
           if [ -f camera-auth.json ]; then
-            node mint-tokens.js
+            node merge-auth.js
           else
             echo "::warning::camera-auth.json missing — run Scrape Camera Credentials first."
           fi
-      - name: Commit cameras.json
+      - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
