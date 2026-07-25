@@ -17,7 +17,13 @@ const path = require('path');
 
 const PAGE_SIZE = 100;
 const MAX_PAGES_PER_ROADWAY = 20;
-const PER_CAMERA_TIMEOUT_MS = 8000;
+// Your original scraper waited a flat 20s per camera because DriveNC handshakes
+// are slow — the m3u8 can take 8-15s to fire. We keep that generous ceiling for
+// any camera that shows network activity, but bail early on a row that produces
+// nothing (a dead row — waiting longer won't help it), so the full run stays
+// bounded instead of taking 3-4 hours.
+const MAX_WAIT_MS = 20000;   // ceiling for slow handshakes (matches your original)
+const DEAD_ROW_MS = 5000;    // if no request fires at all by here, give up on the row
 const ROADWAY_RE = /^(I|US|NC)-/i;
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
@@ -64,7 +70,7 @@ async function run() {
       } catch (e) {}
     }
     const u = req.url();
-    if (u.includes('index.m3u8') || u.includes('manifest.m3u8') || u.includes('/stream')) {
+    if (u.includes('index.m3u8') || u.includes('manifest.m3u8') || u.includes('stream')) {
       const cM = u.match(/(chan-[0-9a-zA-Z_]+)/i);
       if (cM) chan = cM[1].toLowerCase();
     }
@@ -97,8 +103,16 @@ async function run() {
         }, i);
         if (!clicked) continue;
 
-        const deadline = Date.now() + PER_CAMERA_TIMEOUT_MS;
-        while (Date.now() < deadline && !(trio && chan)) await sleep(150);
+        // Wait up to MAX_WAIT_MS for a responsive camera; bail at DEAD_ROW_MS
+        // if nothing fired at all. Exit the instant we have both pieces.
+        const startT = Date.now();
+        let sawActivity = false;
+        while (Date.now() - startT < MAX_WAIT_MS) {
+          if (trio || chan) sawActivity = true;
+          if (trio && chan) break;
+          if (!sawActivity && Date.now() - startT > DEAD_ROW_MS) break;
+          await sleep(150);
+        }
 
         if (trio && chan) { if (!byChan[chan]) captured++; byChan[chan] = trio; }
 
