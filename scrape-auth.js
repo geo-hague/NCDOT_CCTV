@@ -1,17 +1,14 @@
 // scrape-auth.js  —  PHASE 1 (slow, runs weekly)
 // ---------------------------------------------------------------------------
-// Captures each camera's TOKEN-MINTING CREDENTIALS, not the token itself:
-//   sourceId, systemSourceId, and the per-camera UUID (the "token" field in the
-//   GetSecureTokenUriBySourceId POST). These are stable for at least a day, so
-//   we grab them rarely; mint-tokens.js uses them to mint fresh tokens fast.
+// Captures each camera's minting credentials: sourceId, systemSourceId, uuid.
+// Works exactly like the proven token scrape — everything captured SYNCHRONOUSLY
+// from request URLs/payloads, no response-body reading (that async read raced
+// the video request and captured nothing). Per click we grab:
+//   - the trio from the GetSecureTokenUriBySourceId POST payload
+//   - the chan from the m3u8 request URL
+// and pair them. Sequential (video backend refuses concurrent streams). I/US/NC.
 //
-// Pairing is robust: we read the POST body (the trio) AND the POST response
-// (the stream token it returns), then match that stream token to the m3u8 URL
-// (which carries chan + the same token). So chan is tied to the exact trio that
-// produced it — no cross-camera mixups. Sequential, one camera at a time,
-// because the video backend refuses concurrent streams. I-/US-/NC- only.
-//
-// Run:     node scrape-auth.js   (needs cameras.json present)
+// Run:     node scrape-auth.js   (needs cameras.json)
 // Output:  camera-auth.json      (chan -> { sourceId, systemSourceId, uuid })
 // ---------------------------------------------------------------------------
 
@@ -20,7 +17,7 @@ const path = require('path');
 
 const PAGE_SIZE = 100;
 const MAX_PAGES_PER_ROADWAY = 20;
-const PER_CAMERA_TIMEOUT_MS = 10000;
+const PER_CAMERA_TIMEOUT_MS = 8000;
 const ROADWAY_RE = /^(I|US|NC)-/i;
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 
@@ -55,42 +52,25 @@ async function run() {
   await page.setViewport({ width: 1280, height: 3000 });
   await page.setUserAgent(UA);
 
-  const byChan = {};
-  let pendingTrio = null;            // trio from a POST awaiting its response
-  const trioByStreamToken = {};      // streamToken -> trio
-  let lastRecorded = null;           // chan recorded on the current click
-
+  // Both captured synchronously in the request handler — no response reading.
+  let trio = null, chan = null;
   page.on('request', (req) => {
     if (req.method() === 'POST' && req.url().includes('GetSecureTokenUriBySourceId')) {
       try {
         const d = JSON.parse(req.postData() || '{}');
         if (d.sourceId && d.token) {
-          pendingTrio = { sourceId: String(d.sourceId), systemSourceId: String(d.systemSourceId || ''), uuid: String(d.token) };
+          trio = { sourceId: String(d.sourceId), systemSourceId: String(d.systemSourceId || ''), uuid: String(d.token) };
         }
       } catch (e) {}
     }
     const u = req.url();
     if (u.includes('index.m3u8') || u.includes('manifest.m3u8') || u.includes('/stream')) {
       const cM = u.match(/(chan-[0-9a-zA-Z_]+)/i);
-      const tM = u.match(/[?&]token=([0-9a-fA-F]+)/);
-      if (cM && tM) {
-        const trio = trioByStreamToken[tM[1]];
-        if (trio) { byChan[cM[1].toLowerCase()] = trio; lastRecorded = cM[1].toLowerCase(); }
-      }
+      if (cM) chan = cM[1].toLowerCase();
     }
   });
 
-  page.on('response', async (resp) => {
-    const req = resp.request();
-    if (req.method() === 'POST' && req.url().includes('GetSecureTokenUriBySourceId')) {
-      try {
-        const body = await resp.text();               // "?token=HEX"
-        const m = body.match(/token=([0-9a-fA-F]+)/);
-        if (m && pendingTrio) { trioByStreamToken[m[1]] = pendingTrio; pendingTrio = null; }
-      } catch (e) {}
-    }
-  });
-
+  const byChan = {};
   let done = 0;
   for (const roadway of roadways) {
     let rowsTotal = 0, captured = 0;
@@ -104,7 +84,7 @@ async function run() {
       rowsTotal += rows;
 
       for (let i = 0; i < rows; i++) {
-        lastRecorded = null;
+        trio = null; chan = null;
 
         const clicked = await page.evaluate((rowIndex) => {
           const r = document.querySelectorAll('table tbody tr')[rowIndex];
@@ -118,8 +98,9 @@ async function run() {
         if (!clicked) continue;
 
         const deadline = Date.now() + PER_CAMERA_TIMEOUT_MS;
-        while (Date.now() < deadline && !lastRecorded) await sleep(150);
-        if (lastRecorded) captured++;
+        while (Date.now() < deadline && !(trio && chan)) await sleep(150);
+
+        if (trio && chan) { if (!byChan[chan]) captured++; byChan[chan] = trio; }
 
         await page.evaluate(() => {
           const els = [...document.querySelectorAll('button, a, span, .close, [data-dismiss="modal"]')];
