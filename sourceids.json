@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-25T03:55:45.596Z",
-  "count": 643,
+  "updated": "2026-07-25T13:14:54.430Z",
+  "count": 692,
   "entries": [
     {
       "chan": "chan-5112_l",
@@ -15,6 +15,12 @@
       "host": "cfese06"
     },
     {
+      "chan": "chan-6250_l",
+      "sourceId": "2110",
+      "systemSourceId": "Division 1",
+      "host": "cfsse03"
+    },
+    {
       "chan": "chan-6251_l",
       "sourceId": "2111",
       "systemSourceId": "Division 1",
@@ -25,6 +31,12 @@
       "sourceId": "2112",
       "systemSourceId": "Division 1",
       "host": "cfsse06"
+    },
+    {
+      "chan": "chan-5368_l",
+      "sourceId": "513",
+      "systemSourceId": "Division 13",
+      "host": "cfase03"
     },
     {
       "chan": "chan-5399_l",
@@ -51,16 +63,10 @@
       "host": "cfsse08"
     },
     {
-      "chan": "chan-5684_l",
-      "sourceId": "839",
+      "chan": "chan-5716_l",
+      "sourceId": "872",
       "systemSourceId": "Division 5",
-      "host": "cfsse05"
-    },
-    {
-      "chan": "chan-5695_l",
-      "sourceId": "850",
-      "systemSourceId": "Division 5",
-      "host": "cfsse03"
+      "host": "cfsse04"
     },
     {
       "chan": "chan-5727_l",
@@ -75,10 +81,34 @@
       "host": "cfese05"
     },
     {
+      "chan": "chan-5485_l",
+      "sourceId": "630",
+      "systemSourceId": "Division 3",
+      "host": "cfese06"
+    },
+    {
+      "chan": "chan-5489_l",
+      "sourceId": "634",
+      "systemSourceId": "Division 3",
+      "host": "cfese04"
+    },
+    {
       "chan": "chan-5369_l",
       "sourceId": "514",
       "systemSourceId": "Division 13",
       "host": "cfase04"
+    },
+    {
+      "chan": "chan-5401_l",
+      "sourceId": "546",
+      "systemSourceId": "Division 13",
+      "host": "cfase06"
+    },
+    {
+      "chan": "chan-5416_l",
+      "sourceId": "561",
+      "systemSourceId": "Division 13",
+      "host": "cfase01"
     },
     {
       "chan": "chan-5417_l",
@@ -99,34 +129,16 @@
       "host": "cfase05"
     },
     {
-      "chan": "chan-5373_l",
-      "sourceId": "518",
-      "systemSourceId": "Division 13",
-      "host": "cfase02"
-    },
-    {
-      "chan": "chan-5374_l",
-      "sourceId": "519",
-      "systemSourceId": "Division 13",
-      "host": "cfase03"
-    },
-    {
-      "chan": "chan-5378_l",
-      "sourceId": "523",
-      "systemSourceId": "Division 13",
-      "host": "cfase01"
-    },
-    {
       "chan": "chan-5381_l",
       "sourceId": "526",
       "systemSourceId": "Division 13",
       "host": "cfase04"
     },
     {
-      "chan": "chan-5376_l",
-      "sourceId": "521",
+      "chan": "chan-5375_l",
+      "sourceId": "520",
       "systemSourceId": "Division 13",
-      "host": "cfsse11"
+      "host": "cfase04"
     },
     {
       "chan": "chan-5380_l",
@@ -141,16 +153,40 @@
       "host": "cfase04"
     },
     {
+      "chan": "chan-5440_l",
+      "sourceId": "585",
+      "systemSourceId": "Division 14",
+      "host": "cfase03"
+    },
+    {
+      "chan": "chan-5442_l",
+      "sourceId": "587",
+      "systemSourceId": "Division 14",
+      "host": "cfsse02"
+    },
+    {
+      "chan": "chan-5443_l",
+      "sourceId": "588",
+      "systemSourceId": "Division 14",
+      "host": "cfase02"
+    },
+    {
+      "chan": "chan-5444_l",
+      "sourceId": "589",
+      "systemSourceId": "Division 14",
+      "host": "cfsse03"
+    },
+    {
       "chan": "chan-5445_l",
       "sourceId": "590",
       "systemSourceId": "Division 14",
       "host": "cfase05"
     },
     {
-      "chan": "chan-5372_l",
-      "sourceId": "517",
-      "systemSourceId": "Division 13",
-      "host": "cfase01"
+      "chan": "chan-5446_l",
+      "sourceId": "591",
+      "systemSourceId": "Division 14",
+      "host": "cfase03"
     },
     {
       "chan": "chan-6276_l",
@@ -159,27 +195,9 @@
       "host": "cfase03"
     },
     {
-      "chan": "chan-6327_l",
-      "sourceId": "2180",
+      "chan": "chan-6328_l",
+      "sourceId": "2181",
       "systemSourceId": "Division 14",
-      "host": "cfsse05"
-    },
-    {
-      "chan": "chan-6329_l",
-      "sourceId": "2182",
-      "systemSourceId": "Division 13",
-      "host": "cfase03"
-    },
-    {
-      "chan": "chan-6332_l",
-      "sourceId": "2184",
-      "systemSourceId": "Division 13",
-      "host": "cfase02"
-    },
-    {
-      "chan": "chan-6314_l",
-      "sourceId": "2167",
-      "systemSourceId": "Division 13",
       "host": "cfsse05"
     },
     {
@@ -195,10 +213,16 @@
       "host": "cfase01"
     },
     {
-      "chan": "chan-6318_l",
-      "sourceId": "2171",
+      "chan": "chan-6446_l",
+      "sourceId": "2273",
+      "systemSourceId": "Division 14",
+      "host": "cfase05"
+    },
+    {
+      "chan": "chan-6447_l",
+      "sourceId": "2274",
       "systemSourceId": "Division 13",
-      "host": "cfsse05"
+      "host": "cfase06"
     },
     {
       "chan": "chan-5235_l",
@@ -207,16 +231,22 @@
       "host": "cfmse03"
     },
     {
+      "chan": "chan-5989_l",
+      "sourceId": "1150",
+      "systemSourceId": "Division 9",
+      "host": "cftse10"
+    },
+    {
       "chan": "chan-6021_l",
       "sourceId": "1182",
       "systemSourceId": "Division 9",
       "host": "cftse08"
     },
     {
-      "chan": "chan-5392_l",
-      "sourceId": "537",
+      "chan": "chan-5391_l",
+      "sourceId": "536",
       "systemSourceId": "Division 13",
-      "host": "cfase03"
+      "host": "cfase02"
     },
     {
       "chan": "chan-5393_l",
@@ -225,22 +255,22 @@
       "host": "cfase04"
     },
     {
-      "chan": "chan-5354_l",
-      "sourceId": "498",
+      "chan": "chan-5342_l",
+      "sourceId": "486",
       "systemSourceId": "Division 12",
-      "host": "cfmse11"
+      "host": "cfmse12"
     },
     {
-      "chan": "chan-5362_l",
-      "sourceId": "506",
+      "chan": "chan-5360_l",
+      "sourceId": "504",
       "systemSourceId": "Division 12",
-      "host": "cfmse05"
+      "host": "cfmse04"
     },
     {
-      "chan": "chan-5383_l",
-      "sourceId": "528",
-      "systemSourceId": "Division 13",
-      "host": "cfase06"
+      "chan": "chan-5364_l",
+      "sourceId": "508",
+      "systemSourceId": "Division 12",
+      "host": "cfmse06"
     },
     {
       "chan": "chan-5384_l",
@@ -255,6 +285,12 @@
       "host": "cfase02"
     },
     {
+      "chan": "chan-5386_l",
+      "sourceId": "531",
+      "systemSourceId": "Division 13",
+      "host": "cfase03"
+    },
+    {
       "chan": "chan-5387_l",
       "sourceId": "532",
       "systemSourceId": "Division 13",
@@ -267,10 +303,16 @@
       "host": "cfsse08"
     },
     {
-      "chan": "chan-5396_l",
-      "sourceId": "541",
-      "systemSourceId": "Division 13",
-      "host": "cfsse05"
+      "chan": "chan-5424_l",
+      "sourceId": "569",
+      "systemSourceId": "Division 14",
+      "host": "cfase01"
+    },
+    {
+      "chan": "chan-5425_l",
+      "sourceId": "570",
+      "systemSourceId": "Division 14",
+      "host": "cfase02"
     },
     {
       "chan": "chan-6109_l",
@@ -297,12 +339,6 @@
       "host": "cfsse12"
     },
     {
-      "chan": "chan-6115_l",
-      "sourceId": "1285",
-      "systemSourceId": "Division 14",
-      "host": "cfsse13"
-    },
-    {
       "chan": "chan-6118_l",
       "sourceId": "1288",
       "systemSourceId": "Division 14",
@@ -315,16 +351,16 @@
       "host": "cfsse04"
     },
     {
+      "chan": "chan-6120_l",
+      "sourceId": "1290",
+      "systemSourceId": "Division 14",
+      "host": "cfsse05"
+    },
+    {
       "chan": "chan-6121_l",
       "sourceId": "1291",
       "systemSourceId": "Division 14",
       "host": "cfsse06"
-    },
-    {
-      "chan": "chan-6122_l",
-      "sourceId": "1292",
-      "systemSourceId": "Division 14",
-      "host": "cfsse07"
     },
     {
       "chan": "chan-6123_l",
@@ -333,10 +369,10 @@
       "host": "cfsse08"
     },
     {
-      "chan": "chan-6124_l",
-      "sourceId": "1294",
+      "chan": "chan-6173_l",
+      "sourceId": "1394",
       "systemSourceId": "Division 14",
-      "host": "cfsse09"
+      "host": "cfsse10"
     },
     {
       "chan": "chan-5389_l",
@@ -351,6 +387,12 @@
       "host": "cfsse05"
     },
     {
+      "chan": "chan-5490_l",
+      "sourceId": "635",
+      "systemSourceId": "Division 4",
+      "host": "cfsse06"
+    },
+    {
       "chan": "chan-5511_l",
       "sourceId": "657",
       "systemSourceId": "Division 4",
@@ -363,40 +405,34 @@
       "host": "cfsse08"
     },
     {
-      "chan": "chan-5531_l",
-      "sourceId": "679",
+      "chan": "chan-5542_l",
+      "sourceId": "690",
       "systemSourceId": "Division 4",
-      "host": "cfsse09"
+      "host": "cfese01"
     },
     {
-      "chan": "chan-5553_l",
-      "sourceId": "701",
-      "systemSourceId": "Division 4",
-      "host": "cfsse05"
-    },
-    {
-      "chan": "chan-5570_l",
-      "sourceId": "718",
+      "chan": "chan-5578_l",
+      "sourceId": "729",
       "systemSourceId": "Division 5",
-      "host": "cfsse09"
+      "host": "cfsse04"
     },
     {
-      "chan": "chan-5589_l",
-      "sourceId": "740",
+      "chan": "chan-5600_l",
+      "sourceId": "751",
       "systemSourceId": "Division 5",
-      "host": "cfsse02"
-    },
-    {
-      "chan": "chan-5610_l",
-      "sourceId": "762",
-      "systemSourceId": "Division 5",
-      "host": "cfsse10"
+      "host": "cfsse13"
     },
     {
       "chan": "chan-5620_l",
       "sourceId": "773",
       "systemSourceId": "Division 5",
       "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5630_l",
+      "sourceId": "784",
+      "systemSourceId": "Division 5",
+      "host": "cfsse03"
     },
     {
       "chan": "chan-5641_l",
@@ -429,28 +465,28 @@
       "host": "cfsse13"
     },
     {
-      "chan": "chan-5668_l",
-      "sourceId": "822",
+      "chan": "chan-5671_l",
+      "sourceId": "825",
+      "systemSourceId": "Division 5",
+      "host": "cfsse05"
+    },
+    {
+      "chan": "chan-5673_l",
+      "sourceId": "827",
+      "systemSourceId": "Division 5",
+      "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5675_l",
+      "sourceId": "829",
+      "systemSourceId": "Division 5",
+      "host": "cfsse09"
+    },
+    {
+      "chan": "chan-5681_l",
+      "sourceId": "835",
       "systemSourceId": "Division 5",
       "host": "cfsse02"
-    },
-    {
-      "chan": "chan-5670_l",
-      "sourceId": "824",
-      "systemSourceId": "Division 5",
-      "host": "cfsse04"
-    },
-    {
-      "chan": "chan-5676_l",
-      "sourceId": "830",
-      "systemSourceId": "Division 5",
-      "host": "cfsse10"
-    },
-    {
-      "chan": "chan-5680_l",
-      "sourceId": "834",
-      "systemSourceId": "Division 5",
-      "host": "cfsse01"
     },
     {
       "chan": "chan-5682_l",
@@ -459,16 +495,10 @@
       "host": "cfsse03"
     },
     {
-      "chan": "chan-5685_l",
-      "sourceId": "840",
+      "chan": "chan-5686_l",
+      "sourceId": "841",
       "systemSourceId": "Division 5",
-      "host": "cfsse06"
-    },
-    {
-      "chan": "chan-5687_l",
-      "sourceId": "842",
-      "systemSourceId": "Division 5",
-      "host": "cfsse08"
+      "host": "cfsse07"
     },
     {
       "chan": "chan-5688_l",
@@ -495,10 +525,10 @@
       "host": "cftse08"
     },
     {
-      "chan": "chan-5870_l",
-      "sourceId": "1031",
+      "chan": "chan-5859_l",
+      "sourceId": "1020",
       "systemSourceId": "Division 7",
-      "host": "cftse05"
+      "host": "cftse06"
     },
     {
       "chan": "chan-5875_l",
@@ -507,28 +537,34 @@
       "host": "cfsse02"
     },
     {
-      "chan": "chan-5881_l",
-      "sourceId": "1042",
+      "chan": "chan-5882_l",
+      "sourceId": "1043",
       "systemSourceId": "Division 7",
-      "host": "cftse04"
+      "host": "cfsse05"
     },
     {
-      "chan": "chan-5903_l",
-      "sourceId": "1064",
+      "chan": "chan-5892_l",
+      "sourceId": "1053",
       "systemSourceId": "Division 7",
-      "host": "cftse01"
+      "host": "cftse02"
+    },
+    {
+      "chan": "chan-5900_l",
+      "sourceId": "1061",
+      "systemSourceId": "Division 7",
+      "host": "cftse07"
+    },
+    {
+      "chan": "chan-5902_l",
+      "sourceId": "1063",
+      "systemSourceId": "Division 7",
+      "host": "cftse12"
     },
     {
       "chan": "chan-5904_l",
       "sourceId": "1065",
       "systemSourceId": "Division 7",
       "host": "cftse02"
-    },
-    {
-      "chan": "chan-5905_l",
-      "sourceId": "1066",
-      "systemSourceId": "Division 7",
-      "host": "cftse04"
     },
     {
       "chan": "chan-5908_l",
@@ -549,28 +585,46 @@
       "host": "cftse11"
     },
     {
-      "chan": "chan-5911_l",
-      "sourceId": "1072",
-      "systemSourceId": "Division 7",
-      "host": "cftse03"
-    },
-    {
       "chan": "chan-5913_l",
       "sourceId": "1074",
       "systemSourceId": "Division 7",
       "host": "cftse07"
     },
     {
-      "chan": "chan-5920_l",
-      "sourceId": "1081",
+      "chan": "chan-5914_l",
+      "sourceId": "1075",
       "systemSourceId": "Division 7",
-      "host": "cftse08"
+      "host": "cftse10"
     },
     {
-      "chan": "chan-5922_l",
-      "sourceId": "1083",
+      "chan": "chan-5916_l",
+      "sourceId": "1077",
       "systemSourceId": "Division 7",
-      "host": "cfsse12"
+      "host": "cftse01"
+    },
+    {
+      "chan": "chan-5919_l",
+      "sourceId": "1080",
+      "systemSourceId": "Division 7",
+      "host": "cftse05"
+    },
+    {
+      "chan": "chan-5921_l",
+      "sourceId": "1082",
+      "systemSourceId": "Division 7",
+      "host": "cftse09"
+    },
+    {
+      "chan": "chan-5925_l",
+      "sourceId": "1086",
+      "systemSourceId": "Division 7",
+      "host": "cftse06"
+    },
+    {
+      "chan": "chan-5926_l",
+      "sourceId": "1087",
+      "systemSourceId": "Division 7",
+      "host": "cftse07"
     },
     {
       "chan": "chan-5927_l",
@@ -579,22 +633,16 @@
       "host": "cftse10"
     },
     {
-      "chan": "chan-5929_l",
-      "sourceId": "1090",
+      "chan": "chan-5928_l",
+      "sourceId": "1089",
       "systemSourceId": "Division 7",
-      "host": "cftse02"
+      "host": "cftse12"
     },
     {
       "chan": "chan-5930_l",
       "sourceId": "1091",
       "systemSourceId": "Division 7",
       "host": "cftse04"
-    },
-    {
-      "chan": "chan-5931_l",
-      "sourceId": "1092",
-      "systemSourceId": "Division 7",
-      "host": "cftse05"
     },
     {
       "chan": "chan-5938_l",
@@ -609,16 +657,16 @@
       "host": "cftse12"
     },
     {
+      "chan": "chan-6001_l",
+      "sourceId": "1162",
+      "systemSourceId": "Division 9",
+      "host": "cftse10"
+    },
+    {
       "chan": "chan-6012_l",
       "sourceId": "1173",
       "systemSourceId": "Division 9",
       "host": "cftse09"
-    },
-    {
-      "chan": "chan-6014_l",
-      "sourceId": "1175",
-      "systemSourceId": "Division 9",
-      "host": "cftse11"
     },
     {
       "chan": "chan-6015_l",
@@ -627,22 +675,28 @@
       "host": "cftse12"
     },
     {
-      "chan": "chan-6016_l",
-      "sourceId": "1177",
+      "chan": "chan-6017_l",
+      "sourceId": "1178",
       "systemSourceId": "Division 9",
-      "host": "cftse02"
+      "host": "cftse04"
     },
     {
-      "chan": "chan-6019_l",
-      "sourceId": "1180",
+      "chan": "chan-6018_l",
+      "sourceId": "1179",
       "systemSourceId": "Division 9",
-      "host": "cftse06"
+      "host": "cftse05"
     },
     {
-      "chan": "chan-6020_l",
-      "sourceId": "1181",
+      "chan": "chan-6022_l",
+      "sourceId": "1183",
       "systemSourceId": "Division 9",
-      "host": "cftse07"
+      "host": "cftse01"
+    },
+    {
+      "chan": "chan-6054_l",
+      "sourceId": "1215",
+      "systemSourceId": "Division 9",
+      "host": "cftse05"
     },
     {
       "chan": "chan-6065_l",
@@ -663,10 +717,10 @@
       "host": "cftse03"
     },
     {
-      "chan": "chan-5388_l",
-      "sourceId": "533",
-      "systemSourceId": "Division 13",
-      "host": "cfase05"
+      "chan": "chan-6337_l",
+      "sourceId": "2188",
+      "systemSourceId": "Division 7",
+      "host": "cftse03"
     },
     {
       "chan": "chan-6403_l",
@@ -687,10 +741,10 @@
       "host": "cfsse10"
     },
     {
-      "chan": "chan-6177_l",
-      "sourceId": "2053",
+      "chan": "chan-6176_l",
+      "sourceId": "2052",
       "systemSourceId": "Division 14",
-      "host": "cfsse11"
+      "host": "cfsse10"
     },
     {
       "chan": "chan-6293_l",
@@ -705,16 +759,16 @@
       "host": "cfese03"
     },
     {
-      "chan": "chan-6405_l",
-      "sourceId": "2241",
-      "systemSourceId": "Division 3",
-      "host": "cfese04"
-    },
-    {
       "chan": "chan-6406_l",
       "sourceId": "2242",
       "systemSourceId": "Division 3",
       "host": "cfese06"
+    },
+    {
+      "chan": "chan-6407_l",
+      "sourceId": "2243",
+      "systemSourceId": "Division 3",
+      "host": "cfese05"
     },
     {
       "chan": "chan-6408_l",
@@ -723,22 +777,16 @@
       "host": "cfese05"
     },
     {
-      "chan": "chan-6411_l",
-      "sourceId": "2247",
-      "systemSourceId": "Division 3",
-      "host": "cfese03"
-    },
-    {
       "chan": "chan-6409_l",
       "sourceId": "2245",
       "systemSourceId": "Division 3",
       "host": "cfese04"
     },
     {
-      "chan": "chan-6410_l",
-      "sourceId": "2246",
-      "systemSourceId": "Division 3",
-      "host": "cfese06"
+      "chan": "chan-5663_l",
+      "sourceId": "817",
+      "systemSourceId": "Division 5",
+      "host": "cfsse09"
     },
     {
       "chan": "chan-5690_l",
@@ -759,16 +807,22 @@
       "host": "cfsse01"
     },
     {
-      "chan": "chan-5698_l",
-      "sourceId": "853",
+      "chan": "chan-5694_l",
+      "sourceId": "849",
       "systemSourceId": "Division 5",
-      "host": "cfsse06"
+      "host": "cfsse02"
     },
     {
       "chan": "chan-5699_l",
       "sourceId": "854",
       "systemSourceId": "Division 5",
       "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5700_l",
+      "sourceId": "855",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5702_l",
@@ -783,16 +837,28 @@
       "host": "cfsse04"
     },
     {
-      "chan": "chan-5704_l",
-      "sourceId": "860",
+      "chan": "chan-5706_l",
+      "sourceId": "862",
       "systemSourceId": "Division 5",
-      "host": "cfsse06"
+      "host": "cfsse08"
     },
     {
-      "chan": "chan-6333_l",
-      "sourceId": "2185",
-      "systemSourceId": "Division 5",
-      "host": "cfsse05"
+      "chan": "chan-5135_l",
+      "sourceId": "278",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
+    },
+    {
+      "chan": "chan-5136_l",
+      "sourceId": "279",
+      "systemSourceId": "Division 10",
+      "host": "cfmse02"
+    },
+    {
+      "chan": "chan-5147_l",
+      "sourceId": "290",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
     },
     {
       "chan": "chan-5158_l",
@@ -813,22 +879,16 @@
       "host": "cfmse09"
     },
     {
-      "chan": "chan-5202_l",
-      "sourceId": "345",
+      "chan": "chan-5213_l",
+      "sourceId": "356",
       "systemSourceId": "Division 10",
-      "host": "cfmse08"
+      "host": "cfmse07"
     },
     {
       "chan": "chan-5222_l",
       "sourceId": "365",
       "systemSourceId": "Division 10",
       "host": "cfmse02"
-    },
-    {
-      "chan": "chan-5223_l",
-      "sourceId": "366",
-      "systemSourceId": "Division 10",
-      "host": "cfmse03"
     },
     {
       "chan": "chan-5225_l",
@@ -843,16 +903,22 @@
       "host": "cfmse08"
     },
     {
+      "chan": "chan-5229_l",
+      "sourceId": "372",
+      "systemSourceId": "Division 10",
+      "host": "cfmse09"
+    },
+    {
       "chan": "chan-5230_l",
       "sourceId": "373",
       "systemSourceId": "Division 10",
       "host": "cfmse10"
     },
     {
-      "chan": "chan-5231_l",
-      "sourceId": "374",
+      "chan": "chan-5232_l",
+      "sourceId": "375",
       "systemSourceId": "Division 10",
-      "host": "cfmse11"
+      "host": "cfmse12"
     },
     {
       "chan": "chan-5233_l",
@@ -861,28 +927,34 @@
       "host": "cfmse01"
     },
     {
+      "chan": "chan-5236_l",
+      "sourceId": "379",
+      "systemSourceId": "Division 10",
+      "host": "cfmse04"
+    },
+    {
       "chan": "chan-5238_l",
       "sourceId": "381",
       "systemSourceId": "Division 10",
       "host": "cfmse06"
     },
     {
-      "chan": "chan-5239_l",
-      "sourceId": "382",
+      "chan": "chan-5241_l",
+      "sourceId": "384",
       "systemSourceId": "Division 10",
-      "host": "cfmse07"
-    },
-    {
-      "chan": "chan-5242_l",
-      "sourceId": "385",
-      "systemSourceId": "Division 10",
-      "host": "cfmse10"
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5244_l",
       "sourceId": "387",
       "systemSourceId": "Division 10",
       "host": "cfmse12"
+    },
+    {
+      "chan": "chan-5246_l",
+      "sourceId": "389",
+      "systemSourceId": "Division 10",
+      "host": "cfmse02"
     },
     {
       "chan": "chan-5248_l",
@@ -897,10 +969,16 @@
       "host": "cfmse01"
     },
     {
-      "chan": "chan-5279_l",
-      "sourceId": "422",
+      "chan": "chan-5290_l",
+      "sourceId": "433",
       "systemSourceId": "Division 10",
-      "host": "cfmse11"
+      "host": "cfmse10"
+    },
+    {
+      "chan": "chan-5301_l",
+      "sourceId": "444",
+      "systemSourceId": "Division 10",
+      "host": "cfmse09"
     },
     {
       "chan": "chan-6359_l",
@@ -909,22 +987,10 @@
       "host": "cfmse09"
     },
     {
-      "chan": "chan-6360_l",
-      "sourceId": "2202",
-      "systemSourceId": "Division 10",
-      "host": "cfmse08"
-    },
-    {
       "chan": "chan-6362_l",
       "sourceId": "2204",
       "systemSourceId": "Division 10",
       "host": "cfmse06"
-    },
-    {
-      "chan": "chan-6364_l",
-      "sourceId": "2206",
-      "systemSourceId": "Division 10",
-      "host": "cfmse04"
     },
     {
       "chan": "chan-6366_l",
@@ -943,12 +1009,6 @@
       "sourceId": "2218",
       "systemSourceId": "Division 10",
       "host": "cfmse05"
-    },
-    {
-      "chan": "chan-6369_l",
-      "sourceId": "2211",
-      "systemSourceId": "Division 10",
-      "host": "cfmse11"
     },
     {
       "chan": "chan-5712_l",
@@ -981,16 +1041,28 @@
       "host": "cfsse07"
     },
     {
+      "chan": "chan-5719_l",
+      "sourceId": "875",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
+    },
+    {
+      "chan": "chan-5720_l",
+      "sourceId": "876",
+      "systemSourceId": "Division 5",
+      "host": "cfsse09"
+    },
+    {
       "chan": "chan-5721_l",
       "sourceId": "877",
       "systemSourceId": "Division 5",
       "host": "cfsse11"
     },
     {
-      "chan": "chan-5725_l",
-      "sourceId": "881",
+      "chan": "chan-5726_l",
+      "sourceId": "882",
       "systemSourceId": "Division 5",
-      "host": "cfsse02"
+      "host": "cfsse03"
     },
     {
       "chan": "chan-5728_l",
@@ -999,10 +1071,10 @@
       "host": "cfsse10"
     },
     {
-      "chan": "chan-5730_l",
-      "sourceId": "886",
+      "chan": "chan-5729_l",
+      "sourceId": "885",
       "systemSourceId": "Division 5",
-      "host": "cfsse06"
+      "host": "cfsse04"
     },
     {
       "chan": "chan-5731_l",
@@ -1017,10 +1089,10 @@
       "host": "cfsse09"
     },
     {
-      "chan": "chan-5557_l",
-      "sourceId": "705",
-      "systemSourceId": "Division 4",
-      "host": "cfsse08"
+      "chan": "chan-5734_l",
+      "sourceId": "890",
+      "systemSourceId": "Division 5",
+      "host": "cfsse11"
     },
     {
       "chan": "chan-5940_l",
@@ -1035,10 +1107,16 @@
       "host": "cftse10"
     },
     {
-      "chan": "chan-5943_l",
-      "sourceId": "1104",
+      "chan": "chan-5942_l",
+      "sourceId": "1103",
       "systemSourceId": "Division 7",
-      "host": "cftse02"
+      "host": "cftse12"
+    },
+    {
+      "chan": "chan-5946_l",
+      "sourceId": "1107",
+      "systemSourceId": "Division 7",
+      "host": "cftse07"
     },
     {
       "chan": "chan-5947_l",
@@ -1059,12 +1137,6 @@
       "host": "cftse08"
     },
     {
-      "chan": "chan-5952_l",
-      "sourceId": "1113",
-      "systemSourceId": "Division 7",
-      "host": "cftse09"
-    },
-    {
       "chan": "chan-5955_l",
       "sourceId": "1116",
       "systemSourceId": "Division 7",
@@ -1081,12 +1153,6 @@
       "sourceId": "1120",
       "systemSourceId": "Division 7",
       "host": "cftse11"
-    },
-    {
-      "chan": "chan-5960_l",
-      "sourceId": "1121",
-      "systemSourceId": "Division 7",
-      "host": "cftse01"
     },
     {
       "chan": "chan-5961_l",
@@ -1131,6 +1197,12 @@
       "host": "cftse02"
     },
     {
+      "chan": "chan-6395_l",
+      "sourceId": "2232",
+      "systemSourceId": "Division 7",
+      "host": "cftse03"
+    },
+    {
       "chan": "chan-5762_l",
       "sourceId": "920",
       "systemSourceId": "Division 6",
@@ -1143,16 +1215,22 @@
       "host": "cfese06"
     },
     {
-      "chan": "chan-6024_l",
-      "sourceId": "1185",
+      "chan": "chan-6025_l",
+      "sourceId": "1186",
       "systemSourceId": "Division 9",
-      "host": "cftse09"
+      "host": "cftse10"
     },
     {
       "chan": "chan-6026_l",
       "sourceId": "1187",
       "systemSourceId": "Division 9",
       "host": "cftse11"
+    },
+    {
+      "chan": "chan-6027_l",
+      "sourceId": "1188",
+      "systemSourceId": "Division 9",
+      "host": "cftse12"
     },
     {
       "chan": "chan-6028_l",
@@ -1173,10 +1251,10 @@
       "host": "cftse06"
     },
     {
-      "chan": "chan-6033_l",
-      "sourceId": "1194",
+      "chan": "chan-6034_l",
+      "sourceId": "1195",
       "systemSourceId": "Division 9",
-      "host": "cftse08"
+      "host": "cftse01"
     },
     {
       "chan": "chan-6035_l",
@@ -1197,18 +1275,6 @@
       "host": "cftse10"
     },
     {
-      "chan": "chan-6039_l",
-      "sourceId": "1200",
-      "systemSourceId": "Division 9",
-      "host": "cftse12"
-    },
-    {
-      "chan": "chan-6040_l",
-      "sourceId": "1201",
-      "systemSourceId": "Division 9",
-      "host": "cftse02"
-    },
-    {
       "chan": "chan-5137_l",
       "sourceId": "280",
       "systemSourceId": "Division 10",
@@ -1227,10 +1293,22 @@
       "host": "cfmse06"
     },
     {
+      "chan": "chan-5141_l",
+      "sourceId": "284",
+      "systemSourceId": "Division 10",
+      "host": "cfmse07"
+    },
+    {
       "chan": "chan-5142_l",
       "sourceId": "285",
       "systemSourceId": "Division 10",
       "host": "cfmse08"
+    },
+    {
+      "chan": "chan-5143_l",
+      "sourceId": "286",
+      "systemSourceId": "Division 10",
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5144_l",
@@ -1239,34 +1317,22 @@
       "host": "cfmse10"
     },
     {
+      "chan": "chan-5251_l",
+      "sourceId": "394",
+      "systemSourceId": "Division 10",
+      "host": "cfmse07"
+    },
+    {
       "chan": "chan-5252_l",
       "sourceId": "395",
       "systemSourceId": "Division 10",
       "host": "cfmse08"
     },
     {
-      "chan": "chan-5254_l",
-      "sourceId": "397",
+      "chan": "chan-5253_l",
+      "sourceId": "396",
       "systemSourceId": "Division 10",
-      "host": "cfmse10"
-    },
-    {
-      "chan": "chan-5255_l",
-      "sourceId": "398",
-      "systemSourceId": "Division 10",
-      "host": "cfmse11"
-    },
-    {
-      "chan": "chan-5258_l",
-      "sourceId": "401",
-      "systemSourceId": "Division 10",
-      "host": "cfmse02"
-    },
-    {
-      "chan": "chan-5259_l",
-      "sourceId": "402",
-      "systemSourceId": "Division 10",
-      "host": "cfmse03"
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5261_l",
@@ -1281,22 +1347,28 @@
       "host": "cfmse06"
     },
     {
-      "chan": "chan-5263_l",
-      "sourceId": "406",
-      "systemSourceId": "Division 10",
-      "host": "cfmse07"
-    },
-    {
       "chan": "chan-5264_l",
       "sourceId": "407",
       "systemSourceId": "Division 10",
       "host": "cfmse08"
     },
     {
-      "chan": "chan-5266_l",
-      "sourceId": "409",
+      "chan": "chan-5265_l",
+      "sourceId": "408",
       "systemSourceId": "Division 10",
-      "host": "cfmse10"
+      "host": "cfmse09"
+    },
+    {
+      "chan": "chan-5267_l",
+      "sourceId": "410",
+      "systemSourceId": "Division 10",
+      "host": "cfmse11"
+    },
+    {
+      "chan": "chan-5271_l",
+      "sourceId": "414",
+      "systemSourceId": "Division 10",
+      "host": "cfmse03"
     },
     {
       "chan": "chan-5273_l",
@@ -1311,22 +1383,10 @@
       "host": "cfmse06"
     },
     {
-      "chan": "chan-5277_l",
-      "sourceId": "420",
-      "systemSourceId": "Division 10",
-      "host": "cfmse09"
-    },
-    {
       "chan": "chan-5278_l",
       "sourceId": "421",
       "systemSourceId": "Division 10",
       "host": "cfmse10"
-    },
-    {
-      "chan": "chan-5281_l",
-      "sourceId": "424",
-      "systemSourceId": "Division 10",
-      "host": "cfmse01"
     },
     {
       "chan": "chan-5282_l",
@@ -1335,16 +1395,22 @@
       "host": "cfmse02"
     },
     {
+      "chan": "chan-5283_l",
+      "sourceId": "426",
+      "systemSourceId": "Division 10",
+      "host": "cfmse03"
+    },
+    {
       "chan": "chan-5285_l",
       "sourceId": "428",
       "systemSourceId": "Division 10",
       "host": "cfmse05"
     },
     {
-      "chan": "chan-5286_l",
-      "sourceId": "429",
+      "chan": "chan-5287_l",
+      "sourceId": "430",
       "systemSourceId": "Division 10",
-      "host": "cfmse06"
+      "host": "cfmse07"
     },
     {
       "chan": "chan-5288_l",
@@ -1353,10 +1419,22 @@
       "host": "cfmse08"
     },
     {
+      "chan": "chan-5289_l",
+      "sourceId": "432",
+      "systemSourceId": "Division 10",
+      "host": "cfmse09"
+    },
+    {
       "chan": "chan-5291_l",
       "sourceId": "434",
       "systemSourceId": "Division 10",
       "host": "cfmse11"
+    },
+    {
+      "chan": "chan-5293_l",
+      "sourceId": "436",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
     },
     {
       "chan": "chan-5294_l",
@@ -1377,28 +1455,10 @@
       "host": "cfmse06"
     },
     {
-      "chan": "chan-5300_l",
-      "sourceId": "443",
-      "systemSourceId": "Division 10",
-      "host": "cfmse08"
-    },
-    {
-      "chan": "chan-5302_l",
-      "sourceId": "445",
-      "systemSourceId": "Division 10",
-      "host": "cfmse10"
-    },
-    {
       "chan": "chan-5304_l",
       "sourceId": "447",
       "systemSourceId": "Division 10",
       "host": "cfmse12"
-    },
-    {
-      "chan": "chan-5305_l",
-      "sourceId": "448",
-      "systemSourceId": "Division 10",
-      "host": "cfmse01"
     },
     {
       "chan": "chan-5306_l",
@@ -1417,6 +1477,24 @@
       "sourceId": "452",
       "systemSourceId": "Division 10",
       "host": "cfmse05"
+    },
+    {
+      "chan": "chan-5310_l",
+      "sourceId": "453",
+      "systemSourceId": "Division 10",
+      "host": "cfmse06"
+    },
+    {
+      "chan": "chan-5311_l",
+      "sourceId": "454",
+      "systemSourceId": "Division 10",
+      "host": "cfmse07"
+    },
+    {
+      "chan": "chan-5295_l",
+      "sourceId": "438",
+      "systemSourceId": "Division 10",
+      "host": "cfsse04"
     },
     {
       "chan": "chan-5299_l",
@@ -1449,16 +1527,10 @@
       "host": "cfmse07"
     },
     {
-      "chan": "chan-5256_l",
-      "sourceId": "399",
-      "systemSourceId": "Division 10",
-      "host": "cfmse12"
-    },
-    {
-      "chan": "chan-5491_l",
-      "sourceId": "636",
-      "systemSourceId": "Division 4",
-      "host": "cfsse05"
+      "chan": "chan-5805_l",
+      "sourceId": "966",
+      "systemSourceId": "Division 7",
+      "host": "cftse02"
     },
     {
       "chan": "chan-5807_l",
@@ -1473,10 +1545,16 @@
       "host": "cftse05"
     },
     {
-      "chan": "chan-5810_l",
-      "sourceId": "971",
+      "chan": "chan-5809_l",
+      "sourceId": "970",
       "systemSourceId": "Division 7",
-      "host": "cftse07"
+      "host": "cftse06"
+    },
+    {
+      "chan": "chan-5811_l",
+      "sourceId": "972",
+      "systemSourceId": "Division 7",
+      "host": "cftse08"
     },
     {
       "chan": "chan-5812_l",
@@ -1485,34 +1563,34 @@
       "host": "cftse09"
     },
     {
-      "chan": "chan-5814_l",
-      "sourceId": "975",
+      "chan": "chan-5813_l",
+      "sourceId": "974",
       "systemSourceId": "Division 7",
-      "host": "cftse10"
+      "host": "cftse11"
     },
     {
-      "chan": "chan-5816_l",
-      "sourceId": "977",
+      "chan": "chan-5817_l",
+      "sourceId": "978",
       "systemSourceId": "Division 7",
-      "host": "cftse01"
+      "host": "cftse02"
     },
     {
-      "chan": "chan-5818_l",
-      "sourceId": "979",
+      "chan": "chan-5976_l",
+      "sourceId": "1137",
       "systemSourceId": "Division 7",
-      "host": "cftse03"
+      "host": "cftse09"
     },
     {
-      "chan": "chan-5819_l",
-      "sourceId": "980",
+      "chan": "chan-5979_l",
+      "sourceId": "1140",
+      "systemSourceId": "Division 7",
+      "host": "cftse02"
+    },
+    {
+      "chan": "chan-5980_l",
+      "sourceId": "1141",
       "systemSourceId": "Division 7",
       "host": "cftse04"
-    },
-    {
-      "chan": "chan-5977_l",
-      "sourceId": "1138",
-      "systemSourceId": "Division 7",
-      "host": "cftse10"
     },
     {
       "chan": "chan-5981_l",
@@ -1557,10 +1635,16 @@
       "host": "cftse09"
     },
     {
-      "chan": "chan-5149_l",
-      "sourceId": "292",
+      "chan": "chan-5148_l",
+      "sourceId": "291",
       "systemSourceId": "Division 10",
-      "host": "cfmse03"
+      "host": "cfmse02"
+    },
+    {
+      "chan": "chan-5150_l",
+      "sourceId": "293",
+      "systemSourceId": "Division 10",
+      "host": "cfmse04"
     },
     {
       "chan": "chan-5153_l",
@@ -1569,10 +1653,22 @@
       "host": "cfmse07"
     },
     {
+      "chan": "chan-5156_l",
+      "sourceId": "299",
+      "systemSourceId": "Division 10",
+      "host": "cfmse10"
+    },
+    {
       "chan": "chan-5157_l",
       "sourceId": "300",
       "systemSourceId": "Division 10",
       "host": "cfmse11"
+    },
+    {
+      "chan": "chan-5159_l",
+      "sourceId": "302",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
     },
     {
       "chan": "chan-5160_l",
@@ -1611,10 +1707,10 @@
       "host": "cfmse08"
     },
     {
-      "chan": "chan-5168_l",
-      "sourceId": "311",
+      "chan": "chan-5167_l",
+      "sourceId": "310",
       "systemSourceId": "Division 10",
-      "host": "cfmse10"
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5171_l",
@@ -1623,10 +1719,10 @@
       "host": "cfmse01"
     },
     {
-      "chan": "chan-5174_l",
-      "sourceId": "317",
+      "chan": "chan-5176_l",
+      "sourceId": "319",
       "systemSourceId": "Division 10",
-      "host": "cfmse04"
+      "host": "cfmse06"
     },
     {
       "chan": "chan-5177_l",
@@ -1635,10 +1731,10 @@
       "host": "cfmse07"
     },
     {
-      "chan": "chan-5179_l",
-      "sourceId": "322",
+      "chan": "chan-5178_l",
+      "sourceId": "321",
       "systemSourceId": "Division 10",
-      "host": "cfmse09"
+      "host": "cfmse08"
     },
     {
       "chan": "chan-5181_l",
@@ -1647,22 +1743,16 @@
       "host": "cfmse11"
     },
     {
-      "chan": "chan-5182_l",
-      "sourceId": "325",
-      "systemSourceId": "Division 10",
-      "host": "cfmse12"
-    },
-    {
       "chan": "chan-5352_l",
       "sourceId": "496",
       "systemSourceId": "Division 12",
       "host": "cfmse09"
     },
     {
-      "chan": "chan-5334_l",
-      "sourceId": "478",
+      "chan": "chan-5353_l",
+      "sourceId": "497",
       "systemSourceId": "Division 12",
-      "host": "cfmse06"
+      "host": "cfmse10"
     },
     {
       "chan": "chan-5335_l",
@@ -1671,22 +1761,16 @@
       "host": "cfmse07"
     },
     {
-      "chan": "chan-5337_l",
-      "sourceId": "481",
+      "chan": "chan-5336_l",
+      "sourceId": "480",
       "systemSourceId": "Division 12",
-      "host": "cfmse09"
+      "host": "cfmse08"
     },
     {
-      "chan": "chan-5338_l",
-      "sourceId": "482",
+      "chan": "chan-5344_l",
+      "sourceId": "488",
       "systemSourceId": "Division 12",
-      "host": "cfmse10"
-    },
-    {
-      "chan": "chan-5341_l",
-      "sourceId": "485",
-      "systemSourceId": "Division 12",
-      "host": "cfmse11"
+      "host": "cfsse07"
     },
     {
       "chan": "chan-5345_l",
@@ -1695,22 +1779,28 @@
       "host": "cfmse02"
     },
     {
-      "chan": "chan-5346_l",
-      "sourceId": "490",
+      "chan": "chan-5347_l",
+      "sourceId": "491",
       "systemSourceId": "Division 12",
-      "host": "cfmse03"
+      "host": "cfmse04"
     },
     {
-      "chan": "chan-5349_l",
-      "sourceId": "493",
+      "chan": "chan-5348_l",
+      "sourceId": "492",
       "systemSourceId": "Division 12",
-      "host": "cfmse06"
+      "host": "cfmse05"
     },
     {
-      "chan": "chan-5560_l",
-      "sourceId": "708",
+      "chan": "chan-5350_l",
+      "sourceId": "494",
+      "systemSourceId": "Division 12",
+      "host": "cfmse07"
+    },
+    {
+      "chan": "chan-5558_l",
+      "sourceId": "706",
       "systemSourceId": "Division 5",
-      "host": "cfsse12"
+      "host": "cfsse10"
     },
     {
       "chan": "chan-5561_l",
@@ -1731,10 +1821,10 @@
       "host": "cfsse03"
     },
     {
-      "chan": "chan-5565_l",
-      "sourceId": "713",
+      "chan": "chan-5566_l",
+      "sourceId": "714",
       "systemSourceId": "Division 5",
-      "host": "cfsse04"
+      "host": "cfsse05"
     },
     {
       "chan": "chan-5567_l",
@@ -1743,22 +1833,10 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-5569_l",
-      "sourceId": "717",
-      "systemSourceId": "Division 5",
-      "host": "cfsse08"
-    },
-    {
       "chan": "chan-5571_l",
       "sourceId": "721",
       "systemSourceId": "Division 5",
       "host": "cfsse10"
-    },
-    {
-      "chan": "chan-5735_l",
-      "sourceId": "891",
-      "systemSourceId": "Division 5",
-      "host": "cfsse12"
     },
     {
       "chan": "chan-5736_l",
@@ -1773,16 +1851,28 @@
       "host": "cfsse03"
     },
     {
-      "chan": "chan-5741_l",
-      "sourceId": "897",
+      "chan": "chan-5740_l",
+      "sourceId": "896",
       "systemSourceId": "Division 5",
-      "host": "cfsse10"
+      "host": "cfsse05"
     },
     {
-      "chan": "chan-5744_l",
-      "sourceId": "900",
+      "chan": "chan-5742_l",
+      "sourceId": "898",
       "systemSourceId": "Division 5",
-      "host": "cfsse07"
+      "host": "cfsse04"
+    },
+    {
+      "chan": "chan-5743_l",
+      "sourceId": "899",
+      "systemSourceId": "Division 5",
+      "host": "cfsse06"
+    },
+    {
+      "chan": "chan-5745_l",
+      "sourceId": "901",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5746_l",
@@ -1791,10 +1881,10 @@
       "host": "cfsse09"
     },
     {
-      "chan": "chan-5806_l",
-      "sourceId": "967",
-      "systemSourceId": "Division 7",
-      "host": "cftse03"
+      "chan": "chan-5747_l",
+      "sourceId": "904",
+      "systemSourceId": "Division 5",
+      "host": "cfsse11"
     },
     {
       "chan": "chan-5823_l",
@@ -1809,12 +1899,6 @@
       "host": "cftse11"
     },
     {
-      "chan": "chan-5827_l",
-      "sourceId": "988",
-      "systemSourceId": "Division 7",
-      "host": "cftse10"
-    },
-    {
       "chan": "chan-5828_l",
       "sourceId": "989",
       "systemSourceId": "Division 7",
@@ -1825,6 +1909,12 @@
       "sourceId": "991",
       "systemSourceId": "Division 7",
       "host": "cftse02"
+    },
+    {
+      "chan": "chan-5831_l",
+      "sourceId": "992",
+      "systemSourceId": "Division 7",
+      "host": "cftse03"
     },
     {
       "chan": "chan-5833_l",
@@ -1849,12 +1939,6 @@
       "sourceId": "1000",
       "systemSourceId": "Division 7",
       "host": "cftse07"
-    },
-    {
-      "chan": "chan-5840_l",
-      "sourceId": "1001",
-      "systemSourceId": "Division 7",
-      "host": "cftse10"
     },
     {
       "chan": "chan-5841_l",
@@ -1893,16 +1977,40 @@
       "host": "cftse07"
     },
     {
+      "chan": "chan-6045_l",
+      "sourceId": "1206",
+      "systemSourceId": "Division 9",
+      "host": "cftse08"
+    },
+    {
       "chan": "chan-6046_l",
       "sourceId": "1207",
       "systemSourceId": "Division 9",
       "host": "cftse01"
     },
     {
-      "chan": "chan-6049_l",
-      "sourceId": "1210",
+      "chan": "chan-6047_l",
+      "sourceId": "1208",
       "systemSourceId": "Division 9",
-      "host": "cftse10"
+      "host": "cftse03"
+    },
+    {
+      "chan": "chan-6048_l",
+      "sourceId": "1209",
+      "systemSourceId": "Division 9",
+      "host": "cftse09"
+    },
+    {
+      "chan": "chan-6050_l",
+      "sourceId": "1211",
+      "systemSourceId": "Division 9",
+      "host": "cftse11"
+    },
+    {
+      "chan": "chan-6051_l",
+      "sourceId": "1212",
+      "systemSourceId": "Division 9",
+      "host": "cftse12"
     },
     {
       "chan": "chan-6053_l",
@@ -1911,22 +2019,16 @@
       "host": "cftse04"
     },
     {
-      "chan": "chan-6055_l",
-      "sourceId": "1216",
-      "systemSourceId": "Division 9",
-      "host": "cftse06"
-    },
-    {
       "chan": "chan-6057_l",
       "sourceId": "1218",
       "systemSourceId": "Division 9",
       "host": "cftse08"
     },
     {
-      "chan": "chan-6059_l",
-      "sourceId": "1220",
+      "chan": "chan-6058_l",
+      "sourceId": "1219",
       "systemSourceId": "Division 9",
-      "host": "cftse03"
+      "host": "cftse01"
     },
     {
       "chan": "chan-6060_l",
@@ -1935,14 +2037,38 @@
       "host": "cftse09"
     },
     {
-      "chan": "chan-6227_l",
-      "sourceId": "2087",
-      "systemSourceId": "Division 5",
-      "host": "cfsse12"
+      "chan": "chan-6061_l",
+      "sourceId": "1222",
+      "systemSourceId": "Division 9",
+      "host": "cftse10"
     },
     {
-      "chan": "chan-6228_l",
-      "sourceId": "2088",
+      "chan": "chan-6063_l",
+      "sourceId": "1224",
+      "systemSourceId": "Division 9",
+      "host": "cftse12"
+    },
+    {
+      "chan": "chan-6066_l",
+      "sourceId": "1227",
+      "systemSourceId": "Division 9",
+      "host": "cftse05"
+    },
+    {
+      "chan": "chan-6067_l",
+      "sourceId": "1228",
+      "systemSourceId": "Division 9",
+      "host": "cftse06"
+    },
+    {
+      "chan": "chan-6068_l",
+      "sourceId": "1229",
+      "systemSourceId": "Division 9",
+      "host": "cftse07"
+    },
+    {
+      "chan": "chan-6227_l",
+      "sourceId": "2087",
       "systemSourceId": "Division 5",
       "host": "cfsse12"
     },
@@ -1951,6 +2077,12 @@
       "sourceId": "2089",
       "systemSourceId": "Division 5",
       "host": "cfsse08"
+    },
+    {
+      "chan": "chan-6230_l",
+      "sourceId": "2090",
+      "systemSourceId": "Division 5",
+      "host": "cfsse10"
     },
     {
       "chan": "chan-6437_l",
@@ -1965,10 +2097,16 @@
       "host": "cfsse07"
     },
     {
-      "chan": "chan-5572_l",
-      "sourceId": "723",
+      "chan": "chan-5573_l",
+      "sourceId": "724",
       "systemSourceId": "Division 5",
-      "host": "cfsse11"
+      "host": "cfsse12"
+    },
+    {
+      "chan": "chan-5575_l",
+      "sourceId": "726",
+      "systemSourceId": "Division 5",
+      "host": "cfsse01"
     },
     {
       "chan": "chan-5577_l",
@@ -1983,10 +2121,16 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-5582_l",
-      "sourceId": "733",
+      "chan": "chan-5581_l",
+      "sourceId": "732",
       "systemSourceId": "Division 5",
-      "host": "cfsse08"
+      "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5583_l",
+      "sourceId": "734",
+      "systemSourceId": "Division 5",
+      "host": "cfsse09"
     },
     {
       "chan": "chan-5584_l",
@@ -2007,12 +2151,6 @@
       "host": "cfsse11"
     },
     {
-      "chan": "chan-6195_l",
-      "sourceId": "787",
-      "systemSourceId": "Division 5",
-      "host": "cfsse06"
-    },
-    {
       "chan": "chan-6294_l",
       "sourceId": "2147",
       "systemSourceId": "Division 1",
@@ -2031,10 +2169,22 @@
       "host": "cfese03"
     },
     {
-      "chan": "chan-5500_l",
-      "sourceId": "645",
+      "chan": "chan-5496_l",
+      "sourceId": "641",
       "systemSourceId": "Division 4",
       "host": "cfese04"
+    },
+    {
+      "chan": "chan-5497_l",
+      "sourceId": "642",
+      "systemSourceId": "Division 4",
+      "host": "cfese02"
+    },
+    {
+      "chan": "chan-5498_l",
+      "sourceId": "643",
+      "systemSourceId": "Division 4",
+      "host": "cfese06"
     },
     {
       "chan": "chan-5501_l",
@@ -2043,22 +2193,28 @@
       "host": "cfese05"
     },
     {
-      "chan": "chan-5503_l",
-      "sourceId": "649",
+      "chan": "chan-5505_l",
+      "sourceId": "651",
       "systemSourceId": "Division 4",
-      "host": "cfese03"
+      "host": "cfese02"
     },
     {
-      "chan": "chan-5507_l",
-      "sourceId": "653",
+      "chan": "chan-5506_l",
+      "sourceId": "652",
       "systemSourceId": "Division 4",
-      "host": "cfese03"
+      "host": "cfese06"
     },
     {
       "chan": "chan-5508_l",
       "sourceId": "654",
       "systemSourceId": "Division 4",
       "host": "cfese03"
+    },
+    {
+      "chan": "chan-5509_l",
+      "sourceId": "655",
+      "systemSourceId": "Division 4",
+      "host": "cfese04"
     },
     {
       "chan": "chan-5510_l",
@@ -2085,16 +2241,16 @@
       "host": "cfese04"
     },
     {
-      "chan": "chan-5515_l",
-      "sourceId": "661",
-      "systemSourceId": "Division 4",
-      "host": "cfese02"
-    },
-    {
       "chan": "chan-5517_l",
       "sourceId": "664",
       "systemSourceId": "Division 4",
       "host": "cfese04"
+    },
+    {
+      "chan": "chan-5518_l",
+      "sourceId": "665",
+      "systemSourceId": "Division 4",
+      "host": "cfese01"
     },
     {
       "chan": "chan-5748_l",
@@ -2105,6 +2261,12 @@
     {
       "chan": "chan-5751_l",
       "sourceId": "908",
+      "systemSourceId": "Division 6",
+      "host": "cfese04"
+    },
+    {
+      "chan": "chan-5752_l",
+      "sourceId": "909",
       "systemSourceId": "Division 6",
       "host": "cfese04"
     },
@@ -2127,6 +2289,12 @@
       "host": "cfese02"
     },
     {
+      "chan": "chan-5756_l",
+      "sourceId": "913",
+      "systemSourceId": "Division 6",
+      "host": "cfese02"
+    },
+    {
       "chan": "chan-5757_l",
       "sourceId": "914",
       "systemSourceId": "Division 6",
@@ -2139,40 +2307,40 @@
       "host": "cfese04"
     },
     {
-      "chan": "chan-5765_l",
-      "sourceId": "923",
+      "chan": "chan-5766_l",
+      "sourceId": "924",
       "systemSourceId": "Division 6",
-      "host": "cfese03"
+      "host": "cfese01"
     },
     {
-      "chan": "chan-5767_l",
-      "sourceId": "925",
+      "chan": "chan-5770_l",
+      "sourceId": "928",
       "systemSourceId": "Division 6",
-      "host": "cfsse10"
+      "host": "cfese04"
     },
     {
-      "chan": "chan-5769_l",
-      "sourceId": "927",
+      "chan": "chan-5772_l",
+      "sourceId": "930",
       "systemSourceId": "Division 6",
-      "host": "cfese05"
+      "host": "cfese06"
     },
     {
-      "chan": "chan-5771_l",
-      "sourceId": "929",
+      "chan": "chan-5774_l",
+      "sourceId": "933",
       "systemSourceId": "Division 6",
-      "host": "cfese02"
-    },
-    {
-      "chan": "chan-5773_l",
-      "sourceId": "932",
-      "systemSourceId": "Division 6",
-      "host": "cfese05"
+      "host": "cfese01"
     },
     {
       "chan": "chan-5776_l",
       "sourceId": "935",
       "systemSourceId": "Division 6",
       "host": "cfese01"
+    },
+    {
+      "chan": "chan-5778_l",
+      "sourceId": "937",
+      "systemSourceId": "Division 6",
+      "host": "cfese06"
     },
     {
       "chan": "chan-5779_l",
@@ -2187,10 +2355,10 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-5782_l",
-      "sourceId": "941",
+      "chan": "chan-5783_l",
+      "sourceId": "942",
       "systemSourceId": "Division 6",
-      "host": "cfese06"
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5789_l",
@@ -2199,22 +2367,10 @@
       "host": "cfese05"
     },
     {
-      "chan": "chan-5799_l",
-      "sourceId": "960",
+      "chan": "chan-5801_l",
+      "sourceId": "962",
       "systemSourceId": "Division 6",
-      "host": "cfese04"
-    },
-    {
-      "chan": "chan-5800_l",
-      "sourceId": "961",
-      "systemSourceId": "Division 6",
-      "host": "cfese05"
-    },
-    {
-      "chan": "chan-5802_l",
-      "sourceId": "963",
-      "systemSourceId": "Division 6",
-      "host": "cfese01"
+      "host": "cfese06"
     },
     {
       "chan": "chan-6191_l",
@@ -2223,16 +2379,34 @@
       "host": "cfese04"
     },
     {
-      "chan": "chan-6192_l",
-      "sourceId": "2067",
+      "chan": "chan-6196_l",
+      "sourceId": "2068",
       "systemSourceId": "Division 6",
-      "host": "cfese05"
+      "host": "cfese02"
+    },
+    {
+      "chan": "chan-6197_l",
+      "sourceId": "2069",
+      "systemSourceId": "Division 6",
+      "host": "cfese03"
+    },
+    {
+      "chan": "chan-6231_l",
+      "sourceId": "2091",
+      "systemSourceId": "Division 6",
+      "host": "cfese04"
     },
     {
       "chan": "chan-6253_l",
       "sourceId": "2113",
       "systemSourceId": "Division 4",
       "host": "cfese03"
+    },
+    {
+      "chan": "chan-6255_l",
+      "sourceId": "2115",
+      "systemSourceId": "Division 6",
+      "host": "cfsse03"
     },
     {
       "chan": "chan-6258_l",
@@ -2247,8 +2421,14 @@
       "host": "cfese03"
     },
     {
-      "chan": "chan-6263_l",
-      "sourceId": "2123",
+      "chan": "chan-6262_l",
+      "sourceId": "2122",
+      "systemSourceId": "Division 6",
+      "host": "cfese06"
+    },
+    {
+      "chan": "chan-6264_l",
+      "sourceId": "2124",
       "systemSourceId": "Division 6",
       "host": "cfese04"
     },
@@ -2265,34 +2445,22 @@
       "host": "cfese02"
     },
     {
-      "chan": "chan-6269_l",
-      "sourceId": "2128",
-      "systemSourceId": "Division 6",
-      "host": "cfese04"
-    },
-    {
-      "chan": "chan-6331_l",
-      "sourceId": "2183",
-      "systemSourceId": "Division 5",
-      "host": "cfsse05"
-    },
-    {
-      "chan": "chan-6392_l",
-      "sourceId": "2230",
-      "systemSourceId": "Division 6",
-      "host": "cfsse06"
-    },
-    {
       "chan": "chan-5116_l",
       "sourceId": "259",
       "systemSourceId": "City of Wilmington",
       "host": "cfsse08"
     },
     {
-      "chan": "chan-5134_l",
-      "sourceId": "277",
+      "chan": "chan-5122_l",
+      "sourceId": "265",
       "systemSourceId": "City of Wilmington",
-      "host": "cfsse07"
+      "host": "cfsse11"
+    },
+    {
+      "chan": "chan-6069_l",
+      "sourceId": "1230",
+      "systemSourceId": "Division 9",
+      "host": "cftse08"
     },
     {
       "chan": "chan-6070_l",
@@ -2301,10 +2469,28 @@
       "host": "cftse01"
     },
     {
+      "chan": "chan-5134_l",
+      "sourceId": "277",
+      "systemSourceId": "City of Wilmington",
+      "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5183_l",
+      "sourceId": "326",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
+    },
+    {
       "chan": "chan-6431_l",
       "sourceId": "2265",
       "systemSourceId": "Division 5",
       "host": "cfsse12"
+    },
+    {
+      "chan": "chan-5316_l",
+      "sourceId": "459",
+      "systemSourceId": "Division 11",
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5452_l",
@@ -2313,16 +2499,16 @@
       "host": "cfese05"
     },
     {
-      "chan": "chan-5463_l",
-      "sourceId": "608",
-      "systemSourceId": "Division 2",
-      "host": "cfese01"
-    },
-    {
       "chan": "chan-6182_l",
       "sourceId": "2057",
       "systemSourceId": "Division 1",
       "host": "cfese03"
+    },
+    {
+      "chan": "chan-6183_l",
+      "sourceId": "2058",
+      "systemSourceId": "Division 1",
+      "host": "cfese04"
     },
     {
       "chan": "chan-6200_l",
@@ -2331,16 +2517,16 @@
       "host": "cfese06"
     },
     {
+      "chan": "chan-6201_l",
+      "sourceId": "2072",
+      "systemSourceId": "Division 1",
+      "host": "cfese06"
+    },
+    {
       "chan": "chan-6202_l",
       "sourceId": "2073",
       "systemSourceId": "Division 1",
       "host": "cfese05"
-    },
-    {
-      "chan": "chan-6207_l",
-      "sourceId": "2074",
-      "systemSourceId": "Division 1",
-      "host": "cfese04"
     },
     {
       "chan": "chan-6215_l",
@@ -2355,28 +2541,28 @@
       "host": "cfese06"
     },
     {
-      "chan": "chan-6238_l",
-      "sourceId": "2098",
+      "chan": "chan-6239_l",
+      "sourceId": "2099",
+      "systemSourceId": "Division 1",
+      "host": "cfese04"
+    },
+    {
+      "chan": "chan-6244_l",
+      "sourceId": "2104",
       "systemSourceId": "Division 1",
       "host": "cfese05"
     },
     {
-      "chan": "chan-6243_l",
-      "sourceId": "2103",
+      "chan": "chan-6245_l",
+      "sourceId": "2105",
       "systemSourceId": "Division 1",
-      "host": "cfese06"
+      "host": "cfese04"
     },
     {
-      "chan": "chan-6286_l",
-      "sourceId": "2142",
+      "chan": "chan-6246_l",
+      "sourceId": "2106",
       "systemSourceId": "Division 1",
-      "host": "cfese05"
-    },
-    {
-      "chan": "chan-6287_l",
-      "sourceId": "2075",
-      "systemSourceId": "Division 1",
-      "host": "cfese01"
+      "host": "cfese03"
     },
     {
       "chan": "chan-6288_l",
@@ -2393,12 +2579,6 @@
     {
       "chan": "chan-6248_h",
       "sourceId": "2108",
-      "systemSourceId": "",
-      "host": "cfsse08"
-    },
-    {
-      "chan": "chan-6249_h",
-      "sourceId": "2109",
       "systemSourceId": "",
       "host": "cfsse08"
     },
@@ -2427,10 +2607,10 @@
       "host": "cfsse12"
     },
     {
-      "chan": "chan-5587_l",
-      "sourceId": "738",
+      "chan": "chan-5588_l",
+      "sourceId": "739",
       "systemSourceId": "Division 5",
-      "host": "cfsse13"
+      "host": "cfsse01"
     },
     {
       "chan": "chan-5590_l",
@@ -2439,10 +2619,22 @@
       "host": "cfsse03"
     },
     {
-      "chan": "chan-5185_l",
-      "sourceId": "328",
+      "chan": "chan-5592_l",
+      "sourceId": "743",
+      "systemSourceId": "Division 5",
+      "host": "cfsse05"
+    },
+    {
+      "chan": "chan-5184_l",
+      "sourceId": "327",
       "systemSourceId": "Division 10",
-      "host": "cfmse03"
+      "host": "cfmse02"
+    },
+    {
+      "chan": "chan-5312_l",
+      "sourceId": "455",
+      "systemSourceId": "Division 1",
+      "host": "cfese01"
     },
     {
       "chan": "chan-6185_l",
@@ -2451,10 +2643,10 @@
       "host": "cfese05"
     },
     {
-      "chan": "chan-6217_l",
-      "sourceId": "2078",
+      "chan": "chan-6218_l",
+      "sourceId": "2079",
       "systemSourceId": "Division 1",
-      "host": "cfese03"
+      "host": "cfese02"
     },
     {
       "chan": "chan-6219_l",
@@ -2493,16 +2685,16 @@
       "host": "cfase02"
     },
     {
-      "chan": "chan-5786_l",
-      "sourceId": "946",
-      "systemSourceId": "Division 6",
-      "host": "cfese03"
-    },
-    {
       "chan": "chan-5787_l",
       "sourceId": "947",
       "systemSourceId": "Division 6",
       "host": "cfese04"
+    },
+    {
+      "chan": "chan-6256_h",
+      "sourceId": "2116",
+      "systemSourceId": "",
+      "host": "cfese05"
     },
     {
       "chan": "chan-6257_h",
@@ -2511,22 +2703,28 @@
       "host": "cfese06"
     },
     {
+      "chan": "chan-6126_l",
+      "sourceId": "1346",
+      "systemSourceId": "Division 1",
+      "host": "cfese03"
+    },
+    {
       "chan": "chan-6128_l",
       "sourceId": "1348",
       "systemSourceId": "Division 1",
       "host": "cfese01"
     },
     {
-      "chan": "chan-6130_l",
-      "sourceId": "1350",
+      "chan": "chan-6129_l",
+      "sourceId": "1349",
       "systemSourceId": "Division 1",
-      "host": "cfese05"
+      "host": "cfese02"
     },
     {
-      "chan": "chan-5662_l",
-      "sourceId": "816",
+      "chan": "chan-5661_l",
+      "sourceId": "815",
       "systemSourceId": "Division 5",
-      "host": "cfsse10"
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5594_l",
@@ -2535,10 +2733,10 @@
       "host": "cfsse07"
     },
     {
-      "chan": "chan-5596_l",
-      "sourceId": "747",
+      "chan": "chan-5597_l",
+      "sourceId": "748",
       "systemSourceId": "Division 5",
-      "host": "cfsse09"
+      "host": "cfsse10"
     },
     {
       "chan": "chan-5598_l",
@@ -2571,22 +2769,16 @@
       "host": "cfsse07"
     },
     {
-      "chan": "chan-5611_l",
-      "sourceId": "763",
-      "systemSourceId": "Division 5",
-      "host": "cfsse11"
-    },
-    {
       "chan": "chan-5612_l",
       "sourceId": "764",
       "systemSourceId": "Division 5",
       "host": "cfsse12"
     },
     {
-      "chan": "chan-5614_l",
-      "sourceId": "766",
+      "chan": "chan-5613_l",
+      "sourceId": "765",
       "systemSourceId": "Division 5",
-      "host": "cfsse01"
+      "host": "cfsse13"
     },
     {
       "chan": "chan-5615_l",
@@ -2601,10 +2793,22 @@
       "host": "cfsse03"
     },
     {
+      "chan": "chan-6147_l",
+      "sourceId": "1367",
+      "systemSourceId": "Division 5",
+      "host": "cfsse10"
+    },
+    {
       "chan": "chan-6148_l",
       "sourceId": "1368",
       "systemSourceId": "Division 5",
       "host": "cfsse11"
+    },
+    {
+      "chan": "chan-6149_l",
+      "sourceId": "1369",
+      "systemSourceId": "Division 5",
+      "host": "cfsse12"
     },
     {
       "chan": "chan-6150_l",
@@ -2613,10 +2817,10 @@
       "host": "cfsse13"
     },
     {
-      "chan": "chan-6151_l",
-      "sourceId": "1371",
+      "chan": "chan-6152_l",
+      "sourceId": "1372",
       "systemSourceId": "Division 5",
-      "host": "cfsse01"
+      "host": "cfsse02"
     },
     {
       "chan": "chan-6153_l",
@@ -2631,22 +2835,22 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-6158_l",
-      "sourceId": "1378",
+      "chan": "chan-6157_l",
+      "sourceId": "1377",
       "systemSourceId": "Division 5",
-      "host": "cfsse08"
+      "host": "cfsse07"
     },
     {
-      "chan": "chan-6159_l",
-      "sourceId": "1379",
+      "chan": "chan-6160_l",
+      "sourceId": "1380",
       "systemSourceId": "Division 5",
-      "host": "cfsse09"
+      "host": "cfsse10"
     },
     {
-      "chan": "chan-6161_l",
-      "sourceId": "1381",
+      "chan": "chan-6162_l",
+      "sourceId": "1382",
       "systemSourceId": "Division 5",
-      "host": "cfsse11"
+      "host": "cfsse12"
     },
     {
       "chan": "chan-6163_l",
@@ -2661,16 +2865,10 @@
       "host": "cfsse01"
     },
     {
-      "chan": "chan-6165_l",
-      "sourceId": "1385",
+      "chan": "chan-6166_l",
+      "sourceId": "1386",
       "systemSourceId": "Division 5",
-      "host": "cfsse02"
-    },
-    {
-      "chan": "chan-6168_l",
-      "sourceId": "1388",
-      "systemSourceId": "Division 5",
-      "host": "cfsse05"
+      "host": "cfsse03"
     },
     {
       "chan": "chan-6169_l",
@@ -2679,16 +2877,28 @@
       "host": "cfsse06"
     },
     {
+      "chan": "chan-6170_l",
+      "sourceId": "1390",
+      "systemSourceId": "Division 5",
+      "host": "cfsse07"
+    },
+    {
+      "chan": "chan-6171_l",
+      "sourceId": "1391",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
+    },
+    {
       "chan": "chan-5617_l",
       "sourceId": "770",
       "systemSourceId": "Division 5",
       "host": "cfsse04"
     },
     {
-      "chan": "chan-5873_l",
-      "sourceId": "1034",
-      "systemSourceId": "Division 7",
-      "host": "cftse09"
+      "chan": "chan-5468_l",
+      "sourceId": "613",
+      "systemSourceId": "Division 2",
+      "host": "cfese02"
     },
     {
       "chan": "chan-5895_l",
@@ -2697,10 +2907,22 @@
       "host": "cftse06"
     },
     {
+      "chan": "chan-5618_l",
+      "sourceId": "771",
+      "systemSourceId": "Division 5",
+      "host": "cfsse05"
+    },
+    {
       "chan": "chan-5619_l",
       "sourceId": "772",
       "systemSourceId": "Division 5",
       "host": "cfsse06"
+    },
+    {
+      "chan": "chan-5621_l",
+      "sourceId": "774",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5622_l",
@@ -2713,18 +2935,6 @@
       "sourceId": "2174",
       "systemSourceId": "Division 5",
       "host": "cfsse12"
-    },
-    {
-      "chan": "chan-5407_l",
-      "sourceId": "552",
-      "systemSourceId": "Division 13",
-      "host": "cfase06"
-    },
-    {
-      "chan": "chan-6259_l",
-      "sourceId": "2119",
-      "systemSourceId": "Division 10",
-      "host": "cfmse02"
     },
     {
       "chan": "chan-6260_l",
@@ -2751,22 +2961,28 @@
       "host": "cfsse09"
     },
     {
+      "chan": "chan-5474_l",
+      "sourceId": "619",
+      "systemSourceId": "Division 3",
+      "host": "cfese04"
+    },
+    {
       "chan": "chan-5483_l",
       "sourceId": "628",
       "systemSourceId": "Division 3",
       "host": "cfese05"
     },
     {
-      "chan": "chan-5877_l",
-      "sourceId": "1038",
-      "systemSourceId": "Division 7",
-      "host": "cfsse09"
+      "chan": "chan-5623_l",
+      "sourceId": "776",
+      "systemSourceId": "Division 5",
+      "host": "cfsse10"
     },
     {
-      "chan": "chan-5936_l",
-      "sourceId": "1097",
+      "chan": "chan-5880_l",
+      "sourceId": "1041",
       "systemSourceId": "Division 7",
-      "host": "cfsse02"
+      "host": "cfsse04"
     },
     {
       "chan": "chan-6271_l",
@@ -2781,6 +2997,12 @@
       "host": "cfese03"
     },
     {
+      "chan": "chan-6422_l",
+      "sourceId": "2258",
+      "systemSourceId": "Division 6",
+      "host": "cfese05"
+    },
+    {
       "chan": "chan-6424_l",
       "sourceId": "2260",
       "systemSourceId": "Division 6",
@@ -2793,28 +3015,10 @@
       "host": "cfmse11"
     },
     {
-      "chan": "chan-6072_l",
-      "sourceId": "1233",
-      "systemSourceId": "Division 9",
+      "chan": "chan-5849_l",
+      "sourceId": "1010",
+      "systemSourceId": "Division 7",
       "host": "cftse09"
-    },
-    {
-      "chan": "chan-6073_l",
-      "sourceId": "1234",
-      "systemSourceId": "Division 9",
-      "host": "cftse10"
-    },
-    {
-      "chan": "chan-6074_l",
-      "sourceId": "1235",
-      "systemSourceId": "Division 9",
-      "host": "cftse11"
-    },
-    {
-      "chan": "chan-6075_l",
-      "sourceId": "1236",
-      "systemSourceId": "Division 9",
-      "host": "cftse12"
     },
     {
       "chan": "chan-5850_l",
@@ -2823,34 +3027,40 @@
       "host": "cftse11"
     },
     {
-      "chan": "chan-6077_l",
-      "sourceId": "1238",
-      "systemSourceId": "Division 9",
-      "host": "cftse04"
+      "chan": "chan-5851_l",
+      "sourceId": "1012",
+      "systemSourceId": "Division 7",
+      "host": "cftse07"
     },
     {
-      "chan": "chan-5627_l",
-      "sourceId": "781",
-      "systemSourceId": "Division 5",
-      "host": "cfsse13"
+      "chan": "chan-6463_l",
+      "sourceId": "2285",
+      "systemSourceId": "Division 1",
+      "host": "cfese04"
     },
     {
-      "chan": "chan-5628_l",
-      "sourceId": "782",
+      "chan": "chan-5624_l",
+      "sourceId": "777",
       "systemSourceId": "Division 5",
-      "host": "cfsse01"
+      "host": "cfsse09"
+    },
+    {
+      "chan": "chan-5626_l",
+      "sourceId": "780",
+      "systemSourceId": "Division 5",
+      "host": "cfsse12"
+    },
+    {
+      "chan": "chan-5629_l",
+      "sourceId": "783",
+      "systemSourceId": "Division 5",
+      "host": "cfsse02"
     },
     {
       "chan": "chan-5631_l",
       "sourceId": "785",
       "systemSourceId": "Division 5",
       "host": "cfsse04"
-    },
-    {
-      "chan": "chan-5632_l",
-      "sourceId": "786",
-      "systemSourceId": "Division 5",
-      "host": "cfsse05"
     },
     {
       "chan": "chan-5634_l",
@@ -2877,12 +3087,6 @@
       "host": "cfsse05"
     },
     {
-      "chan": "chan-6323_l",
-      "sourceId": "2176",
-      "systemSourceId": "Division 5",
-      "host": "cfsse04"
-    },
-    {
       "chan": "chan-6324_l",
       "sourceId": "2177",
       "systemSourceId": "Division 5",
@@ -2901,16 +3105,28 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-5315_l",
-      "sourceId": "458",
-      "systemSourceId": "Division 1",
-      "host": "cfese03"
+      "chan": "chan-5108_l",
+      "sourceId": "251",
+      "systemSourceId": "City of Wilmington",
+      "host": "cfsse04"
     },
     {
-      "chan": "chan-5319_l",
-      "sourceId": "462",
+      "chan": "chan-5117_l",
+      "sourceId": "260",
+      "systemSourceId": "City of Wilmington",
+      "host": "cfsse08"
+    },
+    {
+      "chan": "chan-5313_l",
+      "sourceId": "456",
       "systemSourceId": "Division 1",
-      "host": "cfese05"
+      "host": "cfese02"
+    },
+    {
+      "chan": "chan-5317_l",
+      "sourceId": "460",
+      "systemSourceId": "Division 1",
+      "host": "cfese04"
     },
     {
       "chan": "chan-5321_l",
@@ -2919,16 +3135,16 @@
       "host": "cfese06"
     },
     {
-      "chan": "chan-5323_l",
-      "sourceId": "466",
-      "systemSourceId": "Division 1",
-      "host": "cfese02"
-    },
-    {
       "chan": "chan-5325_l",
       "sourceId": "468",
       "systemSourceId": "Division 1",
       "host": "cfese01"
+    },
+    {
+      "chan": "chan-5326_l",
+      "sourceId": "469",
+      "systemSourceId": "Division 1",
+      "host": "cfese02"
     },
     {
       "chan": "chan-5327_l",
@@ -2937,8 +3153,8 @@
       "host": "cfese02"
     },
     {
-      "chan": "chan-5329_l",
-      "sourceId": "473",
+      "chan": "chan-5328_l",
+      "sourceId": "471",
       "systemSourceId": "Division 1",
       "host": "cfese03"
     },
@@ -2961,22 +3177,22 @@
       "host": "cfese02"
     },
     {
-      "chan": "chan-5125_l",
-      "sourceId": "268",
-      "systemSourceId": "City of Wilmington",
-      "host": "cfsse12"
+      "chan": "chan-5450_l",
+      "sourceId": "595",
+      "systemSourceId": "Division 1",
+      "host": "cfese06"
     },
     {
-      "chan": "chan-6133_l",
-      "sourceId": "1353",
+      "chan": "chan-6131_l",
+      "sourceId": "1351",
+      "systemSourceId": "Division 1",
+      "host": "cfese06"
+    },
+    {
+      "chan": "chan-6449_l",
+      "sourceId": "2276",
       "systemSourceId": "Division 1",
       "host": "cfese04"
-    },
-    {
-      "chan": "chan-6134_l",
-      "sourceId": "1354",
-      "systemSourceId": "Division 1",
-      "host": "cfese01"
     },
     {
       "chan": "chan-6135_l",
@@ -2989,12 +3205,6 @@
       "sourceId": "1356",
       "systemSourceId": "Division 1",
       "host": "cfese05"
-    },
-    {
-      "chan": "chan-6137_l",
-      "sourceId": "1357",
-      "systemSourceId": "Division 1",
-      "host": "cfese06"
     },
     {
       "chan": "chan-6138_l",
@@ -3015,16 +3225,22 @@
       "host": "cfese01"
     },
     {
+      "chan": "chan-6181_l",
+      "sourceId": "2056",
+      "systemSourceId": "Division 1",
+      "host": "cfese02"
+    },
+    {
       "chan": "chan-6301_l",
       "sourceId": "2154",
       "systemSourceId": "Division 1",
       "host": "cfese04"
     },
     {
-      "chan": "chan-5470_l",
-      "sourceId": "615",
+      "chan": "chan-5469_l",
+      "sourceId": "614",
       "systemSourceId": "Division 2",
-      "host": "cfsse06"
+      "host": "cfsse05"
     },
     {
       "chan": "chan-5478_l",
@@ -3033,16 +3249,16 @@
       "host": "cfese04"
     },
     {
+      "chan": "chan-5479_l",
+      "sourceId": "624",
+      "systemSourceId": "Division 3",
+      "host": "cfese06"
+    },
+    {
       "chan": "chan-6142_l",
       "sourceId": "1362",
       "systemSourceId": "Division 1",
       "host": "cfese05"
-    },
-    {
-      "chan": "chan-6144_l",
-      "sourceId": "1364",
-      "systemSourceId": "Division 1",
-      "host": "cfese03"
     },
     {
       "chan": "chan-6145_l",
@@ -3057,16 +3273,10 @@
       "host": "cfase02"
     },
     {
-      "chan": "chan-6316_l",
-      "sourceId": "2169",
-      "systemSourceId": "Division 14",
-      "host": "cfsse05"
-    },
-    {
-      "chan": "chan-5111_l",
-      "sourceId": "254",
+      "chan": "chan-5105_l",
+      "sourceId": "248",
       "systemSourceId": "City of Wilmington",
-      "host": "cfsse05"
+      "host": "cfsse02"
     },
     {
       "chan": "chan-5113_l",
@@ -3075,22 +3285,22 @@
       "host": "cfsse06"
     },
     {
-      "chan": "chan-5115_l",
-      "sourceId": "258",
+      "chan": "chan-5126_l",
+      "sourceId": "269",
       "systemSourceId": "City of Wilmington",
-      "host": "cfsse07"
-    },
-    {
-      "chan": "chan-5130_l",
-      "sourceId": "273",
-      "systemSourceId": "City of Wilmington",
-      "host": "cfsse03"
+      "host": "cfsse13"
     },
     {
       "chan": "chan-5408_l",
       "sourceId": "553",
       "systemSourceId": "Division 13",
       "host": "cfase03"
+    },
+    {
+      "chan": "chan-5409_l",
+      "sourceId": "554",
+      "systemSourceId": "Division 13",
+      "host": "cfase04"
     },
     {
       "chan": "chan-5410_l",
@@ -3105,28 +3315,34 @@
       "host": "cfase02"
     },
     {
+      "chan": "chan-5414_l",
+      "sourceId": "559",
+      "systemSourceId": "Division 13",
+      "host": "cfase03"
+    },
+    {
       "chan": "chan-5433_l",
       "sourceId": "578",
       "systemSourceId": "Division 14",
       "host": "cfase05"
     },
     {
-      "chan": "chan-6268_l",
-      "sourceId": "2129",
+      "chan": "chan-6254_l",
+      "sourceId": "2114",
       "systemSourceId": "Division 14",
-      "host": "cfsse03"
-    },
-    {
-      "chan": "chan-5413_l",
-      "sourceId": "558",
-      "systemSourceId": "Division 14",
-      "host": "cfase06"
+      "host": "cfase03"
     },
     {
       "chan": "chan-5523_l",
       "sourceId": "670",
       "systemSourceId": "Division 4",
       "host": "cfsse09"
+    },
+    {
+      "chan": "chan-5524_l",
+      "sourceId": "672",
+      "systemSourceId": "Division 4",
+      "host": "cfsse11"
     },
     {
       "chan": "chan-5525_l",
@@ -3141,6 +3357,12 @@
       "host": "cfmse04"
     },
     {
+      "chan": "chan-5187_l",
+      "sourceId": "330",
+      "systemSourceId": "Division 10",
+      "host": "cfmse05"
+    },
+    {
       "chan": "chan-5188_l",
       "sourceId": "331",
       "systemSourceId": "Division 10",
@@ -3151,6 +3373,12 @@
       "sourceId": "333",
       "systemSourceId": "Division 10",
       "host": "cfmse08"
+    },
+    {
+      "chan": "chan-5192_l",
+      "sourceId": "335",
+      "systemSourceId": "Division 10",
+      "host": "cfmse10"
     },
     {
       "chan": "chan-5891_l",
@@ -3165,16 +3393,10 @@
       "host": "cfmse11"
     },
     {
-      "chan": "chan-5791_l",
-      "sourceId": "951",
+      "chan": "chan-5750_l",
+      "sourceId": "907",
       "systemSourceId": "Division 6",
-      "host": "cfese01"
-    },
-    {
-      "chan": "chan-5792_l",
-      "sourceId": "952",
-      "systemSourceId": "Division 6",
-      "host": "cfese03"
+      "host": "cfese02"
     },
     {
       "chan": "chan-5794_l",
@@ -3201,6 +3423,12 @@
       "host": "cfsse05"
     },
     {
+      "chan": "chan-6304_l",
+      "sourceId": "2157",
+      "systemSourceId": "Division 5",
+      "host": "cfsse06"
+    },
+    {
       "chan": "chan-5118_l",
       "sourceId": "261",
       "systemSourceId": "City of Wilmington",
@@ -3225,10 +3453,10 @@
       "host": "cfsse11"
     },
     {
-      "chan": "chan-5131_l",
-      "sourceId": "274",
+      "chan": "chan-5129_l",
+      "sourceId": "272",
       "systemSourceId": "City of Wilmington",
-      "host": "cfsse04"
+      "host": "cfsse02"
     },
     {
       "chan": "chan-5324_l",
@@ -3237,16 +3465,16 @@
       "host": "cfsse06"
     },
     {
+      "chan": "chan-6338_l",
+      "sourceId": "2189",
+      "systemSourceId": "Division 11",
+      "host": "cftse03"
+    },
+    {
       "chan": "chan-5893_l",
       "sourceId": "1054",
       "systemSourceId": "Division 7",
       "host": "cftse04"
-    },
-    {
-      "chan": "chan-5894_l",
-      "sourceId": "1055",
-      "systemSourceId": "Division 7",
-      "host": "cftse05"
     },
     {
       "chan": "chan-6078_l",
@@ -3273,22 +3501,34 @@
       "host": "cftse01"
     },
     {
+      "chan": "chan-6083_l",
+      "sourceId": "1244",
+      "systemSourceId": "Division 9",
+      "host": "cftse03"
+    },
+    {
       "chan": "chan-6084_l",
       "sourceId": "1245",
       "systemSourceId": "Division 9",
       "host": "cftse09"
     },
     {
-      "chan": "chan-6085_l",
-      "sourceId": "1246",
+      "chan": "chan-6088_l",
+      "sourceId": "1249",
       "systemSourceId": "Division 9",
-      "host": "cftse10"
+      "host": "cftse02"
     },
     {
-      "chan": "chan-6091_l",
-      "sourceId": "1252",
+      "chan": "chan-6089_l",
+      "sourceId": "1250",
       "systemSourceId": "Division 9",
-      "host": "cftse06"
+      "host": "cftse04"
+    },
+    {
+      "chan": "chan-6090_l",
+      "sourceId": "1251",
+      "systemSourceId": "Division 9",
+      "host": "cftse05"
     },
     {
       "chan": "chan-6093_l",
@@ -3297,10 +3537,10 @@
       "host": "cftse08"
     },
     {
-      "chan": "chan-6095_l",
-      "sourceId": "1256",
+      "chan": "chan-6094_l",
+      "sourceId": "1255",
       "systemSourceId": "Division 9",
-      "host": "cftse03"
+      "host": "cftse01"
     },
     {
       "chan": "chan-6096_l",
@@ -3315,16 +3555,16 @@
       "host": "cftse10"
     },
     {
-      "chan": "chan-6099_l",
-      "sourceId": "1260",
-      "systemSourceId": "Division 9",
-      "host": "cftse12"
-    },
-    {
       "chan": "chan-6100_l",
       "sourceId": "1261",
       "systemSourceId": "Division 9",
       "host": "cftse02"
+    },
+    {
+      "chan": "chan-6101_l",
+      "sourceId": "1262",
+      "systemSourceId": "Division 9",
+      "host": "cftse04"
     },
     {
       "chan": "chan-6102_l",
@@ -3345,22 +3585,16 @@
       "host": "cftse02"
     },
     {
-      "chan": "chan-5992_l",
-      "sourceId": "1153",
-      "systemSourceId": "Division 9",
-      "host": "cftse04"
-    },
-    {
       "chan": "chan-5993_l",
       "sourceId": "1154",
       "systemSourceId": "Division 9",
       "host": "cftse05"
     },
     {
-      "chan": "chan-5995_l",
-      "sourceId": "1156",
+      "chan": "chan-5994_l",
+      "sourceId": "1155",
       "systemSourceId": "Division 9",
-      "host": "cftse07"
+      "host": "cftse06"
     },
     {
       "chan": "chan-5997_l",
@@ -3369,10 +3603,22 @@
       "host": "cftse11"
     },
     {
-      "chan": "chan-6003_l",
-      "sourceId": "1164",
+      "chan": "chan-5999_l",
+      "sourceId": "1160",
       "systemSourceId": "Division 9",
-      "host": "cftse12"
+      "host": "cftse03"
+    },
+    {
+      "chan": "chan-6002_l",
+      "sourceId": "1163",
+      "systemSourceId": "Division 9",
+      "host": "cftse11"
+    },
+    {
+      "chan": "chan-6004_l",
+      "sourceId": "1165",
+      "systemSourceId": "Division 9",
+      "host": "cftse02"
     },
     {
       "chan": "chan-6005_l",
@@ -3381,10 +3627,10 @@
       "host": "cftse04"
     },
     {
-      "chan": "chan-6007_l",
-      "sourceId": "1168",
+      "chan": "chan-6006_l",
+      "sourceId": "1167",
       "systemSourceId": "Division 9",
-      "host": "cftse06"
+      "host": "cftse05"
     },
     {
       "chan": "chan-6008_l",
@@ -3411,22 +3657,16 @@
       "host": "cftse03"
     },
     {
-      "chan": "chan-6106_l",
-      "sourceId": "1267",
-      "systemSourceId": "Division 9",
-      "host": "cftse01"
-    },
-    {
       "chan": "chan-6107_l",
       "sourceId": "1268",
       "systemSourceId": "Division 9",
       "host": "cftse03"
     },
     {
-      "chan": "chan-6108_l",
-      "sourceId": "1269",
+      "chan": "chan-6340_l",
+      "sourceId": "2190",
       "systemSourceId": "Division 9",
-      "host": "cftse08"
+      "host": "cftse06"
     },
     {
       "chan": "chan-6341_l",
@@ -3435,10 +3675,28 @@
       "host": "cftse09"
     },
     {
-      "chan": "chan-5355_l",
-      "sourceId": "499",
+      "chan": "chan-5435_l",
+      "sourceId": "580",
+      "systemSourceId": "Division 14",
+      "host": "cfase06"
+    },
+    {
+      "chan": "chan-5343_l",
+      "sourceId": "487",
       "systemSourceId": "Division 1",
-      "host": "cfsse08"
+      "host": "cfese04"
+    },
+    {
+      "chan": "chan-5361_l",
+      "sourceId": "505",
+      "systemSourceId": "Division 1",
+      "host": "cfese05"
+    },
+    {
+      "chan": "chan-5363_l",
+      "sourceId": "507",
+      "systemSourceId": "Division 1",
+      "host": "cfsse10"
     },
     {
       "chan": "chan-5527_l",
@@ -3453,16 +3711,16 @@
       "host": "cfese03"
     },
     {
-      "chan": "chan-5529_l",
-      "sourceId": "677",
-      "systemSourceId": "Division 4",
-      "host": "cfese04"
-    },
-    {
       "chan": "chan-5530_l",
       "sourceId": "678",
       "systemSourceId": "Division 4",
       "host": "cfese06"
+    },
+    {
+      "chan": "chan-5532_l",
+      "sourceId": "680",
+      "systemSourceId": "Division 4",
+      "host": "cfese05"
     },
     {
       "chan": "chan-5533_l",
@@ -3477,28 +3735,22 @@
       "host": "cfese01"
     },
     {
+      "chan": "chan-5535_l",
+      "sourceId": "683",
+      "systemSourceId": "Division 4",
+      "host": "cfese01"
+    },
+    {
       "chan": "chan-5536_l",
       "sourceId": "684",
       "systemSourceId": "Division 4",
       "host": "cfese01"
     },
     {
-      "chan": "chan-5537_l",
-      "sourceId": "685",
+      "chan": "chan-5539_l",
+      "sourceId": "687",
       "systemSourceId": "Division 4",
-      "host": "cfese06"
-    },
-    {
-      "chan": "chan-5538_l",
-      "sourceId": "686",
-      "systemSourceId": "Division 4",
-      "host": "cfese06"
-    },
-    {
-      "chan": "chan-5540_l",
-      "sourceId": "688",
-      "systemSourceId": "Division 4",
-      "host": "cfese05"
+      "host": "cfese02"
     },
     {
       "chan": "chan-5644_l",
@@ -3519,10 +3771,22 @@
       "host": "cfsse02"
     },
     {
+      "chan": "chan-6187_l",
+      "sourceId": "2062",
+      "systemSourceId": "Division 5",
+      "host": "cfsse11"
+    },
+    {
       "chan": "chan-6188_l",
       "sourceId": "2063",
       "systemSourceId": "Division 5",
       "host": "cfsse01"
+    },
+    {
+      "chan": "chan-6190_l",
+      "sourceId": "2065",
+      "systemSourceId": "Division 5",
+      "host": "cfsse13"
     },
     {
       "chan": "chan-5436_l",
@@ -3531,28 +3795,40 @@
       "host": "cfase01"
     },
     {
-      "chan": "chan-5437_l",
-      "sourceId": "582",
+      "chan": "chan-5636_l",
+      "sourceId": "790",
+      "systemSourceId": "Division 5",
+      "host": "cfsse10"
+    },
+    {
+      "chan": "chan-5438_l",
+      "sourceId": "583",
       "systemSourceId": "Division 14",
-      "host": "cfase02"
+      "host": "cfase04"
     },
     {
-      "chan": "chan-5637_l",
-      "sourceId": "791",
+      "chan": "chan-5639_l",
+      "sourceId": "793",
       "systemSourceId": "Division 5",
-      "host": "cfsse09"
+      "host": "cfsse12"
     },
     {
-      "chan": "chan-5638_l",
-      "sourceId": "792",
+      "chan": "chan-5640_l",
+      "sourceId": "794",
       "systemSourceId": "Division 5",
-      "host": "cfsse11"
+      "host": "cfsse13"
     },
     {
       "chan": "chan-6281_l",
       "sourceId": "2139",
       "systemSourceId": "Division 13",
       "host": "cfase03"
+    },
+    {
+      "chan": "chan-6282_l",
+      "sourceId": "2140",
+      "systemSourceId": "Division 13",
+      "host": "cfase02"
     },
     {
       "chan": "chan-5453_l",
@@ -3585,6 +3861,12 @@
       "host": "cfese05"
     },
     {
+      "chan": "chan-5459_l",
+      "sourceId": "604",
+      "systemSourceId": "Division 2",
+      "host": "cfese01"
+    },
+    {
       "chan": "chan-5461_l",
       "sourceId": "606",
       "systemSourceId": "Division 2",
@@ -3597,22 +3879,10 @@
       "host": "cfese02"
     },
     {
-      "chan": "chan-5465_l",
-      "sourceId": "610",
+      "chan": "chan-5464_l",
+      "sourceId": "609",
       "systemSourceId": "Division 2",
-      "host": "cfese05"
-    },
-    {
-      "chan": "chan-5472_l",
-      "sourceId": "617",
-      "systemSourceId": "Division 2",
-      "host": "cfese01"
-    },
-    {
-      "chan": "chan-5541_l",
-      "sourceId": "689",
-      "systemSourceId": "Division 4",
-      "host": "cfese03"
+      "host": "cfese06"
     },
     {
       "chan": "chan-5543_l",
@@ -3621,22 +3891,28 @@
       "host": "cfese06"
     },
     {
-      "chan": "chan-5544_l",
-      "sourceId": "692",
-      "systemSourceId": "Division 4",
-      "host": "cfese01"
-    },
-    {
       "chan": "chan-5545_l",
       "sourceId": "693",
       "systemSourceId": "Division 4",
       "host": "cfese03"
     },
     {
+      "chan": "chan-5646_l",
+      "sourceId": "800",
+      "systemSourceId": "Division 5",
+      "host": "cfsse06"
+    },
+    {
       "chan": "chan-5647_l",
       "sourceId": "801",
       "systemSourceId": "Division 5",
       "host": "cfsse07"
+    },
+    {
+      "chan": "chan-5648_l",
+      "sourceId": "802",
+      "systemSourceId": "Division 5",
+      "host": "cfsse08"
     },
     {
       "chan": "chan-5649_l",
@@ -3651,26 +3927,20 @@
       "host": "cfsse09"
     },
     {
-      "chan": "chan-5651_l",
-      "sourceId": "805",
+      "chan": "chan-5654_l",
+      "sourceId": "808",
       "systemSourceId": "Division 5",
-      "host": "cfsse11"
+      "host": "cfsse01"
     },
     {
-      "chan": "chan-5655_l",
-      "sourceId": "809",
+      "chan": "chan-5656_l",
+      "sourceId": "810",
       "systemSourceId": "Division 5",
-      "host": "cfsse02"
+      "host": "cfsse03"
     },
     {
       "chan": "chan-6232_l",
       "sourceId": "2092",
-      "systemSourceId": "Division 4",
-      "host": "cfese05"
-    },
-    {
-      "chan": "chan-6233_l",
-      "sourceId": "2093",
       "systemSourceId": "Division 4",
       "host": "cfese05"
     },
@@ -3681,22 +3951,22 @@
       "host": "cfese03"
     },
     {
-      "chan": "chan-5657_l",
-      "sourceId": "811",
+      "chan": "chan-5658_l",
+      "sourceId": "812",
       "systemSourceId": "Division 5",
-      "host": "cfsse04"
+      "host": "cfsse05"
+    },
+    {
+      "chan": "chan-5546_l",
+      "sourceId": "694",
+      "systemSourceId": "Division 4",
+      "host": "cfese06"
     },
     {
       "chan": "chan-5547_l",
       "sourceId": "695",
       "systemSourceId": "Division 4",
       "host": "cfese01"
-    },
-    {
-      "chan": "chan-5548_l",
-      "sourceId": "696",
-      "systemSourceId": "Division 4",
-      "host": "cfese05"
     },
     {
       "chan": "chan-5549_l",
@@ -3711,22 +3981,28 @@
       "host": "cfese02"
     },
     {
+      "chan": "chan-5552_l",
+      "sourceId": "700",
+      "systemSourceId": "Division 4",
+      "host": "cfese04"
+    },
+    {
+      "chan": "chan-5555_l",
+      "sourceId": "703",
+      "systemSourceId": "Division 4",
+      "host": "cfese03"
+    },
+    {
+      "chan": "chan-5797_l",
+      "sourceId": "957",
+      "systemSourceId": "Division 6",
+      "host": "cfese02"
+    },
+    {
       "chan": "chan-5195_l",
       "sourceId": "338",
       "systemSourceId": "Division 10",
       "host": "cfmse01"
-    },
-    {
-      "chan": "chan-5196_l",
-      "sourceId": "339",
-      "systemSourceId": "Division 10",
-      "host": "cfmse02"
-    },
-    {
-      "chan": "chan-5197_l",
-      "sourceId": "340",
-      "systemSourceId": "Division 10",
-      "host": "cfmse03"
     },
     {
       "chan": "chan-5198_l",
@@ -3735,10 +4011,10 @@
       "host": "cfmse04"
     },
     {
-      "chan": "chan-5199_l",
-      "sourceId": "342",
+      "chan": "chan-5203_l",
+      "sourceId": "346",
       "systemSourceId": "Division 10",
-      "host": "cfmse05"
+      "host": "cfmse09"
     },
     {
       "chan": "chan-5204_l",
@@ -3747,22 +4023,22 @@
       "host": "cfmse10"
     },
     {
-      "chan": "chan-5205_l",
-      "sourceId": "348",
-      "systemSourceId": "Division 10",
-      "host": "cfmse11"
-    },
-    {
       "chan": "chan-5206_l",
       "sourceId": "349",
       "systemSourceId": "Division 10",
       "host": "cfmse12"
     },
     {
-      "chan": "chan-5209_l",
-      "sourceId": "352",
+      "chan": "chan-5208_l",
+      "sourceId": "351",
       "systemSourceId": "Division 10",
-      "host": "cfmse03"
+      "host": "cfmse02"
+    },
+    {
+      "chan": "chan-5210_l",
+      "sourceId": "353",
+      "systemSourceId": "Division 10",
+      "host": "cfmse04"
     },
     {
       "chan": "chan-5211_l",
@@ -3777,10 +4053,16 @@
       "host": "cfmse06"
     },
     {
-      "chan": "chan-5215_l",
-      "sourceId": "358",
+      "chan": "chan-5214_l",
+      "sourceId": "357",
       "systemSourceId": "Division 10",
-      "host": "cfmse09"
+      "host": "cfmse08"
+    },
+    {
+      "chan": "chan-5216_l",
+      "sourceId": "359",
+      "systemSourceId": "Division 10",
+      "host": "cfmse10"
     },
     {
       "chan": "chan-5217_l",
@@ -3789,28 +4071,22 @@
       "host": "cfmse11"
     },
     {
+      "chan": "chan-5218_l",
+      "sourceId": "361",
+      "systemSourceId": "Division 10",
+      "host": "cfmse01"
+    },
+    {
       "chan": "chan-5219_l",
       "sourceId": "362",
       "systemSourceId": "Division 10",
       "host": "cfmse12"
     },
     {
-      "chan": "chan-5220_l",
-      "sourceId": "363",
-      "systemSourceId": "Division 10",
-      "host": "cfmse01"
-    },
-    {
       "chan": "chan-5114_l",
       "sourceId": "257",
       "systemSourceId": "City of Wilmington",
       "host": "cfsse07"
-    },
-    {
-      "chan": "chan-5124_l",
-      "sourceId": "267",
-      "systemSourceId": "City of Wilmington",
-      "host": "cfsse12"
     },
     {
       "chan": "chan-5127_l",
@@ -3831,6 +4107,12 @@
       "host": "cfase05"
     },
     {
+      "chan": "chan-5481_l",
+      "sourceId": "626",
+      "systemSourceId": "Division 3",
+      "host": "cfese04"
+    },
+    {
       "chan": "chan-5798_l",
       "sourceId": "958",
       "systemSourceId": "Division 6",
@@ -3843,22 +4125,34 @@
       "host": "cfese01"
     },
     {
+      "chan": "chan-5104_l",
+      "sourceId": "247",
+      "systemSourceId": "City of Wilmington",
+      "host": "cfsse02"
+    },
+    {
       "chan": "chan-5107_l",
       "sourceId": "250",
       "systemSourceId": "City of Wilmington",
       "host": "cfsse03"
     },
     {
-      "chan": "chan-5119_l",
-      "sourceId": "262",
+      "chan": "chan-5110_l",
+      "sourceId": "253",
       "systemSourceId": "City of Wilmington",
-      "host": "cfsse09"
+      "host": "cfsse05"
     },
     {
-      "chan": "chan-6146_l",
-      "sourceId": "1366",
-      "systemSourceId": "Division 1",
-      "host": "cfese01"
+      "chan": "chan-6073_l",
+      "sourceId": "1234",
+      "systemSourceId": "Division 9",
+      "host": "cftse10"
+    },
+    {
+      "chan": "chan-6075_l",
+      "sourceId": "1236",
+      "systemSourceId": "Division 9",
+      "host": "cftse12"
     }
   ]
 }
