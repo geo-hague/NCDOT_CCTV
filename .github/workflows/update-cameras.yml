@@ -27,6 +27,18 @@ jobs:
           CAMERA_API_KEY: ${{ secrets.CAMERA_API_KEY }}
         run: node fetch-cameras.js
 
+      # fetch-cameras.js writes cameras.json WITHOUT sourceIds. This re-applies
+      # the real scraped ATMS sourceId/systemSourceId (from the committed
+      # sourceids.json) by matching on chan. Without this step, cameras.json
+      # would have no sourceIds and no camera would play.
+      - name: Merge scraped sourceIds
+        run: |
+          if [ -f sourceids.json ]; then
+            node merge-sourceids.js
+          else
+            echo "::warning::sourceids.json not found - skipping merge. Cameras will not play until you commit sourceids.json (run scrape-sourceids.js)."
+          fi
+
       - name: Commit updated cameras.json
         run: |
           git config user.name "github-actions[bot]"
