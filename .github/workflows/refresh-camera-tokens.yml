@@ -1,0 +1,52 @@
+name: Refresh Camera Tokens
+
+on:
+  schedule:
+    # Every 6 hours. Stream tokens expire, so this re-scrapes them and rewrites
+    # cameras.json. If cameras start dying between runs, the token lifetime is
+    # shorter than 6h — lower this interval (e.g. '0 */3 * * *' for every 3h).
+    # If tokens turn out to last a long time, you can relax it.
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Scrape fresh tokens
+        run: node scrape-tokens.js
+
+      - name: Merge tokens into cameras.json
+        run: node merge-tokens.js
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-debug
+          path: |
+            *.png
+          if-no-files-found: ignore
+
+      - name: Commit updated cameras.json + tokens.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cameras.json tokens.json
+          git diff --staged --quiet && echo "No changes" || git commit -m "Refresh camera tokens"
+          git push
