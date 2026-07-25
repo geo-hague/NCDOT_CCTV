@@ -1,38 +1,36 @@
-name: Update Camera List (daily)
+name: Mint Camera Tokens (frequent)
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    # Every 3 hours. This is the fast, browser-free refresh — it just POSTs for
+    # fresh tokens, so it finishes in ~1-2 min. Tokens last ~a day per your
+    # testing, so every 3h is comfortable headroom; adjust freely.
+    - cron: '0 */3 * * *'
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  update-cameras:
+  mint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Fetch camera list
-        env:
-          CAMERA_API_KEY: ${{ secrets.CAMERA_API_KEY }}
-        run: node fetch-cameras.js
-      # fetch writes a tokenless cameras.json; immediately mint tokens back in so
-      # the site isn't left tokenless until the next mint run.
       - name: Mint fresh tokens
         run: |
           if [ -f camera-auth.json ]; then
             node mint-tokens.js
           else
-            echo "::warning::camera-auth.json missing — run Scrape Camera Credentials first."
+            echo "::warning::camera-auth.json missing — run the Scrape Camera Credentials workflow first."
           fi
       - name: Commit cameras.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add cameras.json
-          git diff --staged --quiet && echo "No changes to commit" || git commit -m "Update cameras.json"
+          git diff --staged --quiet && echo "No changes" || git commit -m "Refresh camera tokens"
           git push
