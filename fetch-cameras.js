@@ -4,6 +4,11 @@
 //
 // Run with: node fetch-cameras.js
 // Requires env var CAMERA_API_KEY to be set.
+//
+// CHANGE FROM ORIGINAL: we now also keep each camera's SourceId and Source,
+// which the API returns but the old version discarded. These are exactly the
+// values the stream-token endpoint (GetSecureTokenUriBySourceId) needs, so
+// carrying them here means no scraping is required to play tokenized streams.
 
 const fs = require('fs');
 const path = require('path');
@@ -50,11 +55,20 @@ async function run() {
                 location: cam.Location || view.Description || '',
                 county: view.County || null,
                 videoUrl: view.VideoUrl,
+
+                // --- NEW: needed to mint a stream token at play time ---
+                // sourceId       -> POST field "sourceId"       (e.g. "822")
+                // systemSourceId -> POST field "systemSourceId" (e.g. "Division 5")
+                sourceId: cam.SourceId != null ? String(cam.SourceId) : null,
+                systemSourceId: cam.Source || null,
             });
         }
     }
 
     console.log(`✅ Flattened to ${cameras.length} playable camera views.`);
+
+    const withSource = cameras.filter(c => c.sourceId && c.systemSourceId).length;
+    console.log(`   ${withSource}/${cameras.length} have sourceId + systemSourceId.`);
 
     const output = {
         updated: new Date().toISOString(),
