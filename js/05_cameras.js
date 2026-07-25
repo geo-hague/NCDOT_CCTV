@@ -162,6 +162,31 @@ function hideRetryUI(el) {
   if (wrapper) wrapper.classList.remove('stalled');
 }
 
+// Turns a camera's tokenless base URL into a playable one by asking the
+// worker for a fresh ?token=... (minted per sourceId). Falls back to the
+// bare URL if anything is missing/fails.
+async function resolveStreamUrl(cam) {
+  if (!cam.sourceId || !cam.systemSourceId ||
+      typeof STREAM_TOKEN_PROXY_URL === 'undefined' || !STREAM_TOKEN_PROXY_URL) {
+    return cam.videoUrl;
+  }
+  try {
+    const resp = await fetch(STREAM_TOKEN_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sourceId: cam.sourceId, systemSourceId: cam.systemSourceId }),
+    });
+    if (!resp.ok) return cam.videoUrl;
+    const tokenQs = await resp.json(); // "?token=..."
+    if (typeof tokenQs === 'string' && tokenQs.startsWith('?')) {
+      return cam.videoUrl + tokenQs;
+    }
+    return cam.videoUrl;
+  } catch (e) {
+    return cam.videoUrl;
+  }
+}
+
 // Attaches (and, on failure, retries/recovers) a stream for the given
 // camera into the given slot element. Cellular connections can be slow
 // enough that a manifest never arrives or segments stall entirely, so
@@ -196,10 +221,12 @@ function attachStream(el, cam) {
     showRetryUI(el);
   }
 
-  function startLoad() {
+  async function startLoad() {
     destroySlotEl(el); // clear any previous instance/timer for this element
     hideRetryUI(el);
     setLoadingState(el, true);
+
+    const streamUrl = await resolveStreamUrl(cam);
     armManifestTimeout();
 
     if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -209,7 +236,7 @@ function attachStream(el, cam) {
         manifestLoadingTimeOut: 10000,
         manifestLoadingMaxRetry: 2,
       });
-      hls.loadSource(cam.videoUrl);
+      hls.loadSource(streamUrl);
       hls.attachMedia(video);
       hlsByEl.set(el, hls);
 
@@ -233,7 +260,7 @@ function attachStream(el, cam) {
         }
       });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = cam.videoUrl;
+      video.src = streamUrl;
       video.addEventListener('loadedmetadata', () => {
         clearManifestTimeout();
         setLoadingState(el, false);
