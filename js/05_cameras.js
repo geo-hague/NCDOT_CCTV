@@ -173,11 +173,27 @@ function hideRetryUI(el) {
 // Turns a camera's tokenless base URL into a playable one by asking the
 // worker for a fresh ?token=... (minted per sourceId). Falls back to the
 // bare URL if anything is missing/fails.
+//
+// Tokens are cached briefly per camera so repeated loads of the same camera
+// (retries, slot swaps, GPS churn) don't hit the worker every time. Keep the
+// TTL comfortably BELOW the real token lifetime, or HLS could get a token that
+// expires mid-playback. Measure the real lifetime (play a ?token= URL and see
+// how long before it 401s) and set TOKEN_TTL_MS to well under that.
+const TOKEN_TTL_MS = 4 * 60 * 1000; // 4 minutes — conservative; adjust once lifetime is known
+const _tokenCache = new Map(); // camId -> { url, expires }
+
 async function resolveStreamUrl(cam) {
   if (!cam.sourceId || !cam.systemSourceId ||
       typeof STREAM_TOKEN_PROXY_URL === 'undefined' || !STREAM_TOKEN_PROXY_URL) {
     return cam.videoUrl;
   }
+
+  const key = String(cam.id);
+  const cached = _tokenCache.get(key);
+  if (cached && cached.expires > Date.now()) {
+    return cached.url;
+  }
+
   try {
     const resp = await fetch(STREAM_TOKEN_PROXY_URL, {
       method: 'POST',
@@ -187,7 +203,9 @@ async function resolveStreamUrl(cam) {
     if (!resp.ok) return cam.videoUrl;
     const tokenQs = await resp.json(); // "?token=..."
     if (typeof tokenQs === 'string' && tokenQs.startsWith('?')) {
-      return cam.videoUrl + tokenQs;
+      const url = cam.videoUrl + tokenQs;
+      _tokenCache.set(key, { url, expires: Date.now() + TOKEN_TTL_MS });
+      return url;
     }
     return cam.videoUrl;
   } catch (e) {
@@ -254,6 +272,7 @@ function attachStream(el, cam) {
         if (el._retryCount < MAX_STREAM_RETRIES) {
           el._retryCount++;
           const backoffMs = 1500 * el._retryCount;
+          _tokenCache.delete(String(cam.id)); // force a fresh token in case this one expired
           setTimeout(startLoad, backoffMs);
         } else {
           handleFailure();
@@ -269,6 +288,7 @@ function attachStream(el, cam) {
       video.addEventListener('error', () => {
         if (el._retryCount < MAX_STREAM_RETRIES) {
           el._retryCount++;
+          _tokenCache.delete(String(cam.id)); // force a fresh token in case this one expired
           setTimeout(startLoad, 1500 * el._retryCount);
         } else {
           handleFailure();
