@@ -1,6 +1,6 @@
 {
-  "updated": "2026-07-25T04:15:57.821Z",
-  "count": 1050,
+  "updated": "2026-07-25T10:26:42.711Z",
+  "count": 1049,
   "cameras": [
     {
       "id": 4020,
@@ -651,16 +651,6 @@
       "location": "CCTV10-US74-263.8E_FOWLER",
       "county": null,
       "videoUrl": "https://cfmse01.services.ncdot.gov:8887/chan-5207_l/index.m3u8"
-    },
-    {
-      "id": 4092,
-      "roadway": "US-74",
-      "direction": "Southbound",
-      "lat": 35.032,
-      "lon": -80.5451,
-      "location": "CCTV10-US74-264.0W",
-      "county": null,
-      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5208_l/index.m3u8"
     },
     {
       "id": 4093,
@@ -2863,16 +2853,6 @@
       "videoUrl": "https://cfase06.services.ncdot.gov:8887/chan-5371_l/index.m3u8"
     },
     {
-      "id": 5122,
-      "roadway": "I-26",
-      "direction": "Southbound",
-      "lat": 35.6156,
-      "lon": -82.57283,
-      "location": "CCTV13-I26-25W_BROADWAY",
-      "county": null,
-      "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5372_l/index.m3u8"
-    },
-    {
       "id": 5123,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -4341,6 +4321,16 @@
       "location": "CCTV04-I95-141M_NC43",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8"
     },
     {
       "id": 5430,
