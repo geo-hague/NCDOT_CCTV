@@ -55,20 +55,16 @@ async function run() {
                 location: cam.Location || view.Description || '',
                 county: view.County || null,
                 videoUrl: view.VideoUrl,
-
-                // --- NEW: needed to mint a stream token at play time ---
-                // sourceId       -> POST field "sourceId"       (e.g. "822")
-                // systemSourceId -> POST field "systemSourceId" (e.g. "Division 5")
-                sourceId: cam.SourceId != null ? String(cam.SourceId) : null,
-                systemSourceId: cam.Source || null,
+                // sourceId / systemSourceId are added by merge-sourceids.js from
+                // scraped ATMS values. The API's own SourceId is the channel
+                // number, NOT the ATMS sourceId the token endpoint needs, so we
+                // deliberately do not use it here.
             });
         }
     }
 
     console.log(`✅ Flattened to ${cameras.length} playable camera views.`);
 
-    const withSource = cameras.filter(c => c.sourceId && c.systemSourceId).length;
-    console.log(`   ${withSource}/${cameras.length} have sourceId + systemSourceId.`);
 
     const output = {
         updated: new Date().toISOString(),
