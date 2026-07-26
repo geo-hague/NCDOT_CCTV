@@ -47,7 +47,16 @@ async function run() {
   await page.setViewport({ width: 1280, height: 3000 });
   await page.setUserAgent(UA);
 
-  let chan = null, token = null, host = null;
+  let chan = null, token = null, host = null, activity = false;
+  page.on('request', (req) => {
+    // ANY sign the camera's handshake started -> let it run the full window.
+    // (Without this, slow-but-working cameras get cut off at DEAD_ROW_MS.)
+    const u = req.url();
+    if (u.includes('GetSecureTokenUriBySourceId') || u.includes('.services.ncdot.gov') ||
+        u.includes('m3u8') || u.includes('manifest') || u.includes('stream')) {
+      activity = true;
+    }
+  });
   page.on('response', (response) => {          // response event, like your scraper.js
     const url = response.url();
     if (url.includes('index.m3u8') || url.includes('manifest.m3u8') || url.includes('stream')) {
@@ -71,7 +80,7 @@ async function run() {
       rowsTotal += rows;
 
       for (let i = 0; i < rows; i++) {
-        chan = null; token = null; host = null;
+        chan = null; token = null; host = null; activity = false;
 
         const clicked = await page.evaluate((rowIndex) => {
           const r = document.querySelectorAll('table tbody tr')[rowIndex];
@@ -85,11 +94,9 @@ async function run() {
         if (!clicked) continue;
 
         const startT = Date.now();
-        let sawActivity = false;
         while (Date.now() - startT < MAX_WAIT_MS) {
-          if (chan || token) sawActivity = true;
-          if (chan && token) break;
-          if (!sawActivity && Date.now() - startT > DEAD_ROW_MS) break;
+          if (chan && token) break;                                    // captured -> done
+          if (!activity && Date.now() - startT > DEAD_ROW_MS) break;   // truly dead row -> bail fast
           await sleep(150);
         }
         if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; }
