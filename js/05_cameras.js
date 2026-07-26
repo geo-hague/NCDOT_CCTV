@@ -170,40 +170,13 @@ function hideRetryUI(el) {
 // backoff, and finally a manual "tap to retry" button if all of that
 // fails — so a slow/dead camera never just sits there black forever
 // with no explanation or way to recover.
-// Mints a fresh, short-lived stream token AT PLAY TIME from this camera's own
-// credentials (sourceId/systemSourceId/uuid, stored in cameras.json). The token
-// dies in ~a minute, so it must be minted right before use — a cached/baked
-// token would already be dead. A short cache avoids re-minting for the same
-// camera within its lifetime; retries clear it so an expired token re-mints.
-const TOKEN_TTL_MS = 45 * 1000; // keep BELOW the real token lifetime
-const _tokenCache = new Map();  // camId -> { url, expires }
-
-async function resolveStreamUrl(cam) {
-  if (!cam.sourceId || !cam.systemSourceId || !cam.uuid ||
-      typeof STREAM_TOKEN_PROXY_URL === 'undefined' || !STREAM_TOKEN_PROXY_URL) {
-    return cam.videoUrl; // no creds -> bare URL (will 401; camera was offline at last scrape)
-  }
-  const key = String(cam.id);
-  const cached = _tokenCache.get(key);
-  if (cached && cached.expires > Date.now()) return cached.url;
-
-  try {
-    const resp = await fetch(STREAM_TOKEN_PROXY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sourceId: cam.sourceId, systemSourceId: cam.systemSourceId, uuid: cam.uuid }),
-    });
-    if (!resp.ok) return cam.videoUrl;
-    const tokenQs = await resp.json(); // "?token=..."
-    if (typeof tokenQs === 'string' && tokenQs.startsWith('?')) {
-      const url = cam.videoUrl + tokenQs;
-      _tokenCache.set(key, { url, expires: Date.now() + TOKEN_TTL_MS });
-      return url;
-    }
-    return cam.videoUrl;
-  } catch (e) {
-    return cam.videoUrl;
-  }
+// Appends the camera's baked ?token=... (scraped from the live stream and
+// written into cameras.json by merge-tokens.js, refreshed on a schedule). Same
+// approach as the working I-26 viewer. Falls back to the bare URL if a camera
+// has no token (offline / not captured at last scrape — it will 401, expected).
+function resolveStreamUrl(cam) {
+  if (cam.token) return cam.videoUrl + '?token=' + cam.token;
+  return cam.videoUrl;
 }
 
 function attachStream(el, cam) {
@@ -232,12 +205,12 @@ function attachStream(el, cam) {
     showRetryUI(el);
   }
 
-  async function startLoad() {
+  function startLoad() {
     destroySlotEl(el); // clear any previous instance/timer for this element
     hideRetryUI(el);
     setLoadingState(el, true);
 
-    const streamUrl = await resolveStreamUrl(cam);
+    const streamUrl = resolveStreamUrl(cam);
     armManifestTimeout();
 
     if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -265,7 +238,6 @@ function attachStream(el, cam) {
         if (el._retryCount < MAX_STREAM_RETRIES) {
           el._retryCount++;
           const backoffMs = 1500 * el._retryCount;
-          _tokenCache.delete(String(cam.id));
           setTimeout(startLoad, backoffMs);
         } else {
           handleFailure();
@@ -281,7 +253,6 @@ function attachStream(el, cam) {
       video.addEventListener('error', () => {
         if (el._retryCount < MAX_STREAM_RETRIES) {
           el._retryCount++;
-          _tokenCache.delete(String(cam.id));
           setTimeout(startLoad, 1500 * el._retryCount);
         } else {
           handleFailure();
