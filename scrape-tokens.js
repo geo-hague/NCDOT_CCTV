@@ -35,8 +35,14 @@ function distinctRoadways() {
 }
 
 async function run() {
-  const roadways = distinctRoadways();
-  console.log(`Scraping ${roadways.length} I/US/NC roadways.`);
+  const allRoadways = distinctRoadways();
+  // Shard across parallel jobs: SHARD="k/N" -> this job takes every Nth roadway.
+  // Separate jobs run on separate runners (separate sessions/IPs), which avoids
+  // the throttling a single session hits when it scrapes everything at once.
+  const [k, N] = (process.env.SHARD || '0/1').split('/').map(Number);
+  const roadways = allRoadways.filter((_, idx) => idx % N === k);
+  const OUT = process.env.OUT_FILE || 'tokens.json';
+  console.log(`Shard ${k}/${N}: ${roadways.length} of ${allRoadways.length} roadways -> ${OUT}`);
 
   const puppeteer = require('puppeteer');
   const browser = await puppeteer.launch({
@@ -120,8 +126,8 @@ async function run() {
   await browser.close();
 
   const entries = Object.entries(byChan).map(([chan, v]) => ({ chan, ...v }));
-  fs.writeFileSync(path.join(__dirname, 'tokens.json'),
+  fs.writeFileSync(path.join(__dirname, OUT),
     JSON.stringify({ updated: new Date().toISOString(), count: entries.length, entries }, null, 2), 'utf8');
-  console.log(`\nDone. ${entries.length} tokens -> tokens.json`);
+  console.log(`\nDone. ${entries.length} tokens -> ${OUT}`);
 }
 run().catch(err => { console.error('Scrape failed:', err); process.exit(1); });
