@@ -60,6 +60,11 @@ async function run() {
   let captured = 0;
 
   for (let i = 0; i < rows; i++) {
+    // Clean slate: make sure no leftover player modal is covering the page,
+    // or this row's "Show Video" click lands on the overlay and does nothing.
+    await page.keyboard.press('Escape');
+    await sleep(250);
+
     chan = null; token = null; host = null; activity = false;
 
     const clicked = await page.evaluate((rowIndex) => {
@@ -81,6 +86,9 @@ async function run() {
     }
     if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; }
 
+    // Force-close: click any close control AND press Escape, then let it settle
+    // fully before the next camera (a half-open/half-closed modal is what was
+    // eating ~25% of clicks).
     await page.evaluate(() => {
       const els = [...document.querySelectorAll('button, a, span, .close, [data-dismiss="modal"]')];
       const c = els.find(el => {
@@ -89,7 +97,8 @@ async function run() {
       });
       if (c) c.click();
     });
-    await sleep(300);
+    await page.keyboard.press('Escape');
+    await sleep(700);
   }
 
   await browser.close();
