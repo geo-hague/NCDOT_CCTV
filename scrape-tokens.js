@@ -37,10 +37,14 @@ async function run() {
   await page.setUserAgent(UA);
 
   let chan = null, token = null, host = null, activity = false;
+  let seenUrls = [];
   page.on('request', (req) => {
     const u = req.url();
     if (u.includes('GetSecureTokenUriBySourceId') || u.includes('.services.ncdot.gov') ||
-        u.includes('m3u8') || u.includes('manifest') || u.includes('stream')) activity = true;
+        u.includes('m3u8') || u.includes('manifest') || u.includes('stream')) {
+      activity = true;
+      if (u.includes('m3u8') || u.includes('stream') || u.includes('chan-')) seenUrls.push(u);
+    }
   });
   page.on('response', (response) => {
     const url = response.url();
@@ -66,7 +70,7 @@ async function run() {
   async function attempt(i, windowMs) {
     await page.keyboard.press('Escape');
     await sleep(250);
-    chan = null; token = null; host = null; activity = false;
+    chan = null; token = null; host = null; activity = false; seenUrls = [];
 
     const clicked = await page.evaluate((rowIndex) => {
       const r = document.querySelectorAll('table tbody tr')[rowIndex];
@@ -93,6 +97,11 @@ async function run() {
     }
     let ok = false;
     if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; ok = true; }
+    else if (process.env.DEBUG_MISS) {
+      const sample = seenUrls.slice(0, 3).map(u => u.replace(/token=[^&]*/, 'token=...'));
+      console.log(`  [miss] row activity=${activity} streamUrlsSeen=${seenUrls.length}` +
+                  (sample.length ? ` e.g. ${sample.join(' | ')}` : ' (none)'));
+    }
 
     await page.evaluate(() => {
       const els = [...document.querySelectorAll('button, a, span, .close, [data-dismiss="modal"]')];
