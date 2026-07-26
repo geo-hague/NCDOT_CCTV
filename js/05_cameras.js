@@ -109,6 +109,16 @@ function destroySlotEl(el) {
     try { hls.detachMedia(); hls.destroy(); } catch (e) {}
     hlsByEl.delete(el);
   }
+  // Fully release the <video>'s own connection too. hls.destroy() alone can
+  // leave the media element holding an open connection to the :8887 server;
+  // browsing tears down/rebuilds streams rapidly, and those lingering
+  // connections pile up until the server starts refusing new ones (the 401s
+  // you see going ahead/behind, which a full page reload clears). This is the
+  // same teardown the working I-26 viewer does: pause, clear src, reload.
+  const v = el.querySelector('video');
+  if (v) {
+    try { v.pause(); v.removeAttribute('src'); v.load(); } catch (e) {}
+  }
   if (el._manifestTimeout) {
     clearTimeout(el._manifestTimeout);
     el._manifestTimeout = null;
