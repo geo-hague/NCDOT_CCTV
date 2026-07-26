@@ -213,12 +213,24 @@ function attachStream(el, cam) {
     const streamUrl = resolveStreamUrl(cam);
     armManifestTimeout();
 
+    // Attach the token to EVERY hls.js request, not just the manifest. Some
+    // stream servers enforce the token on the video segments too; without this
+    // the segments 401 and the stream dies ~1s in (the "flash then end").
+    const tokMatch = streamUrl.match(/[?&](token=[^&]+)/);
+    const tokenParam = tokMatch ? tokMatch[1] : null;
+
     if (typeof Hls !== 'undefined' && Hls.isSupported()) {
       const hls = new Hls({
         maxBufferLength: 6,
         lowLatencyMode: true,
         manifestLoadingTimeOut: 10000,
         manifestLoadingMaxRetry: 2,
+        xhrSetup: (xhr, url) => {
+          if (tokenParam && !/[?&]token=/.test(url)) {
+            const sep = url.includes('?') ? '&' : '?';
+            xhr.open('GET', url + sep + tokenParam, true);
+          }
+        },
       });
       hls.loadSource(streamUrl);
       hls.attachMedia(video);
