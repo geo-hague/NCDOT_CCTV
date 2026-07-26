@@ -74,8 +74,14 @@ async function run() {
       r.scrollIntoView({ block: 'center', behavior: 'instant' });
       const els = [...r.querySelectorAll('button, a, span, td')];
       const btn = els.find(el => (el.textContent || '').trim().toLowerCase() === 'show video');
-      if (btn) { btn.click(); return true; }
-      return false;
+      if (!btn) return false;
+      // A single .click() sometimes doesn't "take" (you see this by hand too —
+      // needing a rapid double-tap). Fire real mouse events, twice, to mimic
+      // the double-tap that reliably starts the stream.
+      const fire = (t) => btn.dispatchEvent(new MouseEvent(t, { bubbles: true, cancelable: true, view: window }));
+      fire('mousedown'); fire('mouseup'); fire('click');
+      fire('mousedown'); fire('mouseup'); fire('click');
+      return true;
     }, i);
     if (!clicked) return 'nobutton';
 
