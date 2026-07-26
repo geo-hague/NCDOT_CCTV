@@ -46,6 +46,7 @@ jobs:
           ROADWAY: ${{ matrix.chunk.roadway }}
           START: ${{ matrix.chunk.start }}
           OUT_FILE: tokens-part.json
+          DEBUG_MISS: '1'
         run: node scrape-tokens.js
       - uses: actions/upload-artifact@v4
         with:
