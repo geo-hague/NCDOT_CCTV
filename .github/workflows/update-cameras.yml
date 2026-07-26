@@ -20,18 +20,15 @@ jobs:
         env:
           CAMERA_API_KEY: ${{ secrets.CAMERA_API_KEY }}
         run: node fetch-cameras.js
-      - name: Merge credentials into cameras.json
+      - name: Re-apply tokens
         run: |
-          if [ -f camera-auth.json ]; then
-            node merge-auth.js
-          else
-            echo "::warning::camera-auth.json missing — run Scrape Camera Credentials first."
-          fi
+          if [ -f tokens.json ]; then node merge-tokens.js; else echo "no tokens.json yet"; fi
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add cameras.json
-          git diff --staged --quiet && echo "No changes to commit" || git commit -m "Update cameras.json"
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "Update cameras.json"
           git pull --rebase origin main
           git push
