@@ -59,46 +59,53 @@ async function run() {
   const byChan = {};
   let captured = 0;
 
+  const MAX_ATTEMPTS = 3;
+  const RETRY_WAIT_MS = 12000; // per-attempt window after the first
+
   for (let i = 0; i < rows; i++) {
-    // Clean slate: make sure no leftover player modal is covering the page,
-    // or this row's "Show Video" click lands on the overlay and does nothing.
-    await page.keyboard.press('Escape');
-    await sleep(250);
+    let got = false;
+    let sawButton = true;
 
-    chan = null; token = null; host = null; activity = false;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS && !got && sawButton; attempt++) {
+      // Clean slate so the click lands on the row, not a leftover modal overlay.
+      await page.keyboard.press('Escape');
+      await sleep(250);
 
-    const clicked = await page.evaluate((rowIndex) => {
-      const r = document.querySelectorAll('table tbody tr')[rowIndex];
-      if (!r) return false;
-      r.scrollIntoView({ block: 'center', behavior: 'instant' });
-      const els = [...r.querySelectorAll('button, a, span, td')];
-      const btn = els.find(el => (el.textContent || '').trim().toLowerCase() === 'show video');
-      if (btn) { btn.click(); return true; }
-      return false;
-    }, i);
-    if (!clicked) continue;
+      chan = null; token = null; host = null; activity = false;
 
-    const startT = Date.now();
-    while (Date.now() - startT < MAX_WAIT_MS) {
-      if (chan && token) break;
-      if (!activity && Date.now() - startT > DEAD_ROW_MS) break;
-      await sleep(150);
-    }
-    if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; }
+      const clicked = await page.evaluate((rowIndex) => {
+        const r = document.querySelectorAll('table tbody tr')[rowIndex];
+        if (!r) return false;
+        r.scrollIntoView({ block: 'center', behavior: 'instant' });
+        const els = [...r.querySelectorAll('button, a, span, td')];
+        const btn = els.find(el => (el.textContent || '').trim().toLowerCase() === 'show video');
+        if (btn) { btn.click(); return true; }
+        return false;
+      }, i);
+      if (!clicked) { sawButton = false; break; } // not a video row — don't retry
 
-    // Force-close: click any close control AND press Escape, then let it settle
-    // fully before the next camera (a half-open/half-closed modal is what was
-    // eating ~25% of clicks).
-    await page.evaluate(() => {
-      const els = [...document.querySelectorAll('button, a, span, .close, [data-dismiss="modal"]')];
-      const c = els.find(el => {
-        const t = (el.textContent || '').trim();
-        return t.toLowerCase() === 'close' || t === '×' || el.classList.contains('close');
+      const window = attempt === 0 ? MAX_WAIT_MS : RETRY_WAIT_MS;
+      const startT = Date.now();
+      while (Date.now() - startT < window) {
+        if (chan && token) break;
+        if (!activity && Date.now() - startT > DEAD_ROW_MS) break; // nothing fired — retry
+        await sleep(150);
+      }
+
+      if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; got = true; }
+
+      // Force-close before the next attempt / next camera.
+      await page.evaluate(() => {
+        const els = [...document.querySelectorAll('button, a, span, .close, [data-dismiss="modal"]')];
+        const c = els.find(el => {
+          const t = (el.textContent || '').trim();
+          return t.toLowerCase() === 'close' || t === '×' || el.classList.contains('close');
+        });
+        if (c) c.click();
       });
-      if (c) c.click();
-    });
-    await page.keyboard.press('Escape');
-    await sleep(700);
+      await page.keyboard.press('Escape');
+      await sleep(got ? 500 : 700);
+    }
   }
 
   await browser.close();
