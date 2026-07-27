@@ -36,25 +36,29 @@ async function run() {
   await page.setViewport({ width: 1280, height: 3000 });
   await page.setUserAgent(UA);
 
-  let chan = null, token = null, host = null, activity = false;
-  let seenUrls = [];
+  let activity = false;
+  let m3u8Urls = [];      // every .m3u8 URL seen during the current attempt
+  let clickToken = null;  // token minted by THIS click's GetSecureTokenUriBySourceId POST
+
   page.on('request', (req) => {
     const u = req.url();
     if (u.includes('GetSecureTokenUriBySourceId') || u.includes('.services.ncdot.gov') ||
-        u.includes('m3u8') || u.includes('manifest') || u.includes('stream')) {
-      activity = true;
-      if (u.includes('m3u8') || u.includes('stream') || u.includes('chan-')) seenUrls.push(u);
-    }
+        u.includes('m3u8') || u.includes('stream')) activity = true;
+    if (u.includes('.m3u8')) m3u8Urls.push(u);
   });
-  page.on('response', (response) => {
-    const url = response.url();
-    // Match ANY .m3u8 playlist (index.m3u8, manifest.m3u8, xflow.m3u8, ...).
-    // Some cameras (e.g. parts of I-485) serve xflow.m3u8, which the old
-    // index-only check silently skipped -> deterministic misses.
-    if (url.includes('.m3u8')) {
-      const cM = url.match(/(chan-[0-9a-zA-Z_]+)/i);
-      const tM = url.match(/[?&]token=([0-9a-fA-F]+)/);
-      if (cM && tM) { chan = cM[1].toLowerCase(); token = tM[1]; try { host = new URL(url).hostname.split('.')[0]; } catch (e) {} }
+
+  // The clicked camera's token is the one returned by the POST that the click
+  // triggers. Only the clicked camera's playlist carries that exact token; the
+  // map's background-preloaded playlists carry different ones. We take the FIRST
+  // POST after the click (direct result of clicking) and ignore later ones.
+  page.on('response', async (response) => {
+    const req = response.request();
+    if (req.method() === 'POST' && req.url().includes('GetSecureTokenUriBySourceId') && !clickToken) {
+      try {
+        const body = await response.text();       // "?token=HEX"
+        const m = body.match(/token=([0-9a-fA-F]+)/);
+        if (m) clickToken = m[1];
+      } catch (e) {}
     }
   });
 
@@ -73,7 +77,8 @@ async function run() {
   async function attempt(i, windowMs) {
     await page.keyboard.press('Escape');
     await sleep(250);
-    chan = null; token = null; host = null; activity = false; seenUrls = [];
+    let chan = null, token = null, host = null;
+    activity = false; m3u8Urls = []; clickToken = null;
 
     const clicked = await page.evaluate((rowIndex) => {
       const r = document.querySelectorAll('table tbody tr')[rowIndex];
@@ -94,6 +99,15 @@ async function run() {
 
     const startT = Date.now();
     while (Date.now() - startT < windowMs) {
+      // Match the playlist carrying THIS click's token -> the clicked camera.
+      if (!chan && clickToken) {
+        const hit = m3u8Urls.find(u => u.includes('token=' + clickToken) && /chan-/i.test(u));
+        if (hit) {
+          const cM = hit.match(/(chan-[0-9a-zA-Z_]+)/i);
+          chan = cM[1].toLowerCase(); token = clickToken;
+          try { host = new URL(hit).hostname.split('.')[0]; } catch (e) {}
+        }
+      }
       if (chan && token) break;
       if (!activity && Date.now() - startT > DEAD_ROW_MS) break;
       await sleep(150);
@@ -101,9 +115,7 @@ async function run() {
     let ok = false;
     if (chan && token) { if (!byChan[chan]) captured++; byChan[chan] = { token, host }; ok = true; }
     else if (process.env.DEBUG_MISS) {
-      const sample = seenUrls.slice(0, 3).map(u => u.replace(/token=[^&]*/, 'token=...'));
-      console.log(`  [miss] row activity=${activity} streamUrlsSeen=${seenUrls.length}` +
-                  (sample.length ? ` e.g. ${sample.join(' | ')}` : ' (none)'));
+      console.log(`  [miss] activity=${activity} clickToken=${clickToken ? 'yes' : 'no'} m3u8Seen=${m3u8Urls.length}`);
     }
 
     await page.evaluate(() => {
