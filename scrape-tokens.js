@@ -48,7 +48,10 @@ async function run() {
   });
   page.on('response', (response) => {
     const url = response.url();
-    if (url.includes('index.m3u8') || url.includes('manifest.m3u8') || url.includes('stream')) {
+    // Match ANY .m3u8 playlist (index.m3u8, manifest.m3u8, xflow.m3u8, ...).
+    // Some cameras (e.g. parts of I-485) serve xflow.m3u8, which the old
+    // index-only check silently skipped -> deterministic misses.
+    if (url.includes('.m3u8')) {
       const cM = url.match(/(chan-[0-9a-zA-Z_]+)/i);
       const tM = url.match(/[?&]token=([0-9a-fA-F]+)/);
       if (cM && tM) { chan = cM[1].toLowerCase(); token = tM[1]; try { host = new URL(url).hostname.split('.')[0]; } catch (e) {} }
