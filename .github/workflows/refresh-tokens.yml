@@ -2,7 +2,7 @@ name: Refresh Camera Tokens
 
 on:
   schedule:
-    - cron: '0 9,15 * * *'
+    - cron: '0 6,9,12,15 * * *'
   workflow_dispatch: {}
 
 permissions:
