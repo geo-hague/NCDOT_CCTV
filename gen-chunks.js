@@ -12,7 +12,7 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const log = (...a) => console.error(...a);
 
 function distinctRoadways() {
-  const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'cameras.json'), 'utf8'));
+  const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'docs/cameras.json'), 'utf8'));
   const set = new Set();
   for (const c of data.cameras) {
     const rw = c.roadway && String(c.roadway).trim();
