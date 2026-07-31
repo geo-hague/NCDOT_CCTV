@@ -2,7 +2,7 @@
 // Run after scrape-tokens.js (and after fetch-cameras.js):  node merge-tokens.js
 const fs = require('fs');
 const path = require('path');
-const camerasPath = path.join(__dirname, 'cameras.json');
+const camerasPath = path.join(__dirname, 'docs/cameras.json');
 const cameras = JSON.parse(fs.readFileSync(camerasPath, 'utf8'));
 const tokens = JSON.parse(fs.readFileSync(path.join(__dirname, 'tokens.json'), 'utf8'));
 const byChan = new Map();
