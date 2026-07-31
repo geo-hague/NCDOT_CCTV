@@ -72,7 +72,7 @@ async function run() {
         cameras,
     };
 
-    const outPath = path.join(__dirname, 'cameras.json');
+    const outPath = path.join(__dirname, 'docs/cameras.json');
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2), 'utf8');
     console.log(`🎉 Saved to ${outPath}`);
 }
