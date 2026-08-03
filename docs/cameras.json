@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-03T10:05:10.049Z",
-  "count": 1050,
+  "updated": "2026-08-03T10:33:57.988Z",
+  "count": 1044,
   "cameras": [
     {
       "id": 4020,
@@ -4464,16 +4464,6 @@
       "token": "62dc2c54a72d641ad771a250f941820121572138c5f2b387fa7931b4ee4385ff"
     },
     {
-      "id": 5396,
-      "roadway": "US-70",
-      "direction": "Westbound",
-      "lat": 35.26605,
-      "lon": -77.67615,
-      "location": "CCTV02-US70-380W_NC148",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
-    },
-    {
       "id": 5397,
       "roadway": "Other",
       "direction": "Both Directions",
@@ -5331,6 +5321,17 @@
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5560_l/index.m3u8",
       "token": "3c31e2a216290641b09514a622cebb26816e0b4c6384a5120ba6466bd712ae67"
+    },
+    {
+      "id": 5484,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 36.34113,
+      "lon": -78.40745,
+      "location": "CCTV05-I85-214N_NC39",
+      "county": null,
+      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5561_l/index.m3u8",
+      "token": "901a20b78741327b543998809123de972af1ce3c6ede3a9f235cc2b980efc6ac"
     },
     {
       "id": 5485,
@@ -6729,16 +6730,6 @@
       "token": "fad8f938410fd4b0c8ea3fe4a09cd04b5da48097f94f5902a01576cdff7052eb"
     },
     {
-      "id": 5624,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.83612,
-      "lon": -78.64984,
-      "location": "CCTV05-I440-7.5W",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5703_l/index.m3u8"
-    },
-    {
       "id": 5625,
       "roadway": "I-440",
       "direction": "Southbound",
@@ -6758,16 +6749,6 @@
       "location": "CCTV05-EDWARDSMILL_WADE",
       "county": null,
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
-    },
-    {
-      "id": 5627,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.8348,
-      "lon": -78.6381,
-      "location": "CCTV05-I440-8W_SIXFORKS",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5706_l/index.m3u8"
     },
     {
       "id": 5633,
@@ -6942,6 +6923,72 @@
       "county": null,
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5728_l/index.m3u8",
       "token": "09af74acc8b4d94d026f2344e29bfbe4401d9a9c43b5b822b2df2d4c0b272fdf"
+    },
+    {
+      "id": 5650,
+      "roadway": "I-540",
+      "direction": "Eastbound",
+      "lat": 35.91097,
+      "lon": -78.72819,
+      "location": "CCTV05-I540-7E_LEESVILLE",
+      "county": null,
+      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5729_l/index.m3u8",
+      "token": "f7f04dfe2df24051621875690d550f8d3fdf7c7bd864d8f724b0ad8a73d03e11"
+    },
+    {
+      "id": 5651,
+      "roadway": "I-540",
+      "direction": "Southbound",
+      "lat": 35.91256,
+      "lon": -78.72815,
+      "location": "CCTV05-I540-7W_LEESVILLERMS",
+      "county": null,
+      "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-5730_l/index.m3u8",
+      "token": "d9b4f4ca8952c8ba98090fc59802017faa9fd15aa182567c52404a5c00309b65"
+    },
+    {
+      "id": 5652,
+      "roadway": "I-540",
+      "direction": "Southbound",
+      "lat": 35.91519,
+      "lon": -78.7085,
+      "location": "CCTV05-I540-8W_RAY",
+      "county": null,
+      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5731_l/index.m3u8",
+      "token": "039ebf871b451343cc967508a695516f7bd4e6dd4a8e190f914005abdeafc40e"
+    },
+    {
+      "id": 5653,
+      "roadway": "I-540",
+      "direction": "Eastbound",
+      "lat": 35.91447,
+      "lon": -78.68206,
+      "location": "CCTV05-I540-9E_CREEDMOOR",
+      "county": null,
+      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5732_l/index.m3u8",
+      "token": "0aa02bf6002a122f62cf026f2395b375c06a4a4f38d4e0f2ff0f39ec7e0c3282"
+    },
+    {
+      "id": 5654,
+      "roadway": "I-540",
+      "direction": "Southbound",
+      "lat": 35.9158,
+      "lon": -78.68162,
+      "location": "CCTV05-I540-9W_CREEDMOORRMS",
+      "county": null,
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5733_l/index.m3u8",
+      "token": "2959e6cb4204a16abbd4b6c29947f4462e5710095387b30b513f708fe3bb4366"
+    },
+    {
+      "id": 5655,
+      "roadway": "I-587",
+      "direction": "Southbound",
+      "lat": 35.83344,
+      "lon": -78.29632,
+      "location": "CCTV05-US264-20W",
+      "county": null,
+      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5734_l/index.m3u8",
+      "token": "35bc1c8c3290220ad92ef646540050324b5b3cd20662f62fa4f2388d63063cb5"
     },
     {
       "id": 5656,
@@ -10042,16 +10089,6 @@
       "token": "3903c6ef01a006524f256bb40ba0d925b07ca643ab99528510baae5efc3d24c6"
     },
     {
-      "id": 5981,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.63103,
-      "lon": -78.56907,
-      "location": "CCTV05-NC540-36.8_rampfromI-40E309",
-      "county": null,
-      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-6147_l/index.m3u8"
-    },
-    {
       "id": 5982,
       "roadway": "NC-540",
       "direction": "Southbound",
@@ -10074,16 +10111,6 @@
       "token": "53c439fed60046df7fb211d03d11b4314fcc8c5599be58d82fbc1c617e697e6f"
     },
     {
-      "id": 5984,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.62259,
-      "lon": -78.60645,
-      "location": "CCTV05-NC540-39E_Benson",
-      "county": null,
-      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-6150_l/index.m3u8"
-    },
-    {
       "id": 5985,
       "roadway": "NC-540",
       "direction": "Eastbound",
@@ -10093,36 +10120,6 @@
       "county": null,
       "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-6151_l/index.m3u8",
       "token": "f9d62c5b456ab3c7a7542c5094167bb15e7521d59cccb8ab12a186be2cbea170"
-    },
-    {
-      "id": 5986,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.62216,
-      "lon": -78.6204,
-      "location": "CCTV05-NC540-40E_NC50/Benson",
-      "county": null,
-      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-6152_l/index.m3u8"
-    },
-    {
-      "id": 5987,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.63398,
-      "lon": -78.64173,
-      "location": "CCTV05-NC540-41.4W_Sauls",
-      "county": null,
-      "videoUrl": "https://cfsse03.services.ncdot.gov:8887/chan-6153_l/index.m3u8"
-    },
-    {
-      "id": 5988,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.63754,
-      "lon": -78.65465,
-      "location": "CCTV05-NC540-42.2E_HollandChurch",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-6154_l/index.m3u8"
     },
     {
       "id": 5989,
@@ -10147,16 +10144,6 @@
       "token": "016cf347a19b07d346bfdfccd2968a81866e3b4243d26e79e4b2b8f69fedd067"
     },
     {
-      "id": 5991,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.65202,
-      "lon": -78.68845,
-      "location": "CCTV05-NC540-44.2W_FannyBrown",
-      "county": null,
-      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-6157_l/index.m3u8"
-    },
-    {
       "id": 5992,
       "roadway": "NC-540",
       "direction": "Eastbound",
@@ -10168,36 +10155,6 @@
       "token": "f0a610e21d280e3730d53bcbb732643210fccacb9081773b945bf8cf54977d0a"
     },
     {
-      "id": 5993,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.66172,
-      "lon": -78.71577,
-      "location": "CCTV05-NC540-46.2E_LakeWheeler",
-      "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6159_l/index.m3u8"
-    },
-    {
-      "id": 5994,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.669,
-      "lon": -78.72398,
-      "location": "CCTV05-NC540-46.8W_JohnsonPond",
-      "county": null,
-      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-6160_l/index.m3u8"
-    },
-    {
-      "id": 5995,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.67139,
-      "lon": -78.73276,
-      "location": "CCTV05-NC540-47.2E_DeerMeadow",
-      "county": null,
-      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-6161_l/index.m3u8"
-    },
-    {
       "id": 5996,
       "roadway": "NC-540",
       "direction": "Eastbound",
@@ -10207,16 +10164,6 @@
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-6162_l/index.m3u8",
       "token": "411b63e6ed1c5e8bce04846c1a33cb840f3a4e0c99277342033e1733220597e4"
-    },
-    {
-      "id": 5997,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.67532,
-      "lon": -78.74414,
-      "location": "CCTV05-NC540-48W_BellsLake",
-      "county": null,
-      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-6163_l/index.m3u8"
     },
     {
       "id": 5998,
