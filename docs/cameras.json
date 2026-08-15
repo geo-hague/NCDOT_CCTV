@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-15T06:56:55.638Z",
+  "updated": "2026-08-15T07:23:07.665Z",
   "count": 1068,
   "cameras": [
     {
@@ -443,16 +443,6 @@
       "token": "5ded37d5c5b19e0a777a7137edce7032d1f0911b393bcb22963e4c464d7ac1c8"
     },
     {
-      "id": 4065,
-      "roadway": "I-485",
-      "direction": "Outer",
-      "lat": 35.3275,
-      "lon": -80.92965,
-      "location": "CCTV10-I485-16.1O",
-      "county": null,
-      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5180_l/index.m3u8"
-    },
-    {
       "id": 4066,
       "roadway": "I-85",
       "direction": "Northbound",
@@ -648,16 +638,6 @@
       "county": null,
       "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5200_l/index.m3u8",
       "token": "46c53d8387bf4949c43d9a5fdb2bbe7b25eed6dbbb7d407b05d943ab24096154"
-    },
-    {
-      "id": 4085,
-      "roadway": "US-74",
-      "direction": "Eastbound",
-      "lat": 35.07694,
-      "lon": -80.61122,
-      "location": "CCTV10-US74-259.5E_UNIONVILLE",
-      "county": null,
-      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-5201_l/index.m3u8"
     },
     {
       "id": 4086,
@@ -1681,16 +1661,6 @@
       "token": "512da7acf94353a5d6592577f931e0dc42e92ea6491dd334bb20819eac9b6eff"
     },
     {
-      "id": 4198,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.25471,
-      "lon": -80.98202,
-      "location": "CCTV10-I85-29S_SAMWILSON",
-      "county": null,
-      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5353_l/index.m3u8"
-    },
-    {
       "id": 4203,
       "roadway": "Airport Rd",
       "direction": "Southbound",
@@ -2130,7 +2100,7 @@
       "direction": "Southbound",
       "lat": 34.22341,
       "lon": -77.94477,
-      "location": "WLM 24 US-421@US-17B",
+      "location": "WLM 03 US-421@US-17/76",
       "county": null,
       "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5118_l/index.m3u8",
       "token": "fcf5e3767d7555a7c0aaae2cf0126c88e0b2c72979c5791b096aa661315b6f3f"
@@ -2195,7 +2165,7 @@
       "direction": "Southbound",
       "lat": 34.25272,
       "lon": -77.94673,
-      "location": "WLM 03 US-74@ISAHOLBRIDGE",
+      "location": "WLM 01 US-74@ISAHOLBRIDGEMLK",
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5124_l/index.m3u8",
       "token": "4537f84fa9875c0b3942d06bf47e99704bce00fcde778bb239615644750fb891"
@@ -2239,7 +2209,7 @@
       "direction": "Eastbound",
       "lat": 34.25016,
       "lon": -77.94774,
-      "location": "WLM 35 US-74@ISAHOLBRIDGE3RD",
+      "location": "WLM 02 US-74@ISAHOLBRIDGE3RD",
       "county": null,
       "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-5128_l/index.m3u8",
       "token": "6b8b125f80b03fe53e1284b26ee1b813094a0bf36a1fc48c9f4920ebee0a5e6b"
@@ -2294,7 +2264,7 @@
       "direction": "Southbound",
       "lat": 34.1907,
       "lon": -77.93375,
-      "location": "WLM 08 US-421@US-117",
+      "location": "WLM 04 US-421@US-117",
       "county": null,
       "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-5133_l/index.m3u8",
       "token": "b72a4064b12c344dd490b4342851799c52ef976af493b2144ebab15341c63a18"
@@ -4245,16 +4215,6 @@
       "token": "37bb88f8d6ffdbf5b2c1922ea02272d28594befd7ec7016b0c8d438d91a0d64f"
     },
     {
-      "id": 5369,
-      "roadway": "NC-12",
-      "direction": "Southbound",
-      "lat": 35.60647,
-      "lon": -75.46564,
-      "location": "CCTV01-NC12-38.5S_MIRLOBEACH",
-      "county": null,
-      "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6287_l/index.m3u8"
-    },
-    {
       "id": 5370,
       "roadway": "NC-12",
       "direction": "Northbound",
@@ -4822,6 +4782,17 @@
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8",
       "token": "9c7bfe222077189585505765f5da91a352906cc1e701186b94c6d8f01dda1807"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8",
+      "token": "9dcecb3c46e55b3c8eec76a8bc3570e20e7dd9207c7fc83d9986da08f721b2ce"
     },
     {
       "id": 5430,
@@ -5396,6 +5367,17 @@
       "token": "d4a63d82f7a71db057690b2e107833f3ad18b5851e0a10c01acfb89a95b5aa19"
     },
     {
+      "id": 5484,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 36.34113,
+      "lon": -78.40745,
+      "location": "CCTV05-I85-214N_NC39",
+      "county": null,
+      "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5561_l/index.m3u8",
+      "token": "dde486edc9d8511cae5725430a35ad0d77014a00b0ecf440d1939b9bd069f6d6"
+    },
+    {
       "id": 5485,
       "roadway": "I-85",
       "direction": "Northbound",
@@ -5625,6 +5607,17 @@
       "county": null,
       "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5582_l/index.m3u8",
       "token": "2e7ee44ac2dd016c869e63bada1728875946ccc4449046d8baa05082c38ed914"
+    },
+    {
+      "id": 5506,
+      "roadway": "I-885",
+      "direction": "Northbound",
+      "lat": 35.9243,
+      "lon": -78.86012,
+      "location": "CCTV05-I885-7N_TWALEXANDER",
+      "county": null,
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5583_l/index.m3u8",
+      "token": "9338b6092b273fe83b3fc8171521093dd4262804e53b78743c036c97ece149a5"
     },
     {
       "id": 5507,
@@ -10404,6 +10397,17 @@
       "county": null,
       "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6159_l/index.m3u8",
       "token": "07a1075feffa98324ecb77486dbc5e320558f52ae0ba6b568fdee8dc43f05c95"
+    },
+    {
+      "id": 5994,
+      "roadway": "NC-540",
+      "direction": "Southbound",
+      "lat": 35.669,
+      "lon": -78.72398,
+      "location": "CCTV05-NC540-46.8W_JohnsonPond",
+      "county": null,
+      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-6160_l/index.m3u8",
+      "token": "b1c5ff1fcf233ef817552ed53eef7ebd3ddb88e3ab2ae2a52f94c25150e10607"
     },
     {
       "id": 5995,
