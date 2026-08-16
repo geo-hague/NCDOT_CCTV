@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-16T06:57:15.714Z",
-  "count": 1068,
+  "updated": "2026-08-16T07:24:20.597Z",
+  "count": 1065,
   "cameras": [
     {
       "id": 4020,
@@ -4782,16 +4782,6 @@
       "token": "eb802e1e5c2f6c53c5aa8d8c5d851874dac633944d8f09a9a87614179aaa58bd"
     },
     {
-      "id": 5429,
-      "roadway": "I-95",
-      "direction": "Northbound",
-      "lat": 36.06359,
-      "lon": -77.82237,
-      "location": "CCTV04-I95-145N_NC48",
-      "county": null,
-      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8"
-    },
-    {
       "id": 5430,
       "roadway": "I-95",
       "direction": "Northbound",
@@ -6624,16 +6614,6 @@
       "county": null,
       "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5679_l/index.m3u8",
       "token": "d5446e3b38421334a525021545b8c219c401db0f4ff9abfc8e3149744583bdb0"
-    },
-    {
-      "id": 5602,
-      "roadway": "I-40",
-      "direction": "Eastbound",
-      "lat": 35.75247,
-      "lon": -78.64949,
-      "location": "CCTV05-I40-298E_US70",
-      "county": null,
-      "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-5680_l/index.m3u8"
     },
     {
       "id": 5603,
@@ -10396,16 +10376,6 @@
       "county": null,
       "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6159_l/index.m3u8",
       "token": "04e424026d44a4ed8e2646d570eb51239931e7ce44a0d37167c5c9fc232aebcb"
-    },
-    {
-      "id": 5994,
-      "roadway": "NC-540",
-      "direction": "Southbound",
-      "lat": 35.669,
-      "lon": -78.72398,
-      "location": "CCTV05-NC540-46.8W_JohnsonPond",
-      "county": null,
-      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-6160_l/index.m3u8"
     },
     {
       "id": 5995,
