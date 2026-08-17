@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-17T07:14:52.671Z",
+  "updated": "2026-08-17T07:44:31.293Z",
   "count": 1065,
   "cameras": [
     {
@@ -3876,16 +3876,6 @@
       "token": "899d8c274d7275068c770366b3bb2b22116540a6f269b1d37d78d6ff7ad1c436"
     },
     {
-      "id": 5338,
-      "roadway": "US-17 BUS",
-      "direction": "Eastbound",
-      "lat": 36.29544,
-      "lon": -76.2341,
-      "location": "CCTV01-US17Bus_GRIFFIN",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6141_l/index.m3u8"
-    },
-    {
       "id": 5339,
       "roadway": "US-17 BUS",
       "direction": "Eastbound",
@@ -4777,6 +4767,17 @@
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8",
       "token": "bea8c964f2eb2bdc50dd2aeb8666398e6c4d42208fe3f23a9f3d9ce2b08d40db"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8",
+      "token": "f2b230c9dab1602953ab721a568aec1953b5e059f01f01002f1b0fd0ad1ab4b2"
     },
     {
       "id": 5430,
