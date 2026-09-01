@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-01T11:33:52.801Z",
-  "count": 1083,
+  "updated": "2026-09-01T12:15:16.013Z",
+  "count": 1084,
   "cameras": [
     {
       "id": 4020,
@@ -67,6 +67,17 @@
       "county": null,
       "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5140_l/index.m3u8",
       "token": "74fe8ea0b121e04fe86c1d404e267c5a6d9f6582f267211a46b73583d420cd28"
+    },
+    {
+      "id": 4026,
+      "roadway": "I-77",
+      "direction": "Northbound",
+      "lat": 35.20918,
+      "lon": -80.87529,
+      "location": "CCTV10-I77-8N_REMOUNT",
+      "county": null,
+      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-5141_l/index.m3u8",
+      "token": "62450d73fb6be67ca5074071f21df54710c6ff7338c11019d542527729022071"
     },
     {
       "id": 4027,
@@ -1011,16 +1022,6 @@
       "county": null,
       "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5238_l/index.m3u8",
       "token": "3e2717cb07acc25290d16ad2ad1901e7646341de126eb1c485343f2598abe7db"
-    },
-    {
-      "id": 4123,
-      "roadway": "I-485",
-      "direction": "Inner",
-      "lat": 35.36847,
-      "lon": -80.77992,
-      "location": "CCTV10-I485-26.6I_PROSPERITY",
-      "county": null,
-      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-5239_l/index.m3u8"
     },
     {
       "id": 4125,
@@ -3547,6 +3548,17 @@
       "token": "02b6c37de182e01390fda241a35be4e2d628cbfcced04a4df735ed835883b295"
     },
     {
+      "id": 5307,
+      "roadway": "US-158",
+      "direction": "Westbound",
+      "lat": 36.05139,
+      "lon": -75.68389,
+      "location": "CCTV01-US158-5.5W_HELGA",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5326_l/index.m3u8",
+      "token": "c10d4e6092957591580af2193f5a1a2c00abdf44d3f2d7ab95e33592a6e30427"
+    },
+    {
       "id": 5308,
       "roadway": "US-158",
       "direction": "Westbound",
@@ -4748,16 +4760,6 @@
       "token": "772103aadf9fb1d299a7089002cd0410c03814121a12832a9b5852e8c27e3e47"
     },
     {
-      "id": 5427,
-      "roadway": "I-95",
-      "direction": "Both Directions",
-      "lat": 35.9815,
-      "lon": -77.87695,
-      "location": "CCTV04-I95-138M_US64",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5504_l/index.m3u8"
-    },
-    {
       "id": 5428,
       "roadway": "I-95",
       "direction": "Both Directions",
@@ -5240,16 +5242,6 @@
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5549_l/index.m3u8",
       "token": "75cce95024ebba31ebd47955f2c2c000f5958a4af3f98586471dec975159755c"
-    },
-    {
-      "id": 5473,
-      "roadway": "US-70 BYP",
-      "direction": "Both Directions",
-      "lat": 35.42564,
-      "lon": -77.97984,
-      "location": "CCTV04-US70BYP-356M_US117",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5550_l/index.m3u8"
     },
     {
       "id": 5474,
@@ -6480,6 +6472,17 @@
       "county": null,
       "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5668_l/index.m3u8",
       "token": "6d4f265cb08b234aa943f8f9ee86f290f797381bd0c6edde3bbfcc309debbb09"
+    },
+    {
+      "id": 5591,
+      "roadway": "I-40",
+      "direction": "Eastbound",
+      "lat": 35.84011,
+      "lon": -78.78192,
+      "location": "CCTV05-I40-286E_OLDREEDYCREEK",
+      "county": null,
+      "videoUrl": "https://cfsse03.services.ncdot.gov:8887/chan-5669_l/index.m3u8",
+      "token": "001689197c8b76557c3d15fea0cf918e665fd2c5cff56244564c64ba6160a385"
     },
     {
       "id": 5592,
@@ -11567,6 +11570,16 @@
       "location": "PCCTVSW-053",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
+    },
+    {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.9110090863262,
+      "lon": -76.8172770001624,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
     },
     {
       "id": 6131,
