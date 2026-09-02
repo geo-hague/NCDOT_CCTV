@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-02T11:08:17.748Z",
-  "count": 1084,
+  "updated": "2026-09-02T11:53:33.706Z",
+  "count": 1079,
   "cameras": [
     {
       "id": 4020,
@@ -3735,17 +3735,6 @@
       "token": "34c8dcf0a85033913b4572df5eaa5408ee4a94d43a6b0d8f82e5e6d80edfec06"
     },
     {
-      "id": 5324,
-      "roadway": "NC-344",
-      "direction": "Eastbound",
-      "lat": 36.28144,
-      "lon": -76.22347,
-      "location": "CCTV01-NC344_PEARTREE",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8",
-      "token": "8846f034ec9ed4bcc8e4038625ce3b353130de21fbe9edc1aec0c273bc8178f8"
-    },
-    {
       "id": 5325,
       "roadway": "NC-344",
       "direction": "Eastbound",
@@ -5815,16 +5804,6 @@
       "token": "ada2f903f96358f8999f56cac23b40b5f8045d39ef7308423f55f7ce6eddab50"
     },
     {
-      "id": 5527,
-      "roadway": "NC-540",
-      "direction": "Eastbound",
-      "lat": 35.73225,
-      "lon": -78.89229,
-      "location": "CCTV05-NC540-58.5E_OLIVECHAPEL",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5604_l/index.m3u8"
-    },
-    {
       "id": 5528,
       "roadway": "NC-540",
       "direction": "Southbound",
@@ -6820,17 +6799,6 @@
       "token": "b3def538c79d5195565ff575b24380489a42ff0f4eb23309490115930e89d6e1"
     },
     {
-      "id": 5624,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.83612,
-      "lon": -78.64984,
-      "location": "CCTV05-I440-7.5W",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5703_l/index.m3u8",
-      "token": "7ea5ea4eec410d66a99ca8bf04b68afef65f66c47b73c05c316d534b7ebdf18e"
-    },
-    {
       "id": 5625,
       "roadway": "I-440",
       "direction": "Southbound",
@@ -6850,17 +6818,6 @@
       "location": "CCTV05-EDWARDSMILL_WADE",
       "county": null,
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
-    },
-    {
-      "id": 5627,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.8348,
-      "lon": -78.6381,
-      "location": "CCTV05-I440-8W_SIXFORKS",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5706_l/index.m3u8",
-      "token": "92e192e27c20a0958fda034a508ff141b1ff275218b5755919f15455b3df08cb"
     },
     {
       "id": 5633,
@@ -10905,16 +10862,6 @@
       "county": null,
       "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-6326_l/index.m3u8",
       "token": "0915dfe1eed9501558f2dde24f4b5c7501ed985764b66d0905c3674af96f6a90"
-    },
-    {
-      "id": 6056,
-      "roadway": "I-95",
-      "direction": "Southbound",
-      "lat": 35.50618,
-      "lon": -78.31716,
-      "location": "PCCTVSWxxx-CTD-I95-MM95",
-      "county": null,
-      "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-6331_l/index.m3u8"
     },
     {
       "id": 6057,
