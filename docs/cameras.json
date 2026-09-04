@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-04T11:08:15.429Z",
-  "count": 1081,
+  "updated": "2026-09-04T11:54:30.407Z",
+  "count": 1082,
   "cameras": [
     {
       "id": 4020,
@@ -474,17 +474,6 @@
       "county": null,
       "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5181_l/index.m3u8",
       "token": "3dbea8bda4c75cfc31155825b821330736130d1f73ec258569296bd27f9c132a"
-    },
-    {
-      "id": 4067,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.43816,
-      "lon": -80.65192,
-      "location": "CCTV10-I85-55.15S",
-      "county": null,
-      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5182_l/index.m3u8",
-      "token": "05188bd51b7f8cf12bd9a47a95a6f49ccf93f75edfe0e6203fc4874e4bdcc1e8"
     },
     {
       "id": 4068,
@@ -3560,16 +3549,6 @@
       "token": "393ab1b3b411867c82bd053a9f2cf805e0a39cb34b4f22773e707c88470e4cbb"
     },
     {
-      "id": 5307,
-      "roadway": "US-158",
-      "direction": "Westbound",
-      "lat": 36.05139,
-      "lon": -75.68389,
-      "location": "CCTV01-US158-5.5W_HELGA",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5326_l/index.m3u8"
-    },
-    {
       "id": 5308,
       "roadway": "US-158",
       "direction": "Westbound",
@@ -3744,6 +3723,16 @@
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6126_l/index.m3u8",
       "token": "76d6363ecfa9a23ff3eeb7730d4971a4bf3724977cf24e0cd7861f924a831301"
+    },
+    {
+      "id": 5324,
+      "roadway": "NC-344",
+      "direction": "Eastbound",
+      "lat": 36.28144,
+      "lon": -76.22347,
+      "location": "CCTV01-NC344_PEARTREE",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8"
     },
     {
       "id": 5325,
@@ -4871,6 +4860,17 @@
       "token": "2f9ad5913dfdcf3919a21d460d305c8352f7a6fbc682588714759d93e64cfd6b"
     },
     {
+      "id": 5438,
+      "roadway": "I-95",
+      "direction": "Southbound",
+      "lat": 36.53305,
+      "lon": -77.58425,
+      "location": "CCTV04-I95-180S",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5515_l/index.m3u8",
+      "token": "aea06e9623cb601d89ddeaa8d006247e90873858e0dccedebff671e886c14f5f"
+    },
+    {
       "id": 5439,
       "roadway": "I-95",
       "direction": "Southbound",
@@ -5816,6 +5816,17 @@
       "token": "245eed7f19a60bee009dec24a534b499e9dc33f82808699c3ef236b5c7e049ed"
     },
     {
+      "id": 5527,
+      "roadway": "NC-540",
+      "direction": "Eastbound",
+      "lat": 35.73225,
+      "lon": -78.89229,
+      "location": "CCTV05-NC540-58.5E_OLIVECHAPEL",
+      "county": null,
+      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5604_l/index.m3u8",
+      "token": "f6574d365e229ce27abbcf532519082d53c4e526233b7bf6045373dd06aefea7"
+    },
+    {
       "id": 5528,
       "roadway": "NC-540",
       "direction": "Southbound",
@@ -6396,16 +6407,6 @@
       "county": null,
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5662_l/index.m3u8",
       "token": "4ae40da12e6fb5b7f4382ea3c88bf2e2af8f2a8ea7c21c4acbe6135a8671be65"
-    },
-    {
-      "id": 5585,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.80476,
-      "lon": -78.69434,
-      "location": "PCCTV05-I440-4W_WADE",
-      "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8"
     },
     {
       "id": 5586,
@@ -11543,6 +11544,16 @@
       "location": "PCCTVSW-053",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
+    },
+    {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.9110090863262,
+      "lon": -76.8172770001624,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
     },
     {
       "id": 6131,
