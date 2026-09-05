@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05T10:25:34.243Z",
-  "count": 1082,
+  "updated": "2026-09-05T11:03:55.687Z",
+  "count": 1079,
   "cameras": [
     {
       "id": 4020,
@@ -474,6 +474,17 @@
       "county": null,
       "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5181_l/index.m3u8",
       "token": "b9d4557eba9463f689490d973243800e872a58e077cae658d05ecc43f1b161e7"
+    },
+    {
+      "id": 4067,
+      "roadway": "I-85",
+      "direction": "Southbound",
+      "lat": 35.43816,
+      "lon": -80.65192,
+      "location": "CCTV10-I85-55.15S",
+      "county": null,
+      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5182_l/index.m3u8",
+      "token": "d23f9188bf1ae0a6eaf2e8c23f48193e00a79a372a07c8310c8f191439a37f51"
     },
     {
       "id": 4068,
@@ -1756,17 +1767,6 @@
       "county": null,
       "videoUrl": "https://cfase02.services.ncdot.gov:8887/chan-5391_l/index.m3u8",
       "token": "f12d2b7eb8587ead83f13b4222deb4b39ff3bceabede933153c0bae91b8d83a0"
-    },
-    {
-      "id": 4214,
-      "roadway": "I-40",
-      "direction": "Eastbound",
-      "lat": 35.55815,
-      "lon": -82.5381,
-      "location": "CCTV13-I40-50E_US25",
-      "county": null,
-      "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-5392_l/index.m3u8",
-      "token": "b275fa8ac3ce0b20e70939077f2a30c03b532a281fdbe8fb34949b6e4f413929"
     },
     {
       "id": 4215,
@@ -3744,16 +3744,6 @@
       "token": "85fb2db7b0275b30a5880327a3a6d1c4b3601a33c12fe70996073a8e6b70a58e"
     },
     {
-      "id": 5326,
-      "roadway": "NC-344",
-      "direction": "Eastbound",
-      "lat": 36.28345,
-      "lon": -76.23408,
-      "location": "CCTV01-NC344_ROANOKE",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6129_l/index.m3u8"
-    },
-    {
       "id": 5327,
       "roadway": "NC-344",
       "direction": "Eastbound",
@@ -3862,17 +3852,6 @@
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6141_l/index.m3u8",
       "token": "bc39a6eb2527db303c15594844a7b4fde1bdb4098c7381b35bb3e30eedb313c5"
-    },
-    {
-      "id": 5339,
-      "roadway": "US-17 BUS",
-      "direction": "Eastbound",
-      "lat": 36.30025,
-      "lon": -76.2238,
-      "location": "CCTV01-US17Bus_MAIN",
-      "county": null,
-      "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-6142_l/index.m3u8",
-      "token": "ecf1bde52e62a5c61cb88657fd76951d54ca5929da45a7850da82f8a2e123b7d"
     },
     {
       "id": 5340,
@@ -4037,16 +4016,6 @@
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6217_l/index.m3u8",
       "token": "926b700a2e04b6c976ce14ac8a329e8e3c13e48d8bbcd5097de65ecc22b313a2"
-    },
-    {
-      "id": 5355,
-      "roadway": "NC-168",
-      "direction": "Southbound",
-      "lat": 36.51764,
-      "lon": -76.17023,
-      "location": "CCTV01-NC168-S_MOYOCKCOMMONS",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6218_l/index.m3u8"
     },
     {
       "id": 5356,
@@ -4735,6 +4704,17 @@
       "token": "e84805dfa2154f6fb4b23506212c8b258a47fdda453d0b4ce8fe7b3694887134"
     },
     {
+      "id": 5425,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 35.83722,
+      "lon": -77.97606,
+      "location": "CCTV04-I95-127N_NC97",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5502_l/index.m3u8",
+      "token": "d92f54dbb645b2dc58cd331cf4aaa80d979a4d361769a01f55ccaaef6f5dd3c6"
+    },
+    {
       "id": 5426,
       "roadway": "I-95",
       "direction": "Both Directions",
@@ -5270,16 +5250,6 @@
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5554_l/index.m3u8",
       "token": "5036547bb48f56110941a51ec3f02bb6634a42404bae0cb3b2688a868790cfec"
-    },
-    {
-      "id": 5478,
-      "roadway": "US-70 BYP",
-      "direction": "Westbound",
-      "lat": 35.30412,
-      "lon": -77.81847,
-      "location": "CCTV04-US70BYP-370W_US70",
-      "county": null,
-      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
     },
     {
       "id": 5479,
@@ -6399,6 +6369,17 @@
       "county": null,
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5662_l/index.m3u8",
       "token": "e5cd8962f811cffdd72509ba5f016704d0e4170ec4a938a01c065ce28c4d0f32"
+    },
+    {
+      "id": 5585,
+      "roadway": "I-440",
+      "direction": "Southbound",
+      "lat": 35.80476,
+      "lon": -78.69434,
+      "location": "PCCTV05-I440-4W_WADE",
+      "county": null,
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8",
+      "token": "dc8fb60fcf13c7465975ff6a16b272714b83ff8d61a90002770a8c477c4e6794"
     },
     {
       "id": 5586,
@@ -11542,16 +11523,6 @@
       "location": "PCCTVSW-053",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
-    },
-    {
-      "id": 6130,
-      "roadway": "Other",
-      "direction": "Northbound",
-      "lat": 35.9110090863262,
-      "lon": -76.8172770001624,
-      "location": "CCTV01-SANS-SOUCI-FERRY",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
     },
     {
       "id": 6131,
