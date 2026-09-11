@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T11:05:47.802Z",
+  "updated": "2026-09-11T11:57:50.378Z",
   "count": 1080,
   "cameras": [
     {
@@ -627,16 +627,6 @@
       "county": null,
       "videoUrl": "https://cfmse03.services.ncdot.gov:8887/chan-5197_l/index.m3u8",
       "token": "f300e66da68c69c041b0a074fd5bf4a2c8d7cd9bfe9a7decaf910e6a45c14da4"
-    },
-    {
-      "id": 4082,
-      "roadway": "US-74",
-      "direction": "Southbound",
-      "lat": 35.09833,
-      "lon": -80.63907,
-      "location": "CCTV10-US74-257.0W_INDIANTRAIL",
-      "county": null,
-      "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5198_l/index.m3u8"
     },
     {
       "id": 4083,
@@ -1461,6 +1451,17 @@
       "county": null,
       "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-5287_l/index.m3u8",
       "token": "cf172c8fad91a45524b6b4938891f2502a68825c1e13fd86feda3427b40ebba2"
+    },
+    {
+      "id": 4172,
+      "roadway": "I-77",
+      "direction": "Northbound",
+      "lat": 35.43832,
+      "lon": -80.86819,
+      "location": "CCTV10-I77-24.7N_SAMFURR",
+      "county": null,
+      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-5288_l/index.m3u8",
+      "token": "fdb7bf5a3ca314062026ef4825e939c5224139ce42bb8dcc1239eb0030ed36af"
     },
     {
       "id": 4173,
@@ -3342,8 +3343,8 @@
       "id": 5275,
       "roadway": "US-421",
       "direction": "Westbound",
-      "lat": 36.211674,
-      "lon": -81.67545,
+      "lat": 36.140668,
+      "lon": -81.187201,
       "location": "PCCTV11-003",
       "county": null,
       "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6338_l/index.m3u8",
@@ -3353,8 +3354,8 @@
       "id": 5287,
       "roadway": "Other",
       "direction": "Westbound",
-      "lat": 36.205639,
-      "lon": -81.669669,
+      "lat": 36.148975,
+      "lon": -81.231508,
       "location": "PCCTV11-001",
       "county": null,
       "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6235_l/index.m3u8"
@@ -3363,8 +3364,8 @@
       "id": 5288,
       "roadway": "US-421",
       "direction": "Westbound",
-      "lat": 36.216273,
-      "lon": -81.668858,
+      "lat": 36.135906,
+      "lon": -81.199705,
       "location": "PCCTV11-002",
       "county": null,
       "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-6236_l/index.m3u8",
@@ -3556,16 +3557,6 @@
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5325_l/index.m3u8",
       "token": "ffd835220e067e50af54f00a3aa1bf8c10e4550631a378ec5c4cf4d7ab80adba"
-    },
-    {
-      "id": 5307,
-      "roadway": "US-158",
-      "direction": "Westbound",
-      "lat": 36.05139,
-      "lon": -75.68389,
-      "location": "CCTV01-US158-5.5W_HELGA",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5326_l/index.m3u8"
     },
     {
       "id": 5308,
@@ -4038,16 +4029,6 @@
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6217_l/index.m3u8",
       "token": "eec62e2f6179214b5151627d2e988b5b78b61b5922d17f898c813c1a3feda749"
-    },
-    {
-      "id": 5355,
-      "roadway": "NC-168",
-      "direction": "Southbound",
-      "lat": 36.51764,
-      "lon": -76.17023,
-      "location": "CCTV01-NC168-S_MOYOCKCOMMONS",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6218_l/index.m3u8"
     },
     {
       "id": 5356,
@@ -6392,6 +6373,17 @@
       "token": "521e3436b8a5b45d2f05d99e826de9368c8dd63cb42e9362ee3673e43c9019c0"
     },
     {
+      "id": 5585,
+      "roadway": "I-440",
+      "direction": "Southbound",
+      "lat": 35.80476,
+      "lon": -78.69434,
+      "location": "PCCTV05-I440-4W_WADE",
+      "county": null,
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8",
+      "token": "e6fd774aa985efb95054076b09bf7bfcd72a9264fab7c08c6e6e1833c4e33f1e"
+    },
+    {
       "id": 5586,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -6401,16 +6393,6 @@
       "county": null,
       "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5664_l/index.m3u8",
       "token": "2175a17b9fde1cb9617f1a1f6862f92e3d7b018a7efd1de64c9ad690c2a3e2d9"
-    },
-    {
-      "id": 5587,
-      "roadway": "I-40",
-      "direction": "Eastbound",
-      "lat": 35.88156,
-      "lon": -78.83946,
-      "location": "CCTV05-I40-282E_PAGE",
-      "county": null,
-      "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5665_l/index.m3u8"
     },
     {
       "id": 5588,
@@ -8849,6 +8831,17 @@
       "token": "47c54c9515d1ddfa8ab69b7f51e096d011054def14cabba134f1e58f4b780aea"
     },
     {
+      "id": 5850,
+      "roadway": "I-840",
+      "direction": "Eastbound",
+      "lat": 36.13994,
+      "lon": -79.78997,
+      "location": "CCTV07-I840-10.5E_CHURCH",
+      "county": null,
+      "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-5976_l/index.m3u8",
+      "token": "e6552d734a309d8a0aeea143676658c4da58d63310bd6ccdc97cc7fd084d2554"
+    },
+    {
       "id": 5851,
       "roadway": "I-840",
       "direction": "Both Directions",
@@ -9210,6 +9203,17 @@
       "county": null,
       "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-6012_l/index.m3u8",
       "token": "69284fc151cc2fe11743c53e30297b99bc5bd078e3b05f0da8cd560d16bdf72b"
+    },
+    {
+      "id": 5886,
+      "roadway": "I-40",
+      "direction": "Southbound",
+      "lat": 36.06652,
+      "lon": -80.2401,
+      "location": "CCTV09-I40-192.5W_SILASCREEK",
+      "county": null,
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6014_l/index.m3u8",
+      "token": "30e401d6f366aac1ad5c4d0b571cea39e39901e161d3c78b3e35a251d0c813b1"
     },
     {
       "id": 5887,
@@ -10010,8 +10014,8 @@
       "id": 5967,
       "roadway": "US-421",
       "direction": "Northbound",
-      "lat": 36.093917,
-      "lon": -80.243423,
+      "lat": 36.09392,
+      "lon": -80.24342,
       "location": "CCTV09-US421-233N_MAIN",
       "county": null,
       "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6095_l/index.m3u8",
@@ -10043,8 +10047,8 @@
       "id": 5970,
       "roadway": "I-40",
       "direction": "Westbound",
-      "lat": 36.0635059,
-      "lon": -80.3404627,
+      "lat": 36.06351,
+      "lon": -80.34046,
       "location": "CCTV09-I40-187W_JONESTOWN",
       "county": null,
       "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6098_l/index.m3u8",
@@ -10054,8 +10058,8 @@
       "id": 5971,
       "roadway": "US-421",
       "direction": "Northbound",
-      "lat": 36.094636,
-      "lon": -80.279496,
+      "lat": 36.09464,
+      "lon": -80.2795,
       "location": "CCTV09-US421-235N_US158",
       "county": null,
       "videoUrl": "https://cftse12.services.ncdot.gov:8887/chan-6099_l/index.m3u8",
@@ -10087,8 +10091,8 @@
       "id": 5974,
       "roadway": "US-421",
       "direction": "Northbound",
-      "lat": 36.0842306,
-      "lon": -80.3071849,
+      "lat": 36.08423,
+      "lon": -80.30718,
       "location": "CCTV09-US421-237N_NC67",
       "county": null,
       "videoUrl": "https://cftse05.services.ncdot.gov:8887/chan-6102_l/index.m3u8",
@@ -11279,16 +11283,6 @@
       "token": "b5e0664dd014a2125fe25065c4cbd4d5376458b46a86db22914a2cf68fe30bcb"
     },
     {
-      "id": 6104,
-      "roadway": "I-26",
-      "direction": "Eastbound",
-      "lat": 35.55633,
-      "lon": -82.52102,
-      "location": "PCCTV13-I40-51S",
-      "county": null,
-      "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-6318_l/index.m3u8"
-    },
-    {
       "id": 6105,
       "roadway": "I-40",
       "direction": "Westbound",
@@ -11522,6 +11516,16 @@
       "location": "PCCTVSW-053",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
+    },
+    {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.91101,
+      "lon": -76.81728,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
     },
     {
       "id": 6131,
