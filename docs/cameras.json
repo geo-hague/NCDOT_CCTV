@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-17T11:28:20.866Z",
-  "count": 1080,
+  "updated": "2026-09-17T12:20:06.441Z",
+  "count": 1079,
   "cameras": [
     {
       "id": 4020,
@@ -474,17 +474,6 @@
       "county": null,
       "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5181_l/index.m3u8",
       "token": "8ae9a7ea1da0415865acb6394372983abc5d0b22bcbf04f1377c24d6de64413c"
-    },
-    {
-      "id": 4067,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.43816,
-      "lon": -80.65192,
-      "location": "CCTV10-I85-55.15S",
-      "county": null,
-      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5182_l/index.m3u8",
-      "token": "c81cdb878e486df2590552c83594b85e6030d91f3e6a3a36da00b50d8112b5a0"
     },
     {
       "id": 4068,
@@ -1464,16 +1453,6 @@
       "token": "743088821fad10e02a4f8178b56e820dffec5cf156eecfde5f456011f9923a20"
     },
     {
-      "id": 4172,
-      "roadway": "I-77",
-      "direction": "Northbound",
-      "lat": 35.43832,
-      "lon": -80.86819,
-      "location": "CCTV10-I77-24.7N_SAMFURR",
-      "county": null,
-      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-5288_l/index.m3u8"
-    },
-    {
       "id": 4173,
       "roadway": "I-77",
       "direction": "Northbound",
@@ -2301,16 +2280,6 @@
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5134_l/index.m3u8"
     },
     {
-      "id": 4791,
-      "roadway": "US-74",
-      "direction": "Southbound",
-      "lat": 35.24185,
-      "lon": -80.98403,
-      "location": "CCTV10-US74_SAMWILSON",
-      "county": null,
-      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5194_l/index.m3u8"
-    },
-    {
       "id": 4792,
       "roadway": "I-77",
       "direction": "Southbound",
@@ -2894,11 +2863,11 @@
     },
     {
       "id": 4877,
-      "roadway": "I-26",
+      "roadway": "NC 191",
       "direction": "Southbound",
-      "lat": 35.35982,
-      "lon": -82.45861,
-      "location": "PCCTV14-I26-48W",
+      "lat": 35.480299,
+      "lon": -82.56601,
+      "location": "PCCTV13-NC146_CLAYTON RD",
       "county": null,
       "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5442_l/index.m3u8"
     },
@@ -3413,17 +3382,6 @@
       "token": "5751097c7e6af77fac937537c56d0c017ea285fea50ebb74bc69ed4d7a7d48c6"
     },
     {
-      "id": 5292,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06838,
-      "lon": -80.86541,
-      "location": "CCTV10-I485-62.6O_Carmel",
-      "county": null,
-      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-6361_l/index.m3u8",
-      "token": "7984799f307f598955368f7c5160eb1a8b63f11e02d41f4a4cc674ef4b37648c"
-    },
-    {
       "id": 5293,
       "roadway": "I-485",
       "direction": "Westbound",
@@ -3576,6 +3534,17 @@
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5325_l/index.m3u8",
       "token": "7c5aafb97af260362391a144d1ec70df3cfb2050467ff819f118e09808776a14"
+    },
+    {
+      "id": 5307,
+      "roadway": "US-158",
+      "direction": "Westbound",
+      "lat": 36.05139,
+      "lon": -75.68389,
+      "location": "CCTV01-US158-5.5W_HELGA",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5326_l/index.m3u8",
+      "token": "1efae6c56682ad833c55545af3892537bed466238114fd30aca66687fda80bd7"
     },
     {
       "id": 5308,
@@ -4028,6 +3997,28 @@
       "token": "e40e478edc897a7e5857ef496e7691986b9d37058106f6d18ee8e704b0f69e64"
     },
     {
+      "id": 5354,
+      "roadway": "NC-168",
+      "direction": "Northbound",
+      "lat": 36.52233,
+      "lon": -76.17547,
+      "location": "CCTV01-NC168-N_PUDDINRIDGE",
+      "county": null,
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6217_l/index.m3u8",
+      "token": "3d68111540fa4911a622149f6233bc09d76a25a202fbcb64b8697ab23ec56ab9"
+    },
+    {
+      "id": 5355,
+      "roadway": "NC-168",
+      "direction": "Southbound",
+      "lat": 36.51764,
+      "lon": -76.17023,
+      "location": "CCTV01-NC168-S_MOYOCKCOMMONS",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6218_l/index.m3u8",
+      "token": "63e558e1ecac5e89d468fa49b120b37e15f25e56aa0020cb78d1f67c1ee60486"
+    },
+    {
       "id": 5357,
       "roadway": "NC-12",
       "direction": "Southbound",
@@ -4231,6 +4222,17 @@
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5455_l/index.m3u8",
       "token": "4ce961e2de699bcfb8917460885bf484a3c80d925f6790d728a015c71a7f7d26"
+    },
+    {
+      "id": 5379,
+      "roadway": "US-70",
+      "direction": "Westbound",
+      "lat": 35.2376,
+      "lon": -77.57375,
+      "location": "CCTV02-US70-387W_TRENTON",
+      "county": null,
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5456_l/index.m3u8",
+      "token": "7a545e075a11951e095426db8e0283161d754a4cd22d765398f15dcaabe6982f"
     },
     {
       "id": 5380,
@@ -6807,17 +6809,6 @@
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
     },
     {
-      "id": 5627,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.8348,
-      "lon": -78.6381,
-      "location": "CCTV05-I440-8W_SIXFORKS",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5706_l/index.m3u8",
-      "token": "8f4581b7be3fc1a20e0c3ecc7b0133fa44897791cf99be8038535e058ac60161"
-    },
-    {
       "id": 5633,
       "roadway": "I-540",
       "direction": "Eastbound",
@@ -6849,16 +6840,6 @@
       "county": null,
       "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-5714_l/index.m3u8",
       "token": "fd1712feaa6a922ad6c43c5973455695df16a6e981530ff7829bbb5f2b61373e"
-    },
-    {
-      "id": 5636,
-      "roadway": "I-540",
-      "direction": "Eastbound",
-      "lat": 35.86145,
-      "lon": -78.54872,
-      "location": "CCTV05-I540-18E_US401",
-      "county": null,
-      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5715_l/index.m3u8"
     },
     {
       "id": 5637,
@@ -8775,6 +8756,17 @@
       "token": "108b501ab3164b1b415a54d371cd6c547402e8b818d4fe12f570b5172ec84de8"
     },
     {
+      "id": 5840,
+      "roadway": "I-73",
+      "direction": "Northbound",
+      "lat": 36.26762,
+      "lon": -79.92997,
+      "location": "CCTV07-I73-121N_NC65",
+      "county": null,
+      "videoUrl": "https://cftse08.services.ncdot.gov:8887/chan-5963_l/index.m3u8",
+      "token": "f470daa4f4ababb216fcd9f5b0db2a64c48ddc6e410abb5fa37ea569ad9cb9f6"
+    },
+    {
       "id": 5842,
       "roadway": "I-73",
       "direction": "Southbound",
@@ -10330,9 +10322,9 @@
       "id": 5996,
       "roadway": "NC-540",
       "direction": "Eastbound",
-      "lat": 35.67593,
-      "lon": -78.75505,
-      "location": "CCTV05-NC540-48.6E_WestLake",
+      "lat": 35.676466,
+      "lon": -78.754939,
+      "location": "CCTV05-NC540-48.6W_WestLake",
       "county": null,
       "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-6162_l/index.m3u8",
       "token": "730456f97c59587ffb1f08a934a4e7f1f7d16ad884d326bad5505470d2151a8f"
@@ -11527,6 +11519,16 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
     },
     {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.91101,
+      "lon": -76.81728,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
+    },
+    {
       "id": 6131,
       "roadway": "Other",
       "direction": "Northbound",
@@ -11625,16 +11627,6 @@
       "location": "WLM 40 US-17@PortersNeck",
       "county": null,
       "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-6637_l/index.m3u8"
-    },
-    {
-      "id": 6142,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.25398,
-      "lon": -80.98252,
-      "location": "PCCTV10-I85-29S_SAMWILSON",
-      "county": null,
-      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-6642_l/index.m3u8"
     },
     {
       "id": 6143,
