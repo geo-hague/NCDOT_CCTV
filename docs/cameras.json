@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-19T10:45:33.667Z",
-  "count": 1078,
+  "updated": "2026-09-19T11:43:32.472Z",
+  "count": 1081,
   "cameras": [
     {
       "id": 4020,
@@ -1790,6 +1790,28 @@
       "county": null,
       "videoUrl": "https://cfase04.services.ncdot.gov:8887/chan-5393_l/index.m3u8",
       "token": "1b0e59613f80bbce601e28ae9566cd32530df47884988a6d50593c25a83583ba"
+    },
+    {
+      "id": 4216,
+      "roadway": "NC-191",
+      "direction": "Southbound",
+      "lat": 35.51463,
+      "lon": -82.60291,
+      "location": "CCTV13-NC191_POLECREASMAN",
+      "county": null,
+      "videoUrl": "https://cfase02.services.ncdot.gov:8887/chan-5397_l/index.m3u8",
+      "token": "57d0b66a78ac33335d4e4c625b641e274cfd7092cbfe063dd5b105c3033e682e"
+    },
+    {
+      "id": 4217,
+      "roadway": "NC-191",
+      "direction": "Southbound",
+      "lat": 35.52659,
+      "lon": -82.60704,
+      "location": "CCTV13-NC191_SARDIS",
+      "county": null,
+      "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-5398_l/index.m3u8",
+      "token": "c9db2ce59d3c54a931d9527d5e1a55f9661261d122ecbd4c6d6a19335f45e0da"
     },
     {
       "id": 4218,
@@ -3712,6 +3734,17 @@
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6126_l/index.m3u8",
       "token": "095ae317e74345fa8594ca9351d6fadf71723b10f51adac088e7b94fa970a100"
+    },
+    {
+      "id": 5324,
+      "roadway": "NC-344",
+      "direction": "Eastbound",
+      "lat": 36.28144,
+      "lon": -76.22347,
+      "location": "CCTV01-NC344_PEARTREE",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8",
+      "token": "e5489a35afb355307a6be0874721b32453ec382b299cd2b08ec94eab2c665ab6"
     },
     {
       "id": 5325,
@@ -6780,16 +6813,6 @@
       "token": "f25e9ecb7b1270b8b7bb8c55c73dde44fa6c180e9658240a67505b6796b101b2"
     },
     {
-      "id": 5633,
-      "roadway": "I-540",
-      "direction": "Eastbound",
-      "lat": 35.88436,
-      "lon": -78.59139,
-      "location": "CCTV05-I540-15E_GRESHAMLAKE",
-      "county": null,
-      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5712_l/index.m3u8"
-    },
-    {
       "id": 5634,
       "roadway": "I-540",
       "direction": "Southbound",
@@ -9211,6 +9234,17 @@
       "county": null,
       "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-6012_l/index.m3u8",
       "token": "a77d86c5fe037975e27eee28519e1358c23a6b24abc1cef76edad7eceabe6e4a"
+    },
+    {
+      "id": 5886,
+      "roadway": "I-40",
+      "direction": "Southbound",
+      "lat": 36.06652,
+      "lon": -80.2401,
+      "location": "CCTV09-I40-192.5W_SILASCREEK",
+      "county": null,
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6014_l/index.m3u8",
+      "token": "89d73309b6562e1cffaefe20a8ff38063eae7c73fc6690837e47b07114fd95bc"
     },
     {
       "id": 5887,
