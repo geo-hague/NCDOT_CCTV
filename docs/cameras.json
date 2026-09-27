@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-27T11:54:19.463Z",
+  "updated": "2026-09-27T12:36:31.746Z",
   "count": 1077,
   "cameras": [
     {
@@ -704,16 +704,6 @@
       "county": null,
       "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5204_l/index.m3u8",
       "token": "5ac83eafde911d522e84321cd234e46f78013161858dfadb0fbd62d839b8466b"
-    },
-    {
-      "id": 4089,
-      "roadway": "US-74",
-      "direction": "Southbound",
-      "lat": 35.05693,
-      "lon": -80.58096,
-      "location": "CCTV10-US74-261.8W_WILLISLONG",
-      "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5205_l/index.m3u8"
     },
     {
       "id": 4090,
@@ -6309,6 +6299,17 @@
       "token": "440ca0c38f904d3cd2bab7652658b7e864a50bc5d5625a699fc67cf8dfc40bcf"
     },
     {
+      "id": 5585,
+      "roadway": "I-440",
+      "direction": "Southbound",
+      "lat": 35.80476,
+      "lon": -78.69434,
+      "location": "PCCTV05-I440-4W_WADE",
+      "county": null,
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8",
+      "token": "210f4fafed9edb73dd60ca0fc344f48a6c9cde067365f3c08ebd185bbb8bb3a3"
+    },
+    {
       "id": 5586,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -6787,16 +6788,6 @@
       "county": null,
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5715_l/index.m3u8",
       "token": "144cf48206ec73038d77ea1819f43132592e1a95fc2cdf5e6a604c933156922a"
-    },
-    {
-      "id": 5637,
-      "roadway": "Edwards Mill",
-      "direction": "Northbound",
-      "lat": 35.80257,
-      "lon": -78.72653,
-      "location": "CCTV05-EDWARDSMILL-N_STEPHENSTROUD",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5716_l/index.m3u8"
     },
     {
       "id": 5638,
@@ -10655,16 +10646,6 @@
       "token": "d2dc9160a78a7434e883b271b593d375a938fbbdbc2290396547dab1a746906c"
     },
     {
-      "id": 6039,
-      "roadway": "I-95",
-      "direction": "Southbound",
-      "lat": 35.13513,
-      "lon": -78.74199,
-      "location": "CCTV06-I95-59S",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6266_l/index.m3u8"
-    },
-    {
       "id": 6041,
       "roadway": "I-95",
       "direction": "Northbound",
@@ -11237,9 +11218,9 @@
       "id": 6110,
       "roadway": "I-40",
       "direction": "Westbound",
-      "lat": 35.56059,
-      "lon": -78.33525,
-      "location": "PCCTVSW-028_I40-341W_NC50",
+      "lat": 35.69856,
+      "lon": -75.77057,
+      "location": "PCCTVSW-028_US264-STUMPYPOINT-FERRY",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6402_l/index.m3u8",
       "token": "9dd0642c9cf4327ca4d5b11ac0ed1537dc3fc93672d2895fa63c5704484df36c"
@@ -11248,9 +11229,9 @@
       "id": 6111,
       "roadway": "I-40",
       "direction": "Westbound",
-      "lat": 35.56059,
-      "lon": -78.33525,
-      "location": "PCCTVSW-041_I40-348W_SUTTONTOWN",
+      "lat": 35.66919,
+      "lon": -75.77099,
+      "location": "PCCTVSW-041_US264-STUMPYPOINT",
       "county": null,
       "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-6404_l/index.m3u8",
       "token": "4384ebe8a75c91b1cf259ceac6beb37b48c35faa35a2774276659ed7e13ba7f2"
@@ -11414,6 +11395,16 @@
       "location": "PCCTVSW-053",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
+    },
+    {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.91101,
+      "lon": -76.81728,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
     },
     {
       "id": 6131,
@@ -11760,6 +11751,17 @@
       "county": null,
       "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-6372_l/index.m3u8",
       "token": "d5bd72201cd234549c25c9707315b4d112ef4015335253f19159be36207004a7"
+    },
+    {
+      "id": 6187,
+      "roadway": "US-70 BUS",
+      "direction": "Eastbound",
+      "lat": 34.88109,
+      "lon": -76.90792,
+      "location": "CCTV02-US70BUS-434E",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6454_l/index.m3u8",
+      "token": "d2c8119f8754940f6a9c92771c43917263fbb16146503547a2ef880e3ca67180"
     }
   ]
 }
