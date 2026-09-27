@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-26T16:16:13.178Z",
+  "updated": "2026-09-27T11:54:19.463Z",
   "count": 1077,
   "cameras": [
     {
@@ -713,8 +713,7 @@
       "lon": -80.58096,
       "location": "CCTV10-US74-261.8W_WILLISLONG",
       "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5205_l/index.m3u8",
-      "token": "a0f13f2914251dd80908b06ab920467c595a5eccea609215320cf5874e431ec0"
+      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5205_l/index.m3u8"
     },
     {
       "id": 4090,
@@ -889,7 +888,8 @@
       "lon": -80.8891,
       "location": "CCTV10-I485-18.7I",
       "county": null,
-      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5222_l/index.m3u8"
+      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5222_l/index.m3u8",
+      "token": "08cf66d2f8a76123a4bb3e116edca4c472ad6f0f9d99fca818a637c18ac15f5c"
     },
     {
       "id": 4107,
@@ -3034,7 +3034,8 @@
       "lon": -83.03879,
       "location": "PCCTVSW-025_I40-4.2W",
       "county": null,
-      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-6122_l/index.m3u8"
+      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-6122_l/index.m3u8",
+      "token": "9b8f55cd7a6e13a4f2c211e4eef82e433da79e26d7987d30de765008052b8a3d"
     },
     {
       "id": 5066,
@@ -3132,7 +3133,8 @@
       "lon": -82.50793,
       "location": "CCTV14-US25_ROCKWELL",
       "county": null,
-      "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-6254_l/index.m3u8"
+      "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-6254_l/index.m3u8",
+      "token": "a0a25134340f5a9bf6f5747b445a9cbd36c168811a0524825f7ece97ed2156a7"
     },
     {
       "id": 5131,
@@ -3719,8 +3721,7 @@
       "lon": -76.22347,
       "location": "CCTV01-NC344_PEARTREE",
       "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8",
-      "token": "f3f57be986e5898bfc2dfa81bc99121113ccf9b28d0c1292cc210b525314d389"
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6127_l/index.m3u8"
     },
     {
       "id": 5325,
@@ -5712,8 +5713,7 @@
       "lon": -78.87159,
       "location": "CCTV05-NC540-55.9W_US1",
       "county": null,
-      "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-5601_l/index.m3u8",
-      "token": "e4582c78a9a09c6fe4bbfaa47a1df0a1dfb2faea86551dc94ff565598cc8057d"
+      "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-5601_l/index.m3u8"
     },
     {
       "id": 5525,
@@ -7124,7 +7124,8 @@
       "lon": -78.4491,
       "location": "CCTV05-I85-212N_RUINCREEK",
       "county": null,
-      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5747_l/index.m3u8"
+      "videoUrl": "https://cfsse11.services.ncdot.gov:8887/chan-5747_l/index.m3u8",
+      "token": "94b2c1b2362f273e63b105164a0d9f08ad0e7fbc8e7d3c6e3ab661e565fb5741"
     },
     {
       "id": 5669,
@@ -7849,7 +7850,8 @@
       "lon": -79.71874,
       "location": "CCTV07-I85-128.5S_NELSONFARM",
       "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-5831_l/index.m3u8"
+      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-5831_l/index.m3u8",
+      "token": "6782b4d21dc4dbbd636bfbcef11cce2e4e2714592d40c8640d7703c46b272eb6"
     },
     {
       "id": 5746,
@@ -7892,8 +7894,7 @@
       "lon": -79.66043,
       "location": "CCTV07-I85-132N_MTHOPECHURCH",
       "county": null,
-      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5835_l/index.m3u8",
-      "token": "0edfb9694cd1c712df7a598ceea57597f787cb01f3442beb19542eae96fa3547"
+      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5835_l/index.m3u8"
     },
     {
       "id": 5750,
@@ -8076,8 +8077,7 @@
       "lon": -79.0899,
       "location": "PCCTV07-I-3306A05_I40-261W",
       "county": null,
-      "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-5859_l/index.m3u8",
-      "token": "7c461fdb7c20ab33ca385858cb08034f425741e3e8fa8b0d7a335a0758301811"
+      "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-5859_l/index.m3u8"
     },
     {
       "id": 5767,
@@ -8251,7 +8251,8 @@
       "lon": -79.05982,
       "location": "PCCTV07-I-3306A09_I40-266E_NC86",
       "county": null,
-      "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-5903_l/index.m3u8"
+      "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-5903_l/index.m3u8",
+      "token": "f90a7973ed6aa6255c5ff2c7071199a4c756dc5d972c6d7c9a26000cec114792"
     },
     {
       "id": 5787,
@@ -8898,8 +8899,7 @@
       "lon": -79.712,
       "location": "CCTV07-I840-16M_HINESCHAPEL",
       "county": null,
-      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-5985_l/index.m3u8",
-      "token": "3a5900a33c2107994c52005dbf4c4ff4abc97b3d9d866ca955a332b4a5bf3826"
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-5985_l/index.m3u8"
     },
     {
       "id": 5859,
@@ -10662,8 +10662,7 @@
       "lon": -78.74199,
       "location": "CCTV06-I95-59S",
       "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6266_l/index.m3u8",
-      "token": "49899f8a989181dd40f5a7fc1243ad968c59de7f388eca7699300897e691be75"
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6266_l/index.m3u8"
     },
     {
       "id": 6041,
@@ -11056,7 +11055,8 @@
       "lon": -79.90742,
       "location": "CCTV07-I73-107N_I840",
       "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6395_l/index.m3u8"
+      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6395_l/index.m3u8",
+      "token": "8680e3668d6c6deb66086b8331df6475b6cb95a5f1c273a0b1e221a76f456927"
     },
     {
       "id": 6092,
@@ -11187,8 +11187,7 @@
       "lon": -82.50581,
       "location": "CCTV14-US25_OLDAIRPORT",
       "county": null,
-      "videoUrl": "https://cfase06.services.ncdot.gov:8887/chan-5413_l/index.m3u8",
-      "token": "7f21ed36d738bb067cc94df383271db9795f640c01b2bb76df30872996dadf85"
+      "videoUrl": "https://cfase06.services.ncdot.gov:8887/chan-5413_l/index.m3u8"
     },
     {
       "id": 6105,
