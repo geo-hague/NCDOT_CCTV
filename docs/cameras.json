@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-01T12:56:12.729Z",
-  "count": 1042,
+  "updated": "2026-10-01T14:02:58.545Z",
+  "count": 1041,
   "cameras": [
     {
       "id": 4020,
@@ -651,17 +651,6 @@
       "token": "a56ec14839676b31c9fcb3bb87943fe6aca712229cfe0a01a2c236fb5d3df0e3"
     },
     {
-      "id": 4084,
-      "roadway": "US-74",
-      "direction": "Eastbound",
-      "lat": 35.08217,
-      "lon": -80.61683,
-      "location": "CCTV10-US74-259.0E",
-      "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5200_l/index.m3u8",
-      "token": "448da694f02a2b6121157db8e5a17ecd68f159ec517a740cc6688e5f7d3bfb9f"
-    },
-    {
       "id": 4085,
       "roadway": "US-74",
       "direction": "Eastbound",
@@ -759,17 +748,6 @@
       "county": null,
       "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5211_l/index.m3u8",
       "token": "3242f12fbcfd965001ac631024a979faeb6d2fbf433209ef7fe5c0fe6719c3fc"
-    },
-    {
-      "id": 4096,
-      "roadway": "US-74",
-      "direction": "Eastbound",
-      "lat": 35.00611,
-      "lon": -80.49892,
-      "location": "CCTV10-US74-267.5E_OLIVEBRANCH",
-      "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5212_l/index.m3u8",
-      "token": "8e5db5e778890237cfe3516b7ae7a023a333dc86b16bb0a491454aba0529b287"
     },
     {
       "id": 4097,
@@ -4729,6 +4707,16 @@
       "token": "3f2b01d0d2d534caa2c3951c5860b345e92da21887c2b38caad55890b5ae2a74"
     },
     {
+      "id": 5427,
+      "roadway": "I-95",
+      "direction": "Both Directions",
+      "lat": 35.9815,
+      "lon": -77.87695,
+      "location": "CCTV04-I95-138M_US64",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5504_l/index.m3u8"
+    },
+    {
       "id": 5428,
       "roadway": "I-95",
       "direction": "Both Directions",
@@ -5211,6 +5199,16 @@
       "county": null,
       "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5549_l/index.m3u8",
       "token": "32fb44f1ec93816516bc448946e9930213a355272f12359f1547837561ac41c1"
+    },
+    {
+      "id": 5473,
+      "roadway": "US-70 BYP",
+      "direction": "Both Directions",
+      "lat": 35.42564,
+      "lon": -77.97984,
+      "location": "CCTV04-US70BYP-356M_US117",
+      "county": null,
+      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5550_l/index.m3u8"
     },
     {
       "id": 5474,
@@ -9667,16 +9665,6 @@
       "county": null,
       "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6082_l/index.m3u8",
       "token": "3560a113275726e44541ca4433cb731d6c06c507cd9282096cb5ebc1bd290079"
-    },
-    {
-      "id": 5955,
-      "roadway": "US-421",
-      "direction": "Southbound",
-      "lat": 36.11324,
-      "lon": -80.12956,
-      "location": "CCTV09-I74-53.5W_US421",
-      "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6083_l/index.m3u8"
     },
     {
       "id": 5956,
