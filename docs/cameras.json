@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-04T12:12:51.122Z",
-  "count": 1086,
+  "updated": "2026-10-04T12:58:38.360Z",
+  "count": 1084,
   "cameras": [
     {
       "id": 4020,
@@ -1022,17 +1022,6 @@
       "token": "188eff29320fd5bb19f3ff7ea15d8835291c337e3d50ea1bbf8029be04ced2ae"
     },
     {
-      "id": 4125,
-      "roadway": "I-485",
-      "direction": "Outer",
-      "lat": 35.36156,
-      "lon": -80.74818,
-      "location": "CCTV10-I485-28O_MALLARDCREEK",
-      "county": null,
-      "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-5241_l/index.m3u8",
-      "token": "5cbb175cf44d8645351a9127a4f2b578ac7d5a76505c0d08bf4968e5d0378a3b"
-    },
-    {
       "id": 4126,
       "roadway": "I-485",
       "direction": "Both Directions",
@@ -1064,16 +1053,6 @@
       "county": null,
       "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5244_l/index.m3u8",
       "token": "8ba766ba671429cde7acfaa960f6020241d2cd9788d65d4610c0c64322b565ad"
-    },
-    {
-      "id": 4130,
-      "roadway": "I-485",
-      "direction": "Inner",
-      "lat": 35.12575,
-      "lon": -80.9148,
-      "location": "CCTV10-I485-1.84I_I77",
-      "county": null,
-      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5246_l/index.m3u8"
     },
     {
       "id": 4132,
@@ -3788,6 +3767,17 @@
       "token": "8adc576b3cd3a1cb1954dbc186569a74c83c9c3778c7a91ff305bcb1a3585627"
     },
     {
+      "id": 5334,
+      "roadway": "US-17",
+      "direction": "Eastbound",
+      "lat": 36.29485,
+      "lon": -76.24709,
+      "location": "CCTV01-US17_NC344",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-6137_l/index.m3u8",
+      "token": "b5222797e8d808e13555afe3b80af26cc4bbba0a9b17b12df66314f44be3935b"
+    },
+    {
       "id": 5335,
       "roadway": "US-17",
       "direction": "Eastbound",
@@ -4388,16 +4378,6 @@
       "token": "8422b80d43fd86a158f2e3f587bc6bb452687434a416b3c363c204780370a0cd"
     },
     {
-      "id": 5396,
-      "roadway": "US-70",
-      "direction": "Westbound",
-      "lat": 35.26605,
-      "lon": -77.67615,
-      "location": "CCTV02-US70-380W_NC148",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
-    },
-    {
       "id": 5397,
       "roadway": "Other",
       "direction": "Both Directions",
@@ -4712,6 +4692,17 @@
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5505_l/index.m3u8",
       "token": "8dc6bb197137fdbefeb994ad1e615b6e7d67f80e990e48d052b89aa92b3b346f"
+    },
+    {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8",
+      "token": "99e03dceb85bb0aeb41cdebeb413bf5c2daa89644f8a636b655946e38f690d88"
     },
     {
       "id": 5430,
@@ -6319,16 +6310,6 @@
       "token": "d75542244f6237fdfbb806c99c2ae7f617827f60710e4c00658d757458f4987d"
     },
     {
-      "id": 5585,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.80476,
-      "lon": -78.69434,
-      "location": "PCCTV05-I440-4W_WADE",
-      "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8"
-    },
-    {
       "id": 5586,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -7276,6 +7257,17 @@
       "county": null,
       "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5763_l/index.m3u8",
       "token": "a55b03b883cd568ff2282d37dde8ba2d3c74e27c9c12e1dc1bb8883ff3777105"
+    },
+    {
+      "id": 5685,
+      "roadway": "I-74",
+      "direction": "Both Directions",
+      "lat": 34.57972,
+      "lon": -79.04811,
+      "location": "CCTV06-I74-213M_MLKJR",
+      "county": null,
+      "videoUrl": "https://cfese05.services.ncdot.gov:8887/chan-5764_l/index.m3u8",
+      "token": "56494dd425a784490b45805df42c4458b0ac2922f640e9812a6832a1639a4286"
     },
     {
       "id": 5686,
@@ -9196,16 +9188,6 @@
       "county": null,
       "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-6012_l/index.m3u8",
       "token": "379caa5a2c79b87f33597f3e31bf1b2d741aaa67906d4e33c1b0f3e4e23685fe"
-    },
-    {
-      "id": 5886,
-      "roadway": "I-40",
-      "direction": "Southbound",
-      "lat": 36.06652,
-      "lon": -80.2401,
-      "location": "CCTV09-I40-192.5W_SILASCREEK",
-      "county": null,
-      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6014_l/index.m3u8"
     },
     {
       "id": 5887,
