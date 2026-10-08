@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-08T13:17:29.978Z",
-  "count": 1094,
+  "updated": "2026-10-08T14:15:49.410Z",
+  "count": 1096,
   "cameras": [
     {
       "id": 4020,
@@ -23,6 +23,17 @@
       "county": null,
       "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5136_l/index.m3u8",
       "token": "c0a26e874e2f3e9530c59a5904b09a66a91a3834689ccb23286bedcb05e06a92"
+    },
+    {
+      "id": 4022,
+      "roadway": "I-77",
+      "direction": "Southbound",
+      "lat": 35.19151,
+      "lon": -80.88594,
+      "location": "CCTV10-I77-6.5S",
+      "county": null,
+      "videoUrl": "https://cfmse03.services.ncdot.gov:8887/chan-5137_l/index.m3u8",
+      "token": "653a5f93b38c1a1ba901df6ab17dc831a4b588b0d0323917b9d3b81c28bbac75"
     },
     {
       "id": 4023,
@@ -638,17 +649,6 @@
       "token": "8eef13d610acdfe63c3c787b456c5aa997756838883cd457874c4be872efe57d"
     },
     {
-      "id": 4084,
-      "roadway": "US-74",
-      "direction": "Eastbound",
-      "lat": 35.08217,
-      "lon": -80.61683,
-      "location": "CCTV10-US74-259.0E",
-      "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5200_l/index.m3u8",
-      "token": "82abe40871307fc915f29ad90f72200192b37eba2be563abb17bbbe8b88f5eb9"
-    },
-    {
       "id": 4085,
       "roadway": "US-74",
       "direction": "Eastbound",
@@ -1009,6 +1009,17 @@
       "county": null,
       "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5237_l/index.m3u8",
       "token": "2451cf1626cb990d2c3d98c9a139ed7ec528a7cdd98d9aeb5fe5de6019edcc66"
+    },
+    {
+      "id": 4123,
+      "roadway": "I-485",
+      "direction": "Inner",
+      "lat": 35.36847,
+      "lon": -80.77992,
+      "location": "CCTV10-I485-26.6I_PROSPERITY",
+      "county": null,
+      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-5239_l/index.m3u8",
+      "token": "f6d6ce3ae83b01e1d1c4f8369d8644a967da1dbfe0b904e99c67a091f008f8fa"
     },
     {
       "id": 4125,
@@ -4336,8 +4347,8 @@
       "id": 5392,
       "roadway": "US-17",
       "direction": "Northbound",
-      "lat": 35.096809,
-      "lon": -77.027892,
+      "lat": 35.09681,
+      "lon": -77.02789,
       "location": "CCTV02-US17-149N",
       "county": null,
       "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-5469_l/index.m3u8",
@@ -4347,8 +4358,8 @@
       "id": 5393,
       "roadway": "US-17",
       "direction": "Southbound",
-      "lat": 35.096864,
-      "lon": -77.027912,
+      "lat": 35.09686,
+      "lon": -77.02791,
       "location": "CCTV02-US17-149S",
       "county": null,
       "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-5470_l/index.m3u8",
@@ -9227,6 +9238,17 @@
       "token": "641a29734362f41885422af3f5baae6f6a1fcf1b1484aa4e691cbd6a712c6535"
     },
     {
+      "id": 5886,
+      "roadway": "I-40",
+      "direction": "Southbound",
+      "lat": 36.06652,
+      "lon": -80.2401,
+      "location": "CCTV09-I40-192.5W_SILASCREEK",
+      "county": null,
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6014_l/index.m3u8",
+      "token": "58a6948fccd7d26a51cb7851c18002fe8e79f2baad1ce7934c2e04af8fde21ec"
+    },
+    {
       "id": 5887,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -11553,6 +11575,16 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6424_l/index.m3u8"
     },
     {
+      "id": 6130,
+      "roadway": "Other",
+      "direction": "Northbound",
+      "lat": 35.91101,
+      "lon": -76.81728,
+      "location": "CCTV01-SANS-SOUCI-FERRY",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-6444_h/index.m3u8"
+    },
+    {
       "id": 6131,
       "roadway": "Other",
       "direction": "Northbound",
@@ -11884,17 +11916,6 @@
       "location": "CCTV10-I485-57.8O",
       "county": null,
       "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-6374_l/index.m3u8"
-    },
-    {
-      "id": 6184,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06249,
-      "lon": -80.75729,
-      "location": "CCTV10-I485-56.5O",
-      "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-6375_l/index.m3u8",
-      "token": "1cfe3099eab01583e20706bbc1676e51a11082521768888d3b00426b8f5e5fe3"
     },
     {
       "id": 6185,
