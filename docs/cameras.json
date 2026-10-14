@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-14T11:39:21.196Z",
-  "count": 1001,
+  "updated": "2026-10-14T12:34:41.867Z",
+  "count": 997,
   "cameras": [
     {
       "id": 4020,
@@ -1665,26 +1665,6 @@
       "county": null,
       "videoUrl": "https://cfase02.services.ncdot.gov:8887/chan-5373_l/index.m3u8",
       "token": "0d07883412f59e590cdf7547532e9667c76e60596281b86774c2d73a94b5ccf6"
-    },
-    {
-      "id": 4207,
-      "roadway": "I-26",
-      "direction": "Eastbound",
-      "lat": 35.53402,
-      "lon": -82.603,
-      "location": "CCTV13-I26-33E_BREVARD",
-      "county": null,
-      "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-5374_l/index.m3u8"
-    },
-    {
-      "id": 4210,
-      "roadway": "I-26",
-      "direction": "Eastbound",
-      "lat": 35.44009,
-      "lon": -82.5361,
-      "location": "CCTV13-I26-40E_AIRPORT",
-      "county": null,
-      "videoUrl": "https://cfase04.services.ncdot.gov:8887/chan-5381_l/index.m3u8"
     },
     {
       "id": 4212,
@@ -3859,16 +3839,6 @@
       "token": "125963dd17b71a02036269fe877d85b8344f90b768192505a1bf5418404e0278"
     },
     {
-      "id": 5381,
-      "roadway": "US-70",
-      "direction": "Both Directions",
-      "lat": 35.12698,
-      "lon": -77.13387,
-      "location": "CCTV02-US70-411M_NC43",
-      "county": null,
-      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5458_l/index.m3u8"
-    },
-    {
       "id": 5382,
       "roadway": "US-70",
       "direction": "Both Directions",
@@ -4704,16 +4674,6 @@
       "token": "3827d9d3ef530e5000e5643d5b67d2ff9c090a926681d9478a7fe74cdbab72f6"
     },
     {
-      "id": 5473,
-      "roadway": "US-70 BYP",
-      "direction": "Both Directions",
-      "lat": 35.42564,
-      "lon": -77.97984,
-      "location": "CCTV04-US70BYP-356M_US117",
-      "county": null,
-      "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-5550_l/index.m3u8"
-    },
-    {
       "id": 5474,
       "roadway": "US-70 BYP",
       "direction": "Westbound",
@@ -5227,6 +5187,17 @@
       "county": null,
       "videoUrl": "https://cfsse13.services.ncdot.gov:8887/chan-5600_l/index.m3u8",
       "token": "3a6171336187491741980e7b7e257066732c267b93233bc5dd6a14df5133894a"
+    },
+    {
+      "id": 5524,
+      "roadway": "NC-540",
+      "direction": "Southbound",
+      "lat": 35.69993,
+      "lon": -78.87159,
+      "location": "CCTV05-NC540-55.9W_US1",
+      "county": null,
+      "videoUrl": "https://cfsse01.services.ncdot.gov:8887/chan-5601_l/index.m3u8",
+      "token": "3c50604f0869b35a944d9a67e38124bdaf9cc4a0a0a2ab001a257034239859fc"
     },
     {
       "id": 5526,
@@ -5811,16 +5782,6 @@
       "token": "110768355f2fe5423998e7fd1277cb16383b0b57585140049465dbfe878261eb"
     },
     {
-      "id": 5585,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.80476,
-      "lon": -78.69434,
-      "location": "PCCTV05-I440-4W_WADE",
-      "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8"
-    },
-    {
       "id": 5586,
       "roadway": "I-40",
       "direction": "Southbound",
@@ -5929,16 +5890,6 @@
       "county": null,
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5673_l/index.m3u8",
       "token": "8320a33a8413182374fae94bc3bfef3e39b97b9675b6c1252427bc6f13c29b0e"
-    },
-    {
-      "id": 5596,
-      "roadway": "Edwards Mill",
-      "direction": "Southbound",
-      "lat": 35.82409,
-      "lon": -78.70691,
-      "location": "CCTV05-EDWARDSMILL_DURALEIGH",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5674_l/index.m3u8"
     },
     {
       "id": 5597,
@@ -9263,6 +9214,17 @@
       "token": "e11a2d51825dcd0816f775850dd589f4c509c5862cbd432dcc4d9bb5272baa00"
     },
     {
+      "id": 5978,
+      "roadway": "US-52",
+      "direction": "Northbound",
+      "lat": 36.07218,
+      "lon": -80.22835,
+      "location": "CCTV09-US52-107.5N_WAUGHTOWN",
+      "county": null,
+      "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6106_l/index.m3u8",
+      "token": "85c05c2232d1012fbd7e9759d8870266c4ee39822916279e127073b5f00de40d"
+    },
+    {
       "id": 5979,
       "roadway": "US-52",
       "direction": "Southbound",
@@ -10836,17 +10798,6 @@
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6698_l/index.m3u8"
     },
     {
-      "id": 6183,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06095,
-      "lon": -80.78207,
-      "location": "CCTV10-I485-57.8O",
-      "county": null,
-      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-6374_l/index.m3u8",
-      "token": "69ffa5abc263a4e3b1ae56d4e9cd5f678c0d2ece738bdf6f15f2e58af3f3b503"
-    },
-    {
       "id": 6184,
       "roadway": "I-485",
       "direction": "Westbound",
@@ -10866,6 +10817,17 @@
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6452_l/index.m3u8",
       "token": "7bc21501e357e9c33f5c784f06ed47288c56b25f500cf1ea87bc3609c3302897"
+    },
+    {
+      "id": 6186,
+      "roadway": "I-485",
+      "direction": "Westbound",
+      "lat": 35.06426,
+      "lon": -80.81539,
+      "location": "CCTV10-I485-59I_Rea",
+      "county": null,
+      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-6372_l/index.m3u8",
+      "token": "bb7242570d80f6a66e7f4f7192ade46d34da558729d187717fb45cf25524fa28"
     },
     {
       "id": 6187,
