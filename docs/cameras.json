@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T17:04:08.623Z",
+  "updated": "2026-10-22T11:36:53.240Z",
   "count": 1003,
   "cameras": [
     {
@@ -175,7 +175,8 @@
       "lon": -80.9186,
       "location": "CCTV10-I85-33.3N_BILLYGRHAM",
       "county": null,
-      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5151_l/index.m3u8"
+      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5151_l/index.m3u8",
+      "token": "50b3131cebc123a4a2b27413ed20e1107f7e7c948f884363c1f4c0bf9d5cd4c9"
     },
     {
       "id": 4038,
@@ -251,8 +252,7 @@
       "lon": -80.84638,
       "location": "CCTV10-I85-38S_I77",
       "county": null,
-      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5160_l/index.m3u8",
-      "token": "fd725d010b12f547c69f968777a9e96391a8801ab6f0a0c8dd38ecfce14d7502"
+      "videoUrl": "https://cfmse02.services.ncdot.gov:8887/chan-5160_l/index.m3u8"
     },
     {
       "id": 4046,
@@ -2297,7 +2297,8 @@
       "lon": -81.2996,
       "location": "CCTV12-I85-10S_US74",
       "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5334_l/index.m3u8"
+      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5334_l/index.m3u8",
+      "token": "215206310b5f1a241e6336cf740eef95cd2efc5e4fb1ebf1084c527181566239"
     },
     {
       "id": 4814,
@@ -2340,7 +2341,8 @@
       "lon": -81.17333,
       "location": "D12-049",
       "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5341_l/index.m3u8"
+      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5341_l/index.m3u8",
+      "token": "a115712bedd86a4f650c9e8be23f3a2096af4645e620af8c65ccad1a04a057ba"
     },
     {
       "id": 4819,
@@ -2427,7 +2429,8 @@
       "lon": -80.90561,
       "location": "CCTV12-I40-150W",
       "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5354_l/index.m3u8"
+      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5354_l/index.m3u8",
+      "token": "209c60a76277e53f063b601ddeccb4b4527d7a9040f61dddf6a3fbbc4a6185cd"
     },
     {
       "id": 4832,
@@ -2910,8 +2913,7 @@
       "lon": -83.03879,
       "location": "PCCTVSW-025_I40-4.2W",
       "county": null,
-      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-6122_l/index.m3u8",
-      "token": "16cc817bc73a30847e939646e408a942a44c3dfe2f6250d1b389f660df7aede6"
+      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-6122_l/index.m3u8"
     },
     {
       "id": 5066,
@@ -3477,7 +3479,8 @@
       "lon": -75.73872,
       "location": "CCTV01-US158-0.5E_BARLOW",
       "county": null,
-      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5420_l/index.m3u8"
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5420_l/index.m3u8",
+      "token": "b66977d4351547e88502f0fb9f44e7d7aa818cf285f1dbda896c8c7f99b28219"
     },
     {
       "id": 5317,
@@ -3981,8 +3984,7 @@
       "lon": -77.67615,
       "location": "CCTV02-US70-380W_NC148",
       "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8",
-      "token": "c644293c7991d322804f397b56e7a20f567fb2111891ff1a82e2a6fe13c13395"
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
     },
     {
       "id": 5398,
@@ -4718,8 +4720,7 @@
       "lon": -77.81847,
       "location": "CCTV04-US70BYP-370W_US70",
       "county": null,
-      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8",
-      "token": "0c809467fffcf4fee217cdcc9d2ed3c8e60f2a3c42cf9845a9f5d3d36164507e"
+      "videoUrl": "https://cfese03.services.ncdot.gov:8887/chan-5555_l/index.m3u8"
     },
     {
       "id": 5479,
@@ -5817,8 +5818,7 @@
       "lon": -78.69434,
       "location": "PCCTV05-I440-4W_WADE",
       "county": null,
-      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8",
-      "token": "1dd3ae6e7cca6259bd29ab3f45e65f66ea6e068d08439919bb0834568af1ac2b"
+      "videoUrl": "https://cfsse09.services.ncdot.gov:8887/chan-5663_l/index.m3u8"
     },
     {
       "id": 5586,
@@ -5872,7 +5872,8 @@
       "lon": -78.79795,
       "location": "CCTV05-I40-285E_AVIATION",
       "county": null,
-      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5668_l/index.m3u8"
+      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5668_l/index.m3u8",
+      "token": "5cda72a7b1e165a68620a7a60a05a26d79f5f528c4b520da607567c4b7b24f4e"
     },
     {
       "id": 5592,
@@ -6285,7 +6286,8 @@
       "lon": -78.80104,
       "location": "CCTV05-I540-2.5W",
       "county": null,
-      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5718_l/index.m3u8"
+      "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5718_l/index.m3u8",
+      "token": "c8ffd1418698ed5cbe4349a1963b32169da55192545b4b5827d7ed17d2de8170"
     },
     {
       "id": 5640,
@@ -6350,7 +6352,8 @@
       "lon": -78.78426,
       "location": "CCTV05-I540-3M_LUMLEY",
       "county": null,
-      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5725_l/index.m3u8"
+      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-5725_l/index.m3u8",
+      "token": "f24173eb8e6e6470c4250195f5a500efcf808f522eb78e11b222de0b8ecfbccc"
     },
     {
       "id": 5647,
@@ -7074,7 +7077,8 @@
       "lon": -79.7685,
       "location": "CCTV07-I85-125N",
       "county": null,
-      "videoUrl": "https://cftse12.services.ncdot.gov:8887/chan-5828_l/index.m3u8"
+      "videoUrl": "https://cftse12.services.ncdot.gov:8887/chan-5828_l/index.m3u8",
+      "token": "25259d43e9ee49a595203eae3cb81487b9adb3bc71b1a8dc0b0b6785e59458ab"
     },
     {
       "id": 5743,
@@ -7609,8 +7613,7 @@
       "lon": -79.7804,
       "location": "CCTV07-I40-221E",
       "county": null,
-      "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5922_l/index.m3u8",
-      "token": "bdb12814351b8042e54388969f1a07a8b4b99a976973d2c3e997d3c3cee42f57"
+      "videoUrl": "https://cfsse12.services.ncdot.gov:8887/chan-5922_l/index.m3u8"
     },
     {
       "id": 5806,
@@ -8910,8 +8913,7 @@
       "lon": -80.18005,
       "location": "CCTV09-US421-229M",
       "county": null,
-      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6086_l/index.m3u8",
-      "token": "a83093ec4c78adfb579e7d1cae1f1bd71214fb0a632088771aa87e26ea77b212"
+      "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-6086_l/index.m3u8"
     },
     {
       "id": 5959,
@@ -9482,7 +9484,8 @@
       "lon": -78.86347,
       "location": "CCTV05-I885-8.8S",
       "county": null,
-      "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-6195_l/index.m3u8"
+      "videoUrl": "https://cfsse06.services.ncdot.gov:8887/chan-6195_l/index.m3u8",
+      "token": "52a47136ff4acef5f80ade771c20825c1b2c7ce4b55f8c0f346e7779e3c0de27"
     },
     {
       "id": 6018,
@@ -9722,8 +9725,7 @@
       "lon": -78.79253,
       "location": "CCTV05-US1-98S_US64",
       "county": null,
-      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-6302_l/index.m3u8",
-      "token": "09e1f7155bd86a9735a79a8d4303f0547ee3dce81cdda280d81938442a5bc1a2"
+      "videoUrl": "https://cfsse02.services.ncdot.gov:8887/chan-6302_l/index.m3u8"
     },
     {
       "id": 6047,
@@ -10810,7 +10812,8 @@
       "lon": -80.75729,
       "location": "CCTV10-I485-56.5O",
       "county": null,
-      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-6375_l/index.m3u8"
+      "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-6375_l/index.m3u8",
+      "token": "d58cd8406f98303f51028c56f45c7b70fa85c7297430b113a81cfd3770b0076f"
     },
     {
       "id": 6185,
