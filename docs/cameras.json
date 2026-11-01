@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-01T13:06:26.665Z",
-  "count": 1021,
+  "updated": "2026-11-01T13:56:21.804Z",
+  "count": 1019,
   "cameras": [
     {
       "id": 4020,
@@ -396,16 +396,6 @@
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5174_l/index.m3u8",
       "token": "1f1a078c8df46288db82e164cb16b4b1e64ed449a66dd53ccadb601c49190253"
-    },
-    {
-      "id": 4060,
-      "roadway": "I-85",
-      "direction": "Northbound",
-      "lat": 35.35232,
-      "lon": -80.72927,
-      "location": "CCTV10-I85-48N_I485",
-      "county": null,
-      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5175_l/index.m3u8"
     },
     {
       "id": 4061,
@@ -1031,16 +1021,6 @@
       "county": null,
       "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-5241_l/index.m3u8",
       "token": "326796b2051eb5559c90603d0d6470a46627067b0e08a75a0ed091d2c56555c3"
-    },
-    {
-      "id": 4126,
-      "roadway": "I-485",
-      "direction": "Both Directions",
-      "lat": 35.34894,
-      "lon": -80.7333,
-      "location": "CCTV10-I485-30.5M_I85",
-      "county": null,
-      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5242_l/index.m3u8"
     },
     {
       "id": 4128,
@@ -4004,6 +3984,17 @@
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5472_l/index.m3u8",
       "token": "60d236b3e3e57f9d9bc0ab0e59525764eaa9c66bfe4ca233a5c32e0fe964f081"
+    },
+    {
+      "id": 5396,
+      "roadway": "US-70",
+      "direction": "Westbound",
+      "lat": 35.26605,
+      "lon": -77.67615,
+      "location": "CCTV02-US70-380W_NC148",
+      "county": null,
+      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8",
+      "token": "6c65e206d4e4ac1ce4224e1f521b80aedf47e3bb2a3ea1f9412e61f233eedff9"
     },
     {
       "id": 5398,
@@ -11127,16 +11118,6 @@
       "location": "PCCTVSW-038",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6419_l/index.m3u8"
-    },
-    {
-      "id": 6199,
-      "roadway": "I-485",
-      "direction": "Inner",
-      "lat": 35.34391,
-      "lon": -80.73037,
-      "location": "CCTV10-I485-31I",
-      "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5243_l/index.m3u8"
     }
   ]
 }
