@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-04T14:12:00.959Z",
-  "count": 1023,
+  "updated": "2026-11-04T14:58:26.758Z",
+  "count": 1020,
   "cameras": [
     {
       "id": 4020,
@@ -452,6 +452,17 @@
       "county": null,
       "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5181_l/index.m3u8",
       "token": "c1f4c988899faeb335c61a66c393200118268766e16e43742089643296741b39"
+    },
+    {
+      "id": 4067,
+      "roadway": "I-85",
+      "direction": "Southbound",
+      "lat": 35.43816,
+      "lon": -80.65192,
+      "location": "CCTV10-I85-55.15S",
+      "county": null,
+      "videoUrl": "https://cfmse12.services.ncdot.gov:8887/chan-5182_l/index.m3u8",
+      "token": "45344c90be81a52d5a8a351eb0d3210a15a03131ac3c5b57cbc560d9c4d2e782"
     },
     {
       "id": 4068,
@@ -3932,17 +3943,6 @@
       "token": "173b4fd4944dd28e63000aef7471ddf69eb562a4846a45bc5057f8020bd0b002"
     },
     {
-      "id": 5392,
-      "roadway": "US-17",
-      "direction": "Northbound",
-      "lat": 35.09681,
-      "lon": -77.02789,
-      "location": "CCTV02-US17-149N",
-      "county": null,
-      "videoUrl": "https://cfsse05.services.ncdot.gov:8887/chan-5469_l/index.m3u8",
-      "token": "099672e3febd68207f61c2857d09204385f3930f8b17a32863af1306694a3cd1"
-    },
-    {
       "id": 5393,
       "roadway": "US-17",
       "direction": "Southbound",
@@ -3963,16 +3963,6 @@
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5472_l/index.m3u8",
       "token": "3259941db2111fe2de407d32e0f2c523f24af24281cd623bb2b4a1dee0ac80f7"
-    },
-    {
-      "id": 5396,
-      "roadway": "US-70",
-      "direction": "Westbound",
-      "lat": 35.26605,
-      "lon": -77.67615,
-      "location": "CCTV02-US70-380W_NC148",
-      "county": null,
-      "videoUrl": "https://cfese04.services.ncdot.gov:8887/chan-5473_l/index.m3u8"
     },
     {
       "id": 5398,
@@ -9070,16 +9060,6 @@
       "token": "d476968f994d69d01a09f7a10e273fd4440a869d385fd58fb1fc3ed30c8f3389"
     },
     {
-      "id": 5955,
-      "roadway": "US-421",
-      "direction": "Southbound",
-      "lat": 36.11324,
-      "lon": -80.12956,
-      "location": "CCTV09-I74-53.5W_US421",
-      "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6083_l/index.m3u8"
-    },
-    {
       "id": 5956,
       "roadway": "US-421",
       "direction": "Southbound",
@@ -11010,17 +10990,6 @@
       "location": "CCTV04-VETERANS_SONLAN",
       "county": null,
       "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-6698_l/index.m3u8"
-    },
-    {
-      "id": 6183,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06095,
-      "lon": -80.78207,
-      "location": "CCTV10-I485-57.8O",
-      "county": null,
-      "videoUrl": "https://cfmse07.services.ncdot.gov:8887/chan-6374_l/index.m3u8",
-      "token": "5aa85ff43cdcbbb983a79cc656814f9ddc9467aebd01aa7fbedaf2ccf44fd271"
     },
     {
       "id": 6184,
