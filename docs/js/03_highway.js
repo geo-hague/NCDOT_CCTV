@@ -13,17 +13,35 @@ const OVERPASS_URLS = [
   'https://overpass.private.coffee/api/interpreter',
   'https://lz4.overpass-api.de/api/interpreter',
 ];
-let overpassPreferred = 0; // index of the mirror that last answered — tried first next time,
-                           // so a dead/rate-limited mirror doesn't burn 6s on every lock attempt
-const OVERPASS_FETCH_TIMEOUT_MS = 6000; // hard client-side cap per mirror attempt — the query's
-                                          // own [timeout:10] only bounds Overpass's own server-side
-                                          // processing, not how long our fetch() waits for a response,
-                                          // so a hung/slow mirror could otherwise stall highway lock
-                                          // far longer than necessary before ever trying the 2nd mirror
+const OVERPASS_FETCH_TIMEOUT_MS = 8000; // per-mirror cap; all mirrors run at the same time, so a lock
+                                          // attempt takes as long as the FASTEST mirror (max this value),
+                                          // not the sum of every slow/dead one tried in sequence
 const SNAP_RADIUS_M = 60; // how close a way must be to count as "you're on it" —
                            // loose enough to tolerate the test simulator's straight-line
                            // path drifting off the actual (curved) road; real GPS traces
                            // will sit right on the road so this won't hurt real accuracy.
+
+// One mirror, one attempt. Resolves with parsed JSON or throws a message that
+// names the mirror, so the debug panel can show why EACH one failed.
+async function queryOverpassMirror(baseUrl, query, controller) {
+  const host = baseUrl.replace(/^https?:\/\//, '').split('/')[0];
+  const timeoutId = setTimeout(() => controller.abort(), OVERPASS_FETCH_TIMEOUT_MS);
+  try {
+    const resp = await fetch(baseUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'data=' + encodeURIComponent(query),
+      signal: controller.signal,
+    });
+    if (!resp.ok) throw new Error(`${host} HTTP ${resp.status}`);
+    return await resp.json();
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error(`${host} timed out`);
+    throw new Error(err.message && err.message.startsWith(host) ? err.message : `${host} ${err.message}`);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 async function snapToHighway(lat, lon) {
   const query = `
@@ -33,61 +51,45 @@ async function snapToHighway(lat, lon) {
     out tags;
   `;
 
-  let lastError = null;
-  const order = OVERPASS_URLS.map((_, i) => (overpassPreferred + i) % OVERPASS_URLS.length);
-  for (const idx of order) {
-    const baseUrl = OVERPASS_URLS[idx];
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), OVERPASS_FETCH_TIMEOUT_MS);
-    try {
-      const resp = await fetch(baseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'data=' + encodeURIComponent(query),
-        signal: controller.signal,
-      });
-      clearTimeout(timeoutId);
-      if (!resp.ok) {
-        lastError = `HTTP ${resp.status} from ${baseUrl}`;
-        continue; // try next mirror
-      }
-      const data = await resp.json();
-      overpassPreferred = idx; // this mirror works — start here next time
-      if (!data.elements || !data.elements.length) {
-        return { rawName: null, normalizedList: [], error: null };
-      }
-      // IMPORTANT: don't just look at elements[0]. Divided highways are
-      // almost always split into separate way segments in OSM (one per
-      // carriageway direction, plus ramps/merges), and several can sit
-      // within the search radius at once — Overpass's ordering of them
-      // is arbitrary, not proximity-ranked. At a concurrency (e.g. I-26
-      // running with US-74), taking only the first element risks picking
-      // a segment tagged with just one of the two refs. So union refs
-      // across every nearby element instead.
-      const refSet = new Set();
-      let nameFallback = null;
-      for (const el of data.elements) {
-        const t = el.tags || {};
-        if (t.ref) {
-          t.ref.split(';').map(s => s.trim()).filter(Boolean).forEach(r => refSet.add(r));
-        } else if (!nameFallback && t.name) {
-          nameFallback = t.name.trim();
-        }
-      }
-      const sources = refSet.size ? [...refSet] : (nameFallback ? [nameFallback] : []);
-      if (!sources.length) return { rawName: null, normalizedList: [], error: null };
+  // Race every mirror at once and take the first good answer; cancel the rest.
+  const controllers = OVERPASS_URLS.map(() => new AbortController());
+  let data;
+  try {
+    data = await Promise.any(OVERPASS_URLS.map((u, i) => queryOverpassMirror(u, query, controllers[i])));
+  } catch (aggErr) {
+    const errs = (aggErr.errors || []).map(e => e.message).join(' | ');
+    console.warn('Overpass snap failed on all mirrors:', errs);
+    return { rawName: null, normalizedList: [], error: errs || 'all mirrors failed' };
+  } finally {
+    controllers.forEach(c => { try { c.abort(); } catch (e) {} });
+  }
 
-      const normalizedList = sources.map(normalizeHighwayName).filter(Boolean);
-      return { rawName: sources.join(' / '), normalizedList, error: null };
-    } catch (err) {
-      clearTimeout(timeoutId);
-      lastError = err.name === 'AbortError'
-        ? `${baseUrl}: timed out after ${OVERPASS_FETCH_TIMEOUT_MS}ms`
-        : `${baseUrl}: ${err.message}`;
+  if (!data.elements || !data.elements.length) {
+    return { rawName: null, normalizedList: [], error: null };
+  }
+  // IMPORTANT: don't just look at elements[0]. Divided highways are
+  // almost always split into separate way segments in OSM (one per
+  // carriageway direction, plus ramps/merges), and several can sit
+  // within the search radius at once — Overpass's ordering of them
+  // is arbitrary, not proximity-ranked. At a concurrency (e.g. I-26
+  // running with US-74), taking only the first element risks picking
+  // a segment tagged with just one of the two refs. So union refs
+  // across every nearby element instead.
+  const refSet = new Set();
+  let nameFallback = null;
+  for (const el of data.elements) {
+    const t = el.tags || {};
+    if (t.ref) {
+      t.ref.split(';').map(s => s.trim()).filter(Boolean).forEach(r => refSet.add(r));
+    } else if (!nameFallback && t.name) {
+      nameFallback = t.name.trim();
     }
   }
-  console.warn('Overpass snap failed on all mirrors:', lastError);
-  return { rawName: null, normalizedList: [], error: lastError };
+  const sources = refSet.size ? [...refSet] : (nameFallback ? [nameFallback] : []);
+  if (!sources.length) return { rawName: null, normalizedList: [], error: null };
+
+  const normalizedList = sources.map(normalizeHighwayName).filter(Boolean);
+  return { rawName: sources.join(' / '), normalizedList, error: null };
 }
 
 // ---------- Direction of travel (with hysteresis) ----------

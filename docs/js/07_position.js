@@ -48,10 +48,14 @@ async function handlePositionInner(lat, lon, source) {
   updateDirection(lat, lon);
 
   const now = Date.now();
-  const effectiveRecheckMs = Math.min(
+  let effectiveRecheckMs = Math.min(
     HIGHWAY_RECHECK_MS * Math.pow(2, overpassFailStreak),
     HIGHWAY_RECHECK_MAX_MS
   );
+  // Until the FIRST highway lock lands there's nothing on screen at all (no
+  // cameras, no mile marker), so don't back off past 12s — long waits only make
+  // sense once we already have a lock to keep showing in the meantime.
+  if (!currentHighway) effectiveRecheckMs = Math.min(effectiveRecheckMs, 12000);
   if (now - lastHighwayCheck > effectiveRecheckMs) {
     lastHighwayCheck = now;
     const mySeq = ++highwayCheckSeq;
