@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-08T13:11:51.797Z",
-  "count": 1004,
+  "updated": "2026-11-08T13:58:42.126Z",
+  "count": 1011,
   "cameras": [
     {
       "id": 4020,
@@ -386,6 +386,17 @@
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5174_l/index.m3u8",
       "token": "6808841b4f105a773ab8b4ad82a679d1710b53c444c9842f1a21ddea54d069e0"
+    },
+    {
+      "id": 4060,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 35.35232,
+      "lon": -80.72927,
+      "location": "CCTV10-I85-48N_I485",
+      "county": null,
+      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5175_l/index.m3u8",
+      "token": "2138798da30dad6a26361a33911aba9cbbe74ef124661798985f4c2afe921a14"
     },
     {
       "id": 4061,
@@ -1011,6 +1022,17 @@
       "county": null,
       "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-5241_l/index.m3u8",
       "token": "fee88a33e46596b482d28b61213250576376fe20ba4b3b86a57f2fe0fc04cee4"
+    },
+    {
+      "id": 4126,
+      "roadway": "I-485",
+      "direction": "Both Directions",
+      "lat": 35.34894,
+      "lon": -80.7333,
+      "location": "CCTV10-I485-30.5M_I85",
+      "county": null,
+      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5242_l/index.m3u8",
+      "token": "a382c0254a7fc6754a8e8fcac48b3fa3ace69cb478f81ef6774f22a5744a99fb"
     },
     {
       "id": 4128,
@@ -4216,6 +4238,17 @@
       "token": "156f39603126d305d5d27d448f34c63963cf6044cdc5f99f8ac595a16d62d83a"
     },
     {
+      "id": 5429,
+      "roadway": "I-95",
+      "direction": "Northbound",
+      "lat": 36.06359,
+      "lon": -77.82237,
+      "location": "CCTV04-I95-145N_NC48",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5506_l/index.m3u8",
+      "token": "56808f693359943631676ed120fe6b931d08e00ddd914ecc58097b7d954a3fc6"
+    },
+    {
       "id": 5430,
       "roadway": "I-95",
       "direction": "Northbound",
@@ -6191,6 +6224,16 @@
       "token": "b2addab49951d1000f42f0453f6d476353c6c9c104487f8ebb9a933af8bc627f"
     },
     {
+      "id": 5624,
+      "roadway": "I-440",
+      "direction": "Southbound",
+      "lat": 35.83612,
+      "lon": -78.64984,
+      "location": "CCTV05-I440-7.5W",
+      "county": null,
+      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5703_l/index.m3u8"
+    },
+    {
       "id": 5625,
       "roadway": "I-440",
       "direction": "Southbound",
@@ -6210,6 +6253,16 @@
       "location": "CCTV05-EDWARDSMILL_WADE",
       "county": null,
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
+    },
+    {
+      "id": 5627,
+      "roadway": "I-440",
+      "direction": "Southbound",
+      "lat": 35.8348,
+      "lon": -78.6381,
+      "location": "CCTV05-I440-8W_SIXFORKS",
+      "county": null,
+      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5706_l/index.m3u8"
     },
     {
       "id": 5634,
@@ -8885,6 +8938,17 @@
       "token": "a403f2cd59793f4aebb056c0857554c9a23ee5cdba9829e0b1af1b134f0233aa"
     },
     {
+      "id": 5955,
+      "roadway": "US-421",
+      "direction": "Southbound",
+      "lat": 36.11324,
+      "lon": -80.12956,
+      "location": "CCTV09-I74-53.5W_US421",
+      "county": null,
+      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6083_l/index.m3u8",
+      "token": "c8f3cd0a3ba0f90ef2dd8e0f21c82c94e75a80426f13305a7379371d6440c7bb"
+    },
+    {
       "id": 5956,
       "roadway": "US-421",
       "direction": "Southbound",
@@ -10957,6 +11021,17 @@
       "location": "PCCTVSW-038",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6419_l/index.m3u8"
+    },
+    {
+      "id": 6199,
+      "roadway": "I-485",
+      "direction": "Inner",
+      "lat": 35.34391,
+      "lon": -80.73037,
+      "location": "CCTV10-I485-31I",
+      "county": null,
+      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5243_l/index.m3u8",
+      "token": "eb6e881485a59c102a0bc72aaa40c29b52db55690d5c16489ee2487448c99a61"
     }
   ]
 }
