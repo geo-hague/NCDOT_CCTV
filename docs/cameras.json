@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-09T15:46:40.431Z",
-  "count": 1011,
+  "updated": "2026-11-09T17:00:02.805Z",
+  "count": 1010,
   "cameras": [
     {
       "id": 4020,
@@ -3845,6 +3845,17 @@
       "token": "4ad70e805d84109538db51e40b7cf04f9e0ad001bb3e42cda871b39b2398dd34"
     },
     {
+      "id": 5381,
+      "roadway": "US-70",
+      "direction": "Both Directions",
+      "lat": 35.12698,
+      "lon": -77.13387,
+      "location": "CCTV02-US70-411M_NC43",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5458_l/index.m3u8",
+      "token": "3bdc9ce37422d40e79218f1eeb155b2f153c14d48a6904a468c52c320cb57e13"
+    },
+    {
       "id": 5382,
       "roadway": "US-70",
       "direction": "Both Directions",
@@ -6227,17 +6238,6 @@
       "token": "978362c58711daedc92d58a90a31233508d376c5217a93f30cb8448c60e5a9fa"
     },
     {
-      "id": 5624,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.83612,
-      "lon": -78.64984,
-      "location": "CCTV05-I440-7.5W",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5703_l/index.m3u8",
-      "token": "830befd594aa0182fcb3377b245a3451a8ee2e402fa3c710deb59fd44e5f119e"
-    },
-    {
       "id": 5625,
       "roadway": "I-440",
       "direction": "Southbound",
@@ -6257,17 +6257,6 @@
       "location": "CCTV05-EDWARDSMILL_WADE",
       "county": null,
       "videoUrl": "https://cfsse07.services.ncdot.gov:8887/chan-5705_l/index.m3u8"
-    },
-    {
-      "id": 5627,
-      "roadway": "I-440",
-      "direction": "Southbound",
-      "lat": 35.8348,
-      "lon": -78.6381,
-      "location": "CCTV05-I440-8W_SIXFORKS",
-      "county": null,
-      "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5706_l/index.m3u8",
-      "token": "11b2e5021ca1a4774f21a683bbfee62be0a8aa6df06f0021bfaf0b88a6a95dbd"
     },
     {
       "id": 5634,
@@ -7407,6 +7396,16 @@
       "county": null,
       "videoUrl": "https://cftse05.services.ncdot.gov:8887/chan-5870_l/index.m3u8",
       "token": "4ef23cd7f6cbd0f82f23b6e81936249cc271d8c3d473b9205a96c6a1fc455265"
+    },
+    {
+      "id": 5768,
+      "roadway": "NC-68",
+      "direction": "Northbound",
+      "lat": 36.11624,
+      "lon": -79.9622,
+      "location": "CCTV07-NC68-17N",
+      "county": null,
+      "videoUrl": "https://cftse09.services.ncdot.gov:8887/chan-5873_l/index.m3u8"
     },
     {
       "id": 5776,
@@ -8938,16 +8937,6 @@
       "county": null,
       "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6082_l/index.m3u8",
       "token": "bda18b837fe031c4207d3b4178a673c4c940ca9ed6be9576e72e2e3f8464de76"
-    },
-    {
-      "id": 5955,
-      "roadway": "US-421",
-      "direction": "Southbound",
-      "lat": 36.11324,
-      "lon": -80.12956,
-      "location": "CCTV09-I74-53.5W_US421",
-      "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6083_l/index.m3u8"
     },
     {
       "id": 5956,
