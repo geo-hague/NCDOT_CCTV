@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-15T13:52:03.065Z",
-  "count": 1000,
+  "updated": "2026-11-15T14:26:31.212Z",
+  "count": 1001,
   "cameras": [
     {
       "id": 4020,
@@ -3802,6 +3802,16 @@
       "token": "ba70f02445777e5bcfcccc4f9e6f3b181c67d5464a08eb18a52ca3a631d457d8"
     },
     {
+      "id": 5381,
+      "roadway": "US-70",
+      "direction": "Both Directions",
+      "lat": 35.12698,
+      "lon": -77.13387,
+      "location": "CCTV02-US70-411M_NC43",
+      "county": null,
+      "videoUrl": "https://cfese06.services.ncdot.gov:8887/chan-5458_l/index.m3u8"
+    },
+    {
       "id": 5382,
       "roadway": "US-70",
       "direction": "Both Directions",
@@ -4711,6 +4721,17 @@
       "county": null,
       "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5557_l/index.m3u8",
       "token": "26d99ada47683decbbf78e903d65b2433035ed0b5908f0ba85d9d45c9a505c74"
+    },
+    {
+      "id": 5481,
+      "roadway": "I-85",
+      "direction": "Both Directions",
+      "lat": 36.54372,
+      "lon": -78.18446,
+      "location": "PCCTV05-05-I85-233.5M_VALINE",
+      "county": null,
+      "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-5558_l/index.m3u8",
+      "token": "07ae0c36c3377ac3c1484b6085e94372176d4433749ebdbb77c969aa51a0c8c8"
     },
     {
       "id": 5482,
@@ -8700,17 +8721,6 @@
       "county": null,
       "videoUrl": "https://cftse05.services.ncdot.gov:8887/chan-6066_l/index.m3u8",
       "token": "ced64addb496310fd6e02705096af43b0d83dfab3732a6bc02fce72201f51824"
-    },
-    {
-      "id": 5939,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.76801,
-      "lon": -80.33186,
-      "location": "CCTV09-I85-87S",
-      "county": null,
-      "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6067_l/index.m3u8",
-      "token": "efe579edb45bdcd660115161baad79e738dc7822c143bf220464c3c824780833"
     },
     {
       "id": 5940,
