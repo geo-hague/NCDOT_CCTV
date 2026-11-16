@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T15:23:19.544Z",
+  "updated": "2026-11-16T16:38:45.416Z",
   "count": 1001,
   "cameras": [
     {
@@ -256,16 +256,6 @@
       "token": "8c7df4201d7927088fda8447cf5b87069aa477f9ce4c6893b0b14f06fe224d98"
     },
     {
-      "id": 4046,
-      "roadway": "I-85",
-      "direction": "Southbound",
-      "lat": 35.2734,
-      "lon": -80.8322,
-      "location": "CCTV10-I85-39S",
-      "county": null,
-      "videoUrl": "https://cfmse03.services.ncdot.gov:8887/chan-5161_l/index.m3u8"
-    },
-    {
       "id": 4047,
       "roadway": "I-85",
       "direction": "Southbound",
@@ -385,6 +375,16 @@
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5174_l/index.m3u8",
       "token": "7739082c126cbb1e665705c92cb731abb8c5a343caa694716def20fce657e46b"
+    },
+    {
+      "id": 4060,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 35.35232,
+      "lon": -80.72927,
+      "location": "CCTV10-I85-48N_I485",
+      "county": null,
+      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5175_l/index.m3u8"
     },
     {
       "id": 4061,
@@ -999,6 +999,16 @@
       "county": null,
       "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-5241_l/index.m3u8",
       "token": "afab9d5cc67598a352d0bd43794559e47315925e516e6ee644d889c8dbe16f5f"
+    },
+    {
+      "id": 4126,
+      "roadway": "I-485",
+      "direction": "Both Directions",
+      "lat": 35.34894,
+      "lon": -80.7333,
+      "location": "CCTV10-I485-30.5M_I85",
+      "county": null,
+      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5242_l/index.m3u8"
     },
     {
       "id": 4128,
@@ -6174,16 +6184,6 @@
       "token": "c9fed6838e10bffa3927496788c3cac5cf248131d1c55185a18420bb8413c731"
     },
     {
-      "id": 5637,
-      "roadway": "Edwards Mill",
-      "direction": "Northbound",
-      "lat": 35.80257,
-      "lon": -78.72653,
-      "location": "CCTV05-EDWARDSMILL-N_STEPHENSTROUD",
-      "county": null,
-      "videoUrl": "https://cfsse04.services.ncdot.gov:8887/chan-5716_l/index.m3u8"
-    },
-    {
       "id": 5638,
       "roadway": "I-540",
       "direction": "Southbound",
@@ -6883,16 +6883,6 @@
       "county": null,
       "videoUrl": "https://cftse11.services.ncdot.gov:8887/chan-5813_l/index.m3u8",
       "token": "44bd90692cc1f40b443f90da62f9a922f7e0af595b68d70ad10a6169a92df01a"
-    },
-    {
-      "id": 5732,
-      "roadway": "I-840",
-      "direction": "Southbound",
-      "lat": 36.13868,
-      "lon": -79.84897,
-      "location": "CCTV07-I840-6W_COTSWOLD",
-      "county": null,
-      "videoUrl": "https://cftse10.services.ncdot.gov:8887/chan-5814_l/index.m3u8"
     },
     {
       "id": 5733,
@@ -8670,6 +8660,17 @@
       "token": "1e6dcbc86be99ce634a0d1161ff53d4c3a7b290f0a3bc30eb33d0ff2872ec73a"
     },
     {
+      "id": 5939,
+      "roadway": "I-85",
+      "direction": "Southbound",
+      "lat": 35.76801,
+      "lon": -80.33186,
+      "location": "CCTV09-I85-87S",
+      "county": null,
+      "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6067_l/index.m3u8",
+      "token": "295206408eaf05e14444c56a0e02f07a5ed6d06901ef67c77741d982169446a7"
+    },
+    {
       "id": 5940,
       "roadway": "I-85",
       "direction": "Southbound",
@@ -8824,8 +8825,8 @@
       "id": 5959,
       "roadway": "I-40",
       "direction": "Eastbound",
-      "lat": 36.0517708,
-      "lon": -80.3584137,
+      "lat": 36.05177,
+      "lon": -80.35841,
       "location": "CCTV09-I40-185E_MCGREGOR",
       "county": null,
       "videoUrl": "https://cftse12.services.ncdot.gov:8887/chan-6087_l/index.m3u8",
@@ -10753,17 +10754,6 @@
       "token": "c99a4aa9300a359198ef3a429935e0adc836a10a99e31161448ca46da2466147"
     },
     {
-      "id": 6186,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06426,
-      "lon": -80.81539,
-      "location": "CCTV10-I485-59I_Rea",
-      "county": null,
-      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-6372_l/index.m3u8",
-      "token": "9b9f0177b78921efece667519b6848d4d9b857a7c9522fdc530ad750e5302607"
-    },
-    {
       "id": 6189,
       "roadway": "I-26",
       "direction": "Northbound",
@@ -10868,6 +10858,16 @@
       "location": "PCCTVSW-038",
       "county": null,
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6419_l/index.m3u8"
+    },
+    {
+      "id": 6199,
+      "roadway": "I-485",
+      "direction": "Inner",
+      "lat": 35.34391,
+      "lon": -80.73037,
+      "location": "CCTV10-I485-31I",
+      "county": null,
+      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5243_l/index.m3u8"
     }
   ]
 }
