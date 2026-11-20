@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-20T15:16:26.616Z",
-  "count": 1023,
+  "updated": "2026-11-20T15:51:07.948Z",
+  "count": 1026,
   "cameras": [
     {
       "id": 4020,
@@ -351,6 +351,16 @@
       "location": "CCTV10-I85-48.5S",
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5174_l/index.m3u8"
+    },
+    {
+      "id": 4060,
+      "roadway": "I-85",
+      "direction": "Northbound",
+      "lat": 35.35232,
+      "lon": -80.72927,
+      "location": "CCTV10-I85-48N_I485",
+      "county": null,
+      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5175_l/index.m3u8"
     },
     {
       "id": 4061,
@@ -8022,6 +8032,17 @@
       "token": "ff30cfacb72c33c8c116cfcd9080f92b70a48d0c1e1cbaa0373a5521f6818bf7"
     },
     {
+      "id": 5868,
+      "roadway": "US-52",
+      "direction": "Northbound",
+      "lat": 36.08346,
+      "lon": -80.22848,
+      "location": "CCTV09-US52-108N_RESEARCH",
+      "county": null,
+      "videoUrl": "https://cftse07.services.ncdot.gov:8887/chan-5995_l/index.m3u8",
+      "token": "131eef063031e2aef7b627a2ab2886ebb7ae6fe78f153cca3c2859b9b0bbb458"
+    },
+    {
       "id": 5869,
       "roadway": "US-52",
       "direction": "Southbound",
@@ -8902,6 +8923,17 @@
       "county": null,
       "videoUrl": "https://cftse06.services.ncdot.gov:8887/chan-6103_l/index.m3u8",
       "token": "639e2403daf0d4114da3b0845a5dc24389bbca0fe45f9167743b83a84063437f"
+    },
+    {
+      "id": 5976,
+      "roadway": "US-421",
+      "direction": "Southbound",
+      "lat": 36.07195,
+      "lon": -80.35833,
+      "location": "CCTV09-US421-240S_PEACEHAVEN",
+      "county": null,
+      "videoUrl": "https://cftse07.services.ncdot.gov:8887/chan-6104_l/index.m3u8",
+      "token": "1b781045c523c200cc8755e02b4a8055fb2c544f16e612f34755deb6d35c9021"
     },
     {
       "id": 5977,
@@ -10638,16 +10670,6 @@
       "token": "f8cf9653680b366c4febf2be75e73131799bbd1cb20eaa3882340a5578706ebd"
     },
     {
-      "id": 6186,
-      "roadway": "I-485",
-      "direction": "Westbound",
-      "lat": 35.06426,
-      "lon": -80.81539,
-      "location": "CCTV10-I485-59I_Rea",
-      "county": null,
-      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-6372_l/index.m3u8"
-    },
-    {
       "id": 6189,
       "roadway": "I-26",
       "direction": "Northbound",
@@ -10925,6 +10947,16 @@
       "county": null,
       "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-6371_l/index.m3u8",
       "token": "efb1858850f2250ed66153237640c4a211b28bb97871e6f2938b238d592a8b6f"
+    },
+    {
+      "id": 6234,
+      "roadway": "I-40",
+      "direction": "Eastbound",
+      "lat": 35.58046,
+      "lon": -82.46424,
+      "location": "CCTV13-I40-55E_PORTERSCOVE",
+      "county": null,
+      "videoUrl": "https://cfase06.services.ncdot.gov:8887/chan-5394_l/index.m3u8"
     }
   ]
 }
