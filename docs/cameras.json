@@ -1,6 +1,6 @@
 {
-  "updated": "2026-11-28T15:53:50.630Z",
-  "count": 999,
+  "updated": "2026-11-28T15:54:18.018Z",
+  "count": 993,
   "cameras": [
     {
       "id": 4020,
@@ -352,16 +352,6 @@
       "county": null,
       "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-5174_l/index.m3u8",
       "token": "f3e98463f5990a14d7a0591dce24a5ea723be4657873e4f829e7b54bd54bdf85"
-    },
-    {
-      "id": 4060,
-      "roadway": "I-85",
-      "direction": "Northbound",
-      "lat": 35.35232,
-      "lon": -80.72927,
-      "location": "CCTV10-I85-48N_I485",
-      "county": null,
-      "videoUrl": "https://cfmse05.services.ncdot.gov:8887/chan-5175_l/index.m3u8"
     },
     {
       "id": 4061,
@@ -951,16 +941,6 @@
       "videoUrl": "https://cfmse09.services.ncdot.gov:8887/chan-5241_l/index.m3u8"
     },
     {
-      "id": 4126,
-      "roadway": "I-485",
-      "direction": "Both Directions",
-      "lat": 35.34894,
-      "lon": -80.7333,
-      "location": "CCTV10-I485-30.5M_I85",
-      "county": null,
-      "videoUrl": "https://cfmse10.services.ncdot.gov:8887/chan-5242_l/index.m3u8"
-    },
-    {
       "id": 4128,
       "roadway": "I-485",
       "direction": "Inner",
@@ -1391,6 +1371,16 @@
       "videoUrl": "https://cfmse06.services.ncdot.gov:8887/chan-5298_l/index.m3u8"
     },
     {
+      "id": 4182,
+      "roadway": "I-77",
+      "direction": "Northbound",
+      "lat": 35.5323,
+      "lon": -80.86163,
+      "location": "CCTV10-I77-31.4N_LANGTREE",
+      "county": null,
+      "videoUrl": "https://cfmse08.services.ncdot.gov:8887/chan-5300_l/index.m3u8"
+    },
+    {
       "id": 4183,
       "roadway": "I-485",
       "direction": "Inner",
@@ -1670,16 +1660,6 @@
       "location": "CCTV13-US25_ROCKHILL",
       "county": null,
       "videoUrl": "https://cfase03.services.ncdot.gov:8887/chan-5414_l/index.m3u8"
-    },
-    {
-      "id": 4228,
-      "roadway": "I-240",
-      "direction": "Eastbound",
-      "lat": 35.58917,
-      "lon": -82.57924,
-      "location": "CCTV13-I240-3E_I26",
-      "county": null,
-      "videoUrl": "https://cfase01.services.ncdot.gov:8887/chan-5416_l/index.m3u8"
     },
     {
       "id": 4229,
@@ -4054,16 +4034,6 @@
       "location": "CCTV04-I40-313W_CLEVELAND",
       "county": null,
       "videoUrl": "https://cfsse08.services.ncdot.gov:8887/chan-5521_l/index.m3u8"
-    },
-    {
-      "id": 5445,
-      "roadway": "I-95",
-      "direction": "Southbound",
-      "lat": 35.52891,
-      "lon": -78.27077,
-      "location": "CCTV04-I95-98S",
-      "county": null,
-      "videoUrl": "https://cfese01.services.ncdot.gov:8887/chan-5522_l/index.m3u8"
     },
     {
       "id": 5446,
@@ -8159,16 +8129,6 @@
       "videoUrl": "https://cftse01.services.ncdot.gov:8887/chan-6082_l/index.m3u8"
     },
     {
-      "id": 5955,
-      "roadway": "US-421",
-      "direction": "Southbound",
-      "lat": 36.11324,
-      "lon": -80.12956,
-      "location": "CCTV09-I74-53.5W_US421",
-      "county": null,
-      "videoUrl": "https://cftse03.services.ncdot.gov:8887/chan-6083_l/index.m3u8"
-    },
-    {
       "id": 5956,
       "roadway": "US-421",
       "direction": "Southbound",
@@ -9978,16 +9938,6 @@
       "videoUrl": "https://cfese02.services.ncdot.gov:8887/chan-6419_l/index.m3u8"
     },
     {
-      "id": 6199,
-      "roadway": "I-485",
-      "direction": "Inner",
-      "lat": 35.34391,
-      "lon": -80.73037,
-      "location": "CCTV10-I485-31I",
-      "county": null,
-      "videoUrl": "https://cfmse11.services.ncdot.gov:8887/chan-5243_l/index.m3u8"
-    },
-    {
       "id": 6200,
       "roadway": "I-485",
       "direction": "Westbound",
@@ -10122,16 +10072,6 @@
       "location": "CCTV14-I26-55.7W",
       "county": null,
       "videoUrl": "https://cfsse10.services.ncdot.gov:8887/chan-6308_l/index.m3u8"
-    },
-    {
-      "id": 6231,
-      "roadway": "US-74",
-      "direction": "Westbound",
-      "lat": 34.94564,
-      "lon": -79.87396,
-      "location": "CCTV10-US74-304.5M",
-      "county": null,
-      "videoUrl": "https://cfmse04.services.ncdot.gov:8887/chan-6357_l/index.m3u8"
     },
     {
       "id": 6233,
